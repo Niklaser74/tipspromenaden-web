@@ -1,0 +1,89 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// 404-sidan har dubbla syften:
+//  1. Vanlig "Sidan finns inte" för okända paths.
+//  2. Smart deep-link-fallback för `/walk/<id>` när Android App Links INTE
+//     fångar (iOS, desktop, app inte installerad). Vi läser path:en
+//     client-side och försöker `tipspromenaden://walk/<id>`. Om appen inte
+//     fångar inom 1.5 s redirectar vi till Play Store på Android, eller
+//     visar en "kommer snart"-text på iOS.
+//
+// När Android App Links är fullt utrullade (assetlinks.json + intent-filters
+// i appen + verifiering) öppnar OS:et appen direkt utan att webbsidan ens
+// laddas — denna sida fungerar då bara för icke-installerade fall.
+---
+
+<Layout title="Tipspromenaden — öppnar promenad…">
+  <main class="min-h-screen flex flex-col items-center justify-center px-6 text-center">
+    <img
+      src="/icon.png"
+      alt=""
+      width="96"
+      height="96"
+      class="w-24 h-24 rounded-2xl mb-8"
+    />
+
+    <h1 class="font-serif text-4xl md:text-5xl text-green-dark mb-4">
+      Öppnar promenaden…
+    </h1>
+
+    <p id="status" class="text-lg max-w-md mb-10 leading-relaxed">
+      Om appen inte öppnas automatiskt skickas du vidare om en stund.
+    </p>
+
+    <a
+      href="/"
+      class="text-green font-semibold hover:underline"
+    >
+      ← Tillbaka till tipspromenaden.app
+    </a>
+  </main>
+
+  <script>
+    const PLAY_STORE =
+      "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
+
+    const path = window.location.pathname;
+    const walkMatch = path.match(/^\/walk\/([^/]+)\/?$/);
+    const ua = navigator.userAgent.toLowerCase();
+    const isAndroid = /android/.test(ua);
+    const isIos = /iphone|ipad|ipod/.test(ua);
+
+    const status = document.getElementById("status");
+
+    if (walkMatch) {
+      const walkId = walkMatch[1];
+
+      if (isAndroid) {
+        // Försök öppna appen via custom-scheme. Om OS:et fångar göms
+        // sidan; annars fortsätter vi och redirectar till Play Store.
+        const start = Date.now();
+        window.location.href = `tipspromenaden://walk/${walkId}`;
+        setTimeout(() => {
+          // Om vi fortfarande är här — appen finns inte installerad.
+          if (Date.now() - start < 2500) {
+            window.location.href = PLAY_STORE;
+          }
+        }, 1500);
+      } else if (isIos) {
+        if (status) {
+          status.textContent =
+            "iOS-versionen är inte släppt än. Be skaparen om en Android-installation, eller kom tillbaka när iOS-appen lanseras.";
+        }
+      } else {
+        if (status) {
+          status.textContent =
+            "Öppna länken på en Android-telefon med Tipspromenaden installerad för att starta promenaden.";
+        }
+      }
+    } else {
+      // Vanlig 404 — inte en walk-länk
+      const h1 = document.querySelector("h1");
+      if (h1) h1.textContent = "Sidan finns inte";
+      if (status) {
+        status.textContent = "Den här sidan kunde vi inte hitta.";
+      }
+    }
+  </script>
+</Layout>

@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+/* Friluft Folio design tokens — samma palett som det printade flygbladet
+   (docs/marketing/design-philosophy.md) och social-onepagern. Tailwind 4
+   exposear varje --color-* automatiskt som bg-*, text-*, border-* osv. */
+@theme {
+  --color-cream:        #F5F0E8;
+  --color-green:        #1B6B35;
+  --color-green-dark:   #1B3D2B;
+  --color-text-warm:    #2C3E2D;
+  --color-sage:         #8A9A8D;
+  --color-rule:         #D9D2C2;
+  --color-yellow:       #E8B830;
+  --color-cta-body:     #E8E8DC;
+
+  --font-serif: "Lora", Georgia, "Times New Roman", serif;
+  --font-sans: "Instrument Sans", system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--color-cream);
+  }
+  body {
+    color: var(--color-text-warm);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    color: var(--color-green-dark);
+  }
+}

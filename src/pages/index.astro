@@ -1,0 +1,109 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
+---
+
+<Layout>
+  <main class="min-h-screen">
+    {/* ─── HERO ──────────────────────────────────────────── */}
+    <section class="max-w-3xl mx-auto px-6 pt-20 pb-12 text-center">
+      <p class="text-sm tracking-[0.25em] text-sage uppercase mb-4">
+        Quizpromenad i fickan
+      </p>
+      <hr class="w-12 border-t border-green mx-auto mb-12" />
+
+      <img
+        src="/icon.png"
+        alt=""
+        width="128"
+        height="128"
+        class="w-28 h-28 mx-auto rounded-3xl mb-10 shadow-sm"
+      />
+
+      <h1 class="font-serif font-bold text-6xl md:text-7xl text-green-dark leading-none mb-6">
+        Tipspromenaden
+      </h1>
+      <p class="font-serif italic text-xl md:text-2xl text-green">
+        En quiz­promenad ni går utomhus — med mobilen som frågepapper.
+      </p>
+    </section>
+
+    {/* ─── INTRO ─────────────────────────────────────────── */}
+    <section class="max-w-2xl mx-auto px-6 pb-16 text-center">
+      <p class="text-lg leading-relaxed">
+        Skaparen ritar kontroll­punkter på en karta och kopplar en fråga till
+        varje punkt. Deltagarna skannar QR-koden och går till varje punkt med
+        GPS — frågan låses upp automatiskt när de kommer fram. Familje­turen
+        blir plötsligt en lagom-tävling.
+      </p>
+    </section>
+
+    {/* Hairline — andas innan tre features */}
+    <hr class="w-24 border-t border-rule mx-auto mb-20" />
+
+    {/* ─── FEATURES ──────────────────────────────────────── */}
+    <section class="max-w-5xl mx-auto px-6 pb-20 grid md:grid-cols-3 gap-12">
+      {[
+        {
+          title: "Bygg själv",
+          body: "Karta, frågor, bilder, QR-kod — på minuter. Eller importera ett färdigt frågebatteri."
+        },
+        {
+          title: "GPS låser frågorna",
+          body: "Ingen kan hoppa över kontroller. Tävlings­känsla utan stress, fusk-skydd utan fri­ktion."
+        },
+        {
+          title: "Topplista i realtid",
+          body: "Hela familjen tävlar samtidigt och alla ser ställningen. Snittsteg, snittpoäng och svars­fördelning för skaparen."
+        }
+      ].map(({ title, body }) => (
+        <div class="text-center md:text-left">
+          {/* Diamantmarkör i Friluft Folio-anda */}
+          <div class="inline-block w-3 h-3 bg-green rotate-45 mb-4"></div>
+          <h3 class="font-serif font-bold text-2xl mb-3">{title}</h3>
+          <p class="text-base leading-relaxed">{body}</p>
+        </div>
+      ))}
+    </section>
+
+    {/* ─── CTA ───────────────────────────────────────────── */}
+    <section class="max-w-3xl mx-auto px-6 pb-20">
+      <div class="bg-green-dark text-cream rounded-3xl p-10 md:p-14 text-center">
+        <p class="text-sm tracking-[0.25em] uppercase text-cta-body mb-3">
+          Just nu i sluten test
+        </p>
+        <h2 class="font-serif text-cream text-4xl md:text-5xl mb-6">
+          Vi söker fler testpiloter
+        </h2>
+        <p class="text-cta-body text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+          Hjälp oss kvalitets­säkra appen innan publik release. Du får tidig
+          tillgång och din feedback formar slut­produkten.
+        </p>
+        <a
+          href={PLAY_STORE_URL}
+          class="inline-block bg-cream text-green-dark font-semibold text-lg px-8 py-4 rounded-xl hover:bg-white transition-colors"
+        >
+          Bli testare på Google Play
+        </a>
+        {/* Gul accent under knappen — den ena varmgula glimt som palettens
+            restraint tillåter, samma plats som CTA-blocket på social-postern */}
+        <div class="w-14 h-1 bg-yellow mx-auto mt-8"></div>
+      </div>
+    </section>
+
+    {/* ─── FOOTER ────────────────────────────────────────── */}
+    <footer class="max-w-3xl mx-auto px-6 pb-12 text-center text-sage text-sm">
+      <p class="mb-2 italic">— Niklas Eriksson</p>
+      <p>
+        <a
+          href="mailto:tipspromenaden.app@gmail.com"
+          class="font-semibold text-green hover:underline"
+        >
+          tipspromenaden.app@gmail.com
+        </a>
+      </p>
+    </footer>
+  </main>
+</Layout>
