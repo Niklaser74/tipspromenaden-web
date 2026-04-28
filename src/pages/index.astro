@@ -1,8 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-const PLAY_STORE_URL =
-  "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
+// Två-stegs-flöde för att bli testpilot:
+//   1. Gå med i Google Group `tipspromenaden-testers` (CTA-knappen nedan)
+//   2. Niklas godkänner manuellt och mejlar opt-in-URL:en för Play Store
+//      Closed Testing. När den klickats kan appen installeras från Play.
+// Vi länkar därför INTE direkt till Play-listningen — appen är inte publikt
+// synlig än, så icke-testare skulle få "Objektet kunde inte hittas".
+const TESTERS_GROUP_URL = "https://groups.google.com/g/tipspromenaden-testers";
 ---
 
 <Layout>
@@ -82,11 +87,15 @@ const PLAY_STORE_URL =
           tillgång och din feedback formar slut­produkten.
         </p>
         <a
-          href={PLAY_STORE_URL}
+          href={TESTERS_GROUP_URL}
           class="inline-block bg-cream text-green-dark font-semibold text-lg px-8 py-4 rounded-xl hover:bg-white transition-colors"
         >
-          Bli testare på Google Play
+          Be om att bli testpilot
         </a>
+        <p class="text-cta-body text-sm mt-6 max-w-md mx-auto leading-relaxed opacity-80">
+          Du går med i en Google-grupp. När jag godkänt får du en länk
+          till Play Store där appen kan installeras — oftast inom några minuter.
+        </p>
         {/* Gul accent under knappen — den ena varmgula glimt som palettens
             restraint tillåter, samma plats som CTA-blocket på social-postern */}
         <div class="w-14 h-1 bg-yellow mx-auto mt-8"></div>
