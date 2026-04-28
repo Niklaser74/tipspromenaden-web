@@ -1,0 +1,26 @@
+/**
+ * Cloudflare Workers Static Assets-konfig.
+ *
+ * Vi har ingen worker-kod — bara en statisk Astro-byggd sajt i ./dist.
+ * Workers Static Assets serverar dist/ direkt från CF:s edge-CDN, samma
+ * praktiska slutresultat som klassiska Pages.
+ *
+ * `not_found_handling: "404-page"` gör att Workers serverar dist/404.html
+ * för okända paths (t.ex. /walk/<id>). Vår 404.astro innehåller JS som
+ * detekterar /walk/<id>-mönstret och försöker öppna appen via custom-scheme.
+ *
+ * `single-page-application` skulle peka allt till index.html — det vill vi
+ * INTE eftersom det skulle bryta sökvägslogiken i 404.astro.
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tipspromenaden-web",
+  "compatibility_date": "2026-04-28",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
