@@ -76,9 +76,25 @@ Färger definieras som design-tokens i `src/styles/global.css` under
    och redirectar till Play Store efter 1.5s om appen inte fångar.
    Fångar iOS-användare och desktop-besökare.
 
+## Sidor som finns nu
+
+- `/` — marknadssida
+- `/walk/<id>` — deep-link-redirect till mobilappen, OG-metadata för
+  Messenger/iMessage-förhandsvisning. Implementerad via Cloudflare
+  `_redirects` rewrite till `/walk-redirect/`.
+- `/skapa` — webb-baserad walk-creator (React-island med Firebase + Leaflet)
+
 ## Roadmap
 
 - `/result/<sessionId>` — publik delningsbar leaderboard efter avslutat event
 - `/upptack` — publik katalog över opt-in-publicerade promenader (SEO)
 - `/villkor` + `/integritet` — Terms och Privacy Policy (Play Store kräver det)
-- Skaparportal i webb (`react-native-web`-build hostat här)
+
+## Changelog & release-rutiner
+
+Hård regel (motsvarande mobil-appens "release notes per AAB/OTA"-policy):
+**varje deploy till `main` ska få en rad i [CHANGELOG.md](./CHANGELOG.md)
+i samma commit eller direkt efter.** Användar-orienterat språk, inte
+tekniskt. Detta ersätter Play Console "What's new" för webben — vi har
+ingen butiks-vy att klistra in i, men användare som följer projektet ska
+kunna läsa vad som ändrats utan att gräva i git-loggen.
