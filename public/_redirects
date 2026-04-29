@@ -1,0 +1,8 @@
+# Cloudflare Pages-redirects.
+#
+# /walk/<id> serveras internt av walk-redirect/index.html med HTTP 200,
+# så Messenger/iMessage/Slack och andra länkförhandsvisningar får giltigt
+# 200-svar med OG-tags och kan visa preview. Utan denna rewrite skulle
+# /walk/<id> returnera 404 (smart-redirect-JS i 404.astro fungerar
+# fortfarande som backup men HTTP-statusen avvisas av sociala plattformar).
+/walk/*  /walk-redirect/  200
