@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+import App from "../components/skapa/App.tsx";
+
+// Webb-baserad walk-creator (`/skapa`).
+//
+// Hela skaparflödet är ett React-island — login, walks-lista, walk-editor,
+// karta, allt på klient-sidan. Astro-skalet ger bara HTML-grundstommen
+// och OG-metadata. `client:load` bootar React direkt vid sidladdning så
+// auth-statusen hinner avgöras innan användaren ser något.
+//
+// Sidan körs SSG (statisk vid build), men eftersom React-eventet sker
+// klient-side kan vi använda Firebase-Auth/Firestore utan SSR-stress.
+---
+
+<Layout
+  title="Skapa promenad — Tipspromenaden"
+  description="Skapa en tipspromenad i webbläsaren — placera kontroller på kartan, skriv frågor, dela med en QR-kod. Alternativ till mobilappens skapar-vy med större skärm och snabbare textinmatning."
+>
+  <main class="min-h-screen bg-cream">
+    <App client:only="react" />
+  </main>
+</Layout>
