@@ -11,6 +11,16 @@ användar-orienterad text.
 
 ---
 
+## 2026-04-30 — Ett-klicks-import till mobilappen från /tipspack
+
+- Varje pack på `/tipspack` har nu en **📲 Öppna i appen**-knapp som
+  öppnar Tipspromenaden-appen direkt med batteriet förladdat — du landar
+  rakt i karta-läget för att placera frågorna. Inget mellansteg med
+  filnedladdning.
+- Kräver Tipspromenaden 1.4.0+. Användare på äldre versioner använder
+  fortfarande **📥 Ladda ner fil** + Importera-knappen i appen.
+- Instruktionsblocket högst upp på sidan visar nu båda flödena.
+
 ## 2026-04-30 — Bibliotek med färdiga frågebatterier
 
 - Ny sida `tipspromenaden.app/tipspack` med 8 färdiga frågebatterier som

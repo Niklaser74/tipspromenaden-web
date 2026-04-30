@@ -91,25 +91,23 @@ const packs: PackMeta[] = files.map((filename) => {
         <h2 class="font-serif text-xl text-green-dark mb-3">
           Så här använder du filerna
         </h2>
-        <ol class="space-y-2 text-sm text-text-warm leading-relaxed list-decimal list-inside">
-          <li>Klicka <strong>Ladda ner</strong> på paketet du vill ha.</li>
-          <li>
-            Öppna Tipspromenaden-appen på telefonen eller{" "}
-            <a href="/skapa" class="text-green font-semibold hover:underline">
-              webb-skaparen
-            </a>
-            .
-          </li>
-          <li>
-            Skapa en ny promenad och klicka <strong>📥 Importera fil</strong>
-            (eller "Importera frågebatteri" i mobil-appen).
-          </li>
-          <li>
-            Välj <code class="bg-cream px-1 rounded">.tipspack</code>-filen
-            du laddade ner.
-          </li>
-          <li>Placera frågorna på kartan en och en — klar att gå.</li>
-        </ol>
+        <p class="text-sm text-text-warm leading-relaxed mb-3">
+          <strong>Snabbast (Tipspromenaden 1.4.0+):</strong> Klicka{" "}
+          <strong>📲 Öppna i appen</strong>. Telefonen frågar om du vill öppna
+          appen — välj Tipspromenaden, så hoppar du rakt in i karta-läget med
+          alla frågor förladdade. Placera dem en och en, klart att gå.
+        </p>
+        <p class="text-sm text-text-warm leading-relaxed">
+          <strong>Alternativ:</strong> Klicka <strong>📥 Ladda ner fil</strong>{" "}
+          för att spara <code class="bg-cream px-1 rounded">.tipspack</code>-filen
+          lokalt. Importera den sen via <strong>Importera frågebatteri</strong>{" "}
+          i mobil-appen eller{" "}
+          <a href="/skapa" class="text-green font-semibold hover:underline">
+            webb-skaparen
+          </a>
+          . Använd det här om du vill arkivera filen, redigera den manuellt eller
+          dela den vidare.
+        </p>
       </section>
 
       {packs.length === 0 ? (
@@ -134,15 +132,22 @@ const packs: PackMeta[] = files.map((filename) => {
                 </div>
                 <div class="flex flex-col gap-2 shrink-0">
                   <a
+                    href={`tipspromenaden://tipspack/${p.slug}`}
+                    class="bg-green-dark text-cream px-5 py-2 rounded-full text-sm font-semibold shadow hover:shadow-md transition text-center"
+                    title="Öppna direkt i Tipspromenaden-appen (kräver appen installerad, v1.4.0+)"
+                  >
+                    📲 Öppna i appen
+                  </a>
+                  <a
                     href={p.url}
                     download={p.filename}
-                    class="bg-green-dark text-cream px-5 py-2 rounded-full text-sm font-semibold shadow hover:shadow-md transition text-center"
+                    class="border border-green-dark text-green-dark px-5 py-2 rounded-full text-sm font-semibold hover:bg-green-dark/5 transition text-center"
                   >
-                    📥 Ladda ner
+                    📥 Ladda ner fil
                   </a>
                   <button
                     data-copy-url={`https://tipspromenaden.app${p.url}`}
-                    class="copy-btn border border-green-dark text-green-dark px-5 py-2 rounded-full text-sm font-semibold hover:bg-green-dark/5 transition"
+                    class="copy-btn text-text-warm text-xs hover:text-green-dark"
                   >
                     Kopiera länk
                   </button>
