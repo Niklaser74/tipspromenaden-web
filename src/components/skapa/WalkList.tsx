@@ -14,6 +14,7 @@ import { signOut, type User } from "firebase/auth";
 import { auth } from "../../lib/firebase";
 import { getMyWalks, saveWalk } from "../../lib/walks";
 import { generateId, type Walk } from "../../lib/types";
+import { ShareDialog } from "./ShareDialog";
 
 interface Props {
   user: User;
@@ -24,6 +25,7 @@ export function WalkList({ user, onOpenWalk }: Props) {
   const [walks, setWalks] = useState<Walk[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
+  const [shareWalk, setShareWalk] = useState<Walk | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -107,10 +109,13 @@ export function WalkList({ user, onOpenWalk }: Props) {
       {walks !== null && walks.length > 0 && (
         <ul className="space-y-3">
           {walks.map((w) => (
-            <li key={w.id}>
+            <li
+              key={w.id}
+              className="bg-white border border-gray-200 rounded-xl hover:border-green-dark transition flex"
+            >
               <button
                 onClick={() => onOpenWalk(w.id)}
-                className="w-full text-left bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-green-dark transition"
+                className="flex-1 text-left px-5 py-4 min-w-0"
               >
                 <div className="flex items-baseline justify-between gap-4">
                   <h2 className="font-serif text-xl text-green-dark truncate">
@@ -127,9 +132,25 @@ export function WalkList({ user, onOpenWalk }: Props) {
                   </p>
                 )}
               </button>
+              <button
+                onClick={() => setShareWalk(w)}
+                className="px-4 border-l border-gray-200 text-text-warm hover:text-green-dark hover:bg-green-dark/5 transition rounded-r-xl"
+                title="Dela promenaden"
+                aria-label={`Dela ${w.title}`}
+              >
+                📤
+              </button>
             </li>
           ))}
         </ul>
+      )}
+
+      {shareWalk && (
+        <ShareDialog
+          walkId={shareWalk.id}
+          walkTitle={shareWalk.title}
+          onClose={() => setShareWalk(null)}
+        />
       )}
     </div>
   );

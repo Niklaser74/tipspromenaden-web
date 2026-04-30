@@ -13,7 +13,7 @@
  * frågan. Markörerna är klickbara → väljer frågan i sidopanelen.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { User } from "firebase/auth";
 import { getWalk, saveWalk, deleteWalk } from "../../lib/walks";
 import {
@@ -22,8 +22,11 @@ import {
   type Question,
   type Coordinate,
 } from "../../lib/types";
+import { parseTipspackFile } from "../../lib/tipspack";
 import { MapEditor } from "./MapEditor";
 import { QuestionForm } from "./QuestionForm";
+import { ShareDialog } from "./ShareDialog";
+import { ReuseRouteDialog } from "./ReuseRouteDialog";
 
 interface Props {
   walkId: string;
@@ -38,6 +41,10 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
   const [savedAt, setSavedAt] = useState<number | null>(null);
   const [selectedQuestionId, setSelectedQuestionId] = useState<string | null>(null);
   const [placingMode, setPlacingMode] = useState(false);
+  const [showShare, setShowShare] = useState(false);
+  const [showReuse, setShowReuse] = useState(false);
+  const [importMessage, setImportMessage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -99,6 +106,75 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
     if (!placingMode || !selectedQuestionId) return;
     updateQuestion(selectedQuestionId, { coordinate: coord });
     setPlacingMode(false);
+  }
+
+  /**
+   * Importera frågor från en .tipspack-fil. De importerade frågorna får
+   * koordinat (0, 0) — användaren placerar dem en och en sen, eller
+   * använder "Återanvänd rutt" för att massimporta koordinater från en
+   * tidigare walk.
+   */
+  async function handleImportFile(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!walk) return;
+    const file = e.target.files?.[0];
+    e.target.value = ""; // tillåt re-import av samma fil senare
+    if (!file) return;
+
+    const result = await parseTipspackFile(file);
+    if (!result.success) {
+      setImportMessage(`❌ ${result.error}`);
+      setTimeout(() => setImportMessage(null), 6000);
+      return;
+    }
+
+    const battery = result.battery;
+    const newQuestions: Question[] = battery.questions.map((bq, i) => ({
+      id: generateId(),
+      text: bq.text,
+      options: [...bq.options],
+      correctOptionIndex: bq.correctOptionIndex,
+      coordinate: { latitude: 0, longitude: 0 },
+      order: walk.questions.length + i + 1,
+    }));
+
+    // Auto-sätt språk från batteriet om walken inte har något än
+    const patch: Partial<Walk> = {
+      questions: [...walk.questions, ...newQuestions],
+    };
+    if (battery.language && !walk.language) {
+      patch.language = battery.language;
+    }
+    update(patch);
+
+    setImportMessage(
+      `✅ Importerade ${newQuestions.length} frågor från "${battery.name}". Placera dem på kartan eller använd "Återanvänd rutt".`
+    );
+    setTimeout(() => setImportMessage(null), 8000);
+  }
+
+  /**
+   * Mottar koordinater från ReuseRouteDialog och fyller dem i de
+   * frågor som inte är placerade än, i ordning.
+   */
+  function handleReuseRoute(coords: Coordinate[]) {
+    if (!walk) return;
+    let coordIndex = 0;
+    const updated = walk.questions.map((q) => {
+      const isPlaced =
+        q.coordinate.latitude !== 0 || q.coordinate.longitude !== 0;
+      if (isPlaced || coordIndex >= coords.length) return q;
+      const c = coords[coordIndex++];
+      return { ...q, coordinate: c };
+    });
+    update({ questions: updated });
+    const filled = coordIndex;
+    const remaining = coords.length - coordIndex;
+    setImportMessage(
+      remaining > 0
+        ? `✅ Kopierade ${filled} koordinater. ${remaining} koordinater i källan oanvända (slut på tomma frågor).`
+        : `✅ Kopierade ${filled} koordinater till oplacerade frågor.`
+    );
+    setTimeout(() => setImportMessage(null), 6000);
   }
 
   async function handleSave() {
@@ -174,6 +250,13 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
               Sparad {new Date(savedAt).toLocaleTimeString("sv-SE")}
             </span>
           )}
+          <button
+            onClick={() => setShowShare(true)}
+            className="border border-green-dark text-green-dark px-4 py-2 rounded-full font-semibold text-sm hover:bg-green-dark/5 transition"
+            title="Dela promenaden"
+          >
+            Dela
+          </button>
           <button
             onClick={handleSave}
             disabled={saving}
@@ -293,6 +376,37 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
             >
               + Lägg till fråga
             </button>
+
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="bg-white border border-green-dark text-green-dark px-3 py-2 rounded-lg text-xs font-semibold hover:bg-green-dark/5 transition"
+                title="Importera frågor från .tipspack-fil"
+              >
+                📥 Importera fil
+              </button>
+              <button
+                onClick={() => setShowReuse(true)}
+                className="bg-white border border-green-dark text-green-dark px-3 py-2 rounded-lg text-xs font-semibold hover:bg-green-dark/5 transition"
+                title="Kopiera koordinater från en annan walk"
+              >
+                🗺 Återanvänd rutt
+              </button>
+            </div>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".tipspack,.json,application/json"
+              onChange={handleImportFile}
+              className="hidden"
+            />
+
+            {importMessage && (
+              <p className="mt-3 text-xs leading-relaxed bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2 text-text-warm">
+                {importMessage}
+              </p>
+            )}
           </div>
 
           {selected && (
@@ -316,6 +430,23 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
           </div>
         </aside>
       </div>
+
+      {showShare && (
+        <ShareDialog
+          walkId={walk.id}
+          walkTitle={walk.title}
+          onClose={() => setShowShare(false)}
+        />
+      )}
+
+      {showReuse && (
+        <ReuseRouteDialog
+          user={user}
+          currentWalkId={walk.id}
+          onClose={() => setShowReuse(false)}
+          onPickRoute={handleReuseRoute}
+        />
+      )}
     </div>
   );
 }
