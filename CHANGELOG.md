@@ -11,6 +11,25 @@ användar-orienterad text.
 
 ---
 
+## 2026-04-30 — Ladda upp egna tipspacks från webben
+
+- Ny **"Mina tipspacks"**-sektion på `/skapa`-sidan: ladda upp en
+  `.tipspack`-fil direkt från disk eller drag-och-släpp. Filen
+  valideras före upload och hamnar i Firebase Storage med metadata
+  i Firestore.
+- **Två synlighetsnivåer** vid upload:
+  - 🌐 Publik — visas i biblioteket på `/tipspack` och i en ny
+    "Inskickade av användare"-sektion. Vem som helst kan upptäcka och
+    ladda ner.
+  - 🔗 Hemlig länk — inte i listan, men URL:en fungerar för alla med
+    länken. Bra för familj/vän-grupper.
+- I "Mina tipspacks" kan du när som helst toggla mellan publik/hemlig,
+  kopiera app-länk (`tipspromenaden://tipspack/<slug>`) eller
+  fil-länk, och radera (filen + metadata försvinner).
+- Slug genereras från filnamnet (åäö blir aoa, lowercase, bindestreck).
+  Krockar fångas direkt — då döper du om filen och försöker igen.
+- Krav: inloggad med Google. Anonyma kan inte ladda upp.
+
 ## 2026-04-30 — Mindre fixar i webb-skaparen
 
 - **Dragbara markörer**: dra punkten på kartan för att finjustera positionen

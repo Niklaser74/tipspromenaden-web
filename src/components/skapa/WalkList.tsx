@@ -16,6 +16,8 @@ import { getMyWalks, saveWalk } from "../../lib/walks";
 import { generateId, type Walk } from "../../lib/types";
 import { flagForLanguage } from "../../lib/languages";
 import { ShareDialog } from "./ShareDialog";
+import { UploadTipspackDialog } from "./UploadTipspackDialog";
+import { MyTipspacks } from "./MyTipspacks";
 
 interface Props {
   user: User;
@@ -27,6 +29,8 @@ export function WalkList({ user, onOpenWalk }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [shareWalk, setShareWalk] = useState<Walk | null>(null);
+  const [showUpload, setShowUpload] = useState(false);
+  const [tipspacksRefreshKey, setTipspacksRefreshKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -156,6 +160,42 @@ export function WalkList({ user, onOpenWalk }: Props) {
           walkId={shareWalk.id}
           walkTitle={shareWalk.title}
           onClose={() => setShareWalk(null)}
+        />
+      )}
+
+      {/* Mina tipspacks-sektion */}
+      <section className="mt-12">
+        <div className="flex items-baseline justify-between mb-4">
+          <h2 className="font-serif text-2xl text-green-dark">
+            Mina tipspacks
+          </h2>
+          <button
+            onClick={() => setShowUpload(true)}
+            className="text-sm bg-green-dark text-cream px-4 py-2 rounded-full font-semibold hover:opacity-90"
+          >
+            + Ladda upp
+          </button>
+        </div>
+        <p className="text-sm text-text-warm mb-4 leading-relaxed">
+          Frågebatterier du laddat upp till webben. Publika dyker upp i{" "}
+          <a
+            href="/tipspack"
+            target="_blank"
+            rel="noopener"
+            className="text-green font-semibold hover:underline"
+          >
+            biblioteket på /tipspack
+          </a>
+          .
+        </p>
+        <MyTipspacks user={user} refreshKey={tipspacksRefreshKey} />
+      </section>
+
+      {showUpload && (
+        <UploadTipspackDialog
+          user={user}
+          onClose={() => setShowUpload(false)}
+          onUploaded={() => setTipspacksRefreshKey((k) => k + 1)}
         />
       )}
     </div>

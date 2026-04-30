@@ -105,6 +105,33 @@ function validateBattery(data: any): asserts data is QuestionBattery {
 }
 
 /**
+ * Genererar en slug från ett filnamn.
+ *
+ * Tar bort `.tipspack`-suffix, ersätter åäö med ascii-motsvarigheter,
+ * lowercaser, byter ut allt utom [a-z0-9-_] mot `-`, kollapsar
+ * upprepade `-`. Validerar mot Firestore-regelns mönster `^[a-z0-9_-]+$`.
+ *
+ * `goteborgs-hamn.tipspack` → `goteborgs-hamn`
+ * `Visby Medeltid.tipspack` → `visby-medeltid`
+ * `Älg & Björn.tipspack` → `alg-bjorn`
+ */
+export function slugFromFilename(filename: string): string {
+  return filename
+    .replace(/\.tipspack$/i, "")
+    .replace(/\.json$/i, "")
+    .normalize("NFD") // separera diakriter (ö → o + ̈)
+    .replace(/[̀-ͯ]/g, "") // ta bort diakritiska tecken
+    .replace(/å/gi, "a")
+    .replace(/ä/gi, "a")
+    .replace(/ö/gi, "o")
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 100);
+}
+
+/**
  * Läser en File (från `<input type="file">` eller drag-and-drop) och
  * returnerar parsat batteri eller felmeddelande.
  */

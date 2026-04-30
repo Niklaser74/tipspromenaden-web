@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import Layout from "../../layouts/Layout.astro";
 import { flagForLanguage } from "../../lib/languages";
+import UserTipspacks from "../../components/tipspack/UserTipspacks.tsx";
 
 // /tipspack — publik bibliotekssida för färdiga frågebatterier (.tipspack-filer).
 //
@@ -149,21 +150,23 @@ const packs: PackMeta[] = files.map((filename) => {
         </ul>
       )}
 
-      <section class="mt-12 bg-white border border-rule rounded-xl p-5">
-        <h2 class="font-serif text-xl text-green-dark mb-3">
-          Vill du dela ditt eget batteri?
+      {/* Inskickade paket från användare — laddas client-side från Firestore */}
+      <section class="mt-16">
+        <h2 class="font-serif text-3xl text-green-dark mb-3">
+          Inskickade av användare
         </h2>
-        <p class="text-sm text-text-warm leading-relaxed">
-          Skicka filen till{" "}
+        <p class="text-sm text-text-warm mb-6 leading-relaxed">
+          Frågebatterier som andra Tipspromenaden-användare laddat upp och
+          delar publikt. Vill du själv lägga till ett pack?{" "}
           <a
-            href="mailto:tipspromenaden.app@gmail.com"
+            href="/skapa"
             class="text-green font-semibold hover:underline"
           >
-            tipspromenaden.app@gmail.com
+            Logga in på /skapa
           </a>{" "}
-          så plockar vi in den i biblioteket om den passar in. Du behåller
-          upphovsrätten — vi länkar till dig som författare.
+          och tryck "Ladda upp" under "Mina tipspacks".
         </p>
+        <UserTipspacks client:idle />
       </section>
     </div>
   </main>
