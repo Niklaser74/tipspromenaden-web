@@ -1,0 +1,110 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Claesson",
+  "description": "20 blandade frågor – matte, 10Mila/orientering, Brawl Stars och blommor.",
+  "author": "Niklas Eriksson",
+  "language": "sv",
+  "questions": [
+    {
+      "text": "Vad är 144 ÷ 12?",
+      "options": ["14", "12", "10"],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad kännetecknar ofta laget som leder efter första sträckan i 10Mila?",
+      "options": ["Bara ren sprint utan karta", "Slumpmässig vägval", "Stabil fart + säker orientering"],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilken Brawler kan bli osynlig?",
+      "options": ["Leon", "Colt", "Jessie"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Varför blir det ofta stora omkastningar under nattsträckorna i 10Mila?",
+      "options": ["Alla springer exakt lika snabbt", "Små misstag i mörker kostar mycket tid", "Kartan blir enklare"],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad är 7,5 + 3,85?",
+      "options": ["11,35", "10,35", "11,25"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad betyder det när ett lag växlar först?",
+      "options": ["De har vunnit hela loppet", "De springer utan karta", "De leder just då i tävlingen"],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vad gör Spike i Brawl Stars?",
+      "options": ["Skjuter laser", "Kastar kaktusliknande attacker", "Helar lagkamrater"],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilken blomma är gul och vanlig på våren?",
+      "options": ["Påsklilja", "Ros", "Tulpan"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad händer ofta i resultatlistan efter långa natten i 10Mila?",
+      "options": ["Ingen förändring alls", "Alla lag hamnar lika", "Stora förändringar i placering"],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vad är 18 × 7?",
+      "options": ["116", "126", "136"],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad är viktigt i Gem Grab?",
+      "options": ["Samla och hålla ädelstenar", "Springa snabbast ensam", "Göra mål med boll"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad krävs oftast för att vinna 10Mila?",
+      "options": ["En snabb start räcker", "En stark sista löpare", "Jämnt starkt lag över alla sträckor"],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vad behöver blommor för att växa?",
+      "options": ["Godis", "Sol, vatten och näring", "Snö"],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad är 250 − 135?",
+      "options": ["115", "125", "105"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad är \"långa natten\" i 10Mila?",
+      "options": ["En vilosträcka", "En kort sprint", "En avgörande lång nattsträcka"],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vad är en \"Super\" i Brawl Stars?",
+      "options": ["Extra liv", "En speciell förmåga", "Dubbel poäng alltid"],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad händer ofta med ledningen under mitten av 10Mila?",
+      "options": ["Den skiftar mellan lag", "Den försvinner helt", "Den blir alltid samma lag"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad är 12 × 6?",
+      "options": ["62", "82", "72"],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilken blomma är vanlig i svenska ängar?",
+      "options": ["Kaktus", "Prästkrage", "Palm"],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad är viktigast i orientering för bra resultat?",
+      "options": ["Kartläsning och vägval", "Springa rakt utan karta", "Springa snabbast kortaste biten"],
+      "correctOptionIndex": 0
+    }
+  ]
+}
