@@ -27,7 +27,7 @@ interface Props {
 }
 
 export function Flag({ code, height = 20, className = "" }: Props) {
-  const url = flagImageUrl(code, height);
+  const url = flagImageUrl(code);
   if (!url) return null;
   const normalized = normalizeLanguageCode(code);
   // Width-ratio: flaggor är typiskt 4:3 (sv) till 2:1 (no/dk) — flagcdn
@@ -45,6 +45,8 @@ export function Flag({ code, height = 20, className = "" }: Props) {
   };
   const ratio = aspectRatio[normalized] || 1.5;
   const width = Math.round(height * ratio);
+  // Vi laddar alltid h40 från CDN (för retina-skärpa) och skalar visuellt
+  // via height/width-attribut + style.
   return (
     <img
       src={url}
@@ -52,7 +54,7 @@ export function Flag({ code, height = 20, className = "" }: Props) {
       width={width}
       height={height}
       className={`inline-block align-text-bottom rounded-sm ${className}`}
-      style={{ width: `${width}px`, height: `${height}px` }}
+      style={{ width: `${width}px`, height: `${height}px`, objectFit: "cover" }}
       loading="lazy"
     />
   );

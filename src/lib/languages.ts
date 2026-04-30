@@ -51,13 +51,17 @@ const LANG_TO_COUNTRY: Record<string, string> = {
  * Använd det här istället för `flagForLanguage()` när det ska renderas
  * synligt — Windows har inga flag-emojis i default-fonts så `🇸🇪` blir
  * bokstäverna "SE" istället för en flagga. PNG-bilder fungerar överallt.
+ *
+ * **VIKTIGT:** flagcdn.com har bara förvalda storlekar (20, 24, 40, 60,
+ * 80, 120, 160, 240 för h-prefix). Vi laddar alltid h40 för bra
+ * skärpa på retina och låter CSS skala ner visuellt.
  */
-export function flagImageUrl(code: string | undefined, height = 20): string | null {
+export function flagImageUrl(code: string | undefined): string | null {
   const normalized = normalizeLanguageCode(code);
   if (!normalized) return null;
   const country = LANG_TO_COUNTRY[normalized];
   if (!country) return null;
-  return `https://flagcdn.com/h${height}/${country}.png`;
+  return `https://flagcdn.com/h40/${country}.png`;
 }
 
 /**
