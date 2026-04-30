@@ -25,7 +25,6 @@ import {
   getDocs,
   query,
   where,
-  orderBy,
   setDoc,
   deleteDoc,
 } from "firebase/firestore";
@@ -54,15 +53,21 @@ function stripUndefined<T>(obj: T): T {
   return obj;
 }
 
-/** Hämta alla walks ägda av en specifik uid. Sorterade på senaste först. */
+/**
+ * Hämta alla walks ägda av en specifik uid. Sorterade på senaste först.
+ *
+ * Sorteringen sker client-side istället för via Firestore `orderBy()` för
+ * att undvika att kräva en composite index (`createdBy` + `createdAt`).
+ * Vid hobby-skala (få walks per användare) är payload försumbar och
+ * sortering i JS trivial. Om listan växer till hundratals walks kan
+ * detta bytas till en server-side query med rätt index.
+ */
 export async function getMyWalks(uid: string): Promise<Walk[]> {
-  const q = query(
-    collection(db, WALKS),
-    where("createdBy", "==", uid),
-    orderBy("createdAt", "desc")
-  );
+  const q = query(collection(db, WALKS), where("createdBy", "==", uid));
   const snap = await getDocs(q);
-  return snap.docs.map((d) => d.data() as Walk);
+  const walks = snap.docs.map((d) => d.data() as Walk);
+  walks.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
+  return walks;
 }
 
 /** Hämta en enskild walk via id. */
