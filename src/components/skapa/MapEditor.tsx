@@ -28,6 +28,8 @@ interface Props {
   placingMode: boolean;
   onMapClick: (coord: Coordinate) => void;
   onMarkerClick: (qid: string) => void;
+  /** Anropas när användaren dragit en markör till ny position. */
+  onMarkerDragEnd: (qid: string, coord: Coordinate) => void;
 }
 
 export function MapEditor({
@@ -36,6 +38,7 @@ export function MapEditor({
   placingMode,
   onMapClick,
   onMarkerClick,
+  onMarkerDragEnd,
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<L.Map | null>(null);
@@ -124,11 +127,19 @@ export function MapEditor({
 
       const marker = L.marker(
         [q.coordinate.latitude, q.coordinate.longitude],
-        { icon }
+        { icon, draggable: true, autoPan: true }
       ).addTo(map);
       marker.on("click", (e) => {
         L.DomEvent.stopPropagation(e);
         onMarkerClick(q.id);
+      });
+      marker.on("dragstart", () => {
+        // Klicka in frågan i sidopanelen så användaren ser vilken hen drar.
+        onMarkerClick(q.id);
+      });
+      marker.on("dragend", () => {
+        const pos = marker.getLatLng();
+        onMarkerDragEnd(q.id, { latitude: pos.lat, longitude: pos.lng });
       });
       markersRef.current.set(q.id, marker);
     });

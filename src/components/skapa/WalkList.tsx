@@ -14,6 +14,7 @@ import { signOut, type User } from "firebase/auth";
 import { auth } from "../../lib/firebase";
 import { getMyWalks, saveWalk } from "../../lib/walks";
 import { generateId, type Walk } from "../../lib/types";
+import { flagForLanguage } from "../../lib/languages";
 import { ShareDialog } from "./ShareDialog";
 
 interface Props {
@@ -119,6 +120,11 @@ export function WalkList({ user, onOpenWalk }: Props) {
               >
                 <div className="flex items-baseline justify-between gap-4">
                   <h2 className="font-serif text-xl text-green-dark truncate">
+                    {flagForLanguage(w.language) && (
+                      <span className="mr-2" aria-label={w.language}>
+                        {flagForLanguage(w.language)}
+                      </span>
+                    )}
                     {w.title}
                   </h2>
                   <span className="text-xs text-text-warm whitespace-nowrap">

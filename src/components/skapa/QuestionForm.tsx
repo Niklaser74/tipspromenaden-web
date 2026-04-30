@@ -114,17 +114,22 @@ export function QuestionForm({ question, onChange, onPlaceOnMap, onDelete }: Pro
           Plats
         </label>
         {isPlaced ? (
-          <div className="flex items-center justify-between gap-3">
-            <span className="text-sm text-text-warm font-mono">
-              {question.coordinate.latitude.toFixed(5)},{" "}
-              {question.coordinate.longitude.toFixed(5)}
-            </span>
-            <button
-              onClick={onPlaceOnMap}
-              className="text-sm text-green font-semibold hover:underline"
-            >
-              Flytta
-            </button>
+          <div>
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-sm text-text-warm font-mono">
+                {question.coordinate.latitude.toFixed(5)},{" "}
+                {question.coordinate.longitude.toFixed(5)}
+              </span>
+              <button
+                onClick={onPlaceOnMap}
+                className="text-sm text-green font-semibold hover:underline"
+              >
+                Klicka om
+              </button>
+            </div>
+            <p className="text-xs text-text-warm mt-1 leading-snug">
+              Tips: dra markören på kartan för att finjustera positionen.
+            </p>
           </div>
         ) : (
           <button

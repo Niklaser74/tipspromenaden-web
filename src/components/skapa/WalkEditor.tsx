@@ -280,6 +280,9 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
               setSelectedQuestionId(qid);
               setPlacingMode(false);
             }}
+            onMarkerDragEnd={(qid, coord) => {
+              updateQuestion(qid, { coordinate: coord });
+            }}
           />
           {placingMode && (
             <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-yellow-100 border border-yellow-300 rounded-full px-4 py-2 text-sm shadow z-[1000]">

@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import Layout from "../../layouts/Layout.astro";
+import { flagForLanguage } from "../../lib/languages";
 
 // /tipspack — publik bibliotekssida för färdiga frågebatterier (.tipspack-filer).
 //
@@ -31,19 +32,9 @@ interface PackMeta {
   fileSizeKb: number;
 }
 
-const flagFor = (lang: string): string => {
-  const map: Record<string, string> = {
-    sv: "🇸🇪",
-    en: "🇬🇧",
-    de: "🇩🇪",
-    no: "🇳🇴",
-    da: "🇩🇰",
-    fi: "🇫🇮",
-    fr: "🇫🇷",
-    es: "🇪🇸",
-  };
-  return map[lang] || "🌐";
-};
+// Flagg-rendering tolerant mot felaktiga koder ("se" → "sv", etc.)
+// Faller tillbaka på 🌐 om språket är okänt eller saknas.
+const flagFor = (lang: string): string => flagForLanguage(lang) || "🌐";
 
 const packs: PackMeta[] = files.map((filename) => {
   const filePath = path.join(dir, filename);

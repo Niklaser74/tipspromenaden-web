@@ -11,6 +11,17 @@ användar-orienterad text.
 
 ---
 
+## 2026-04-30 — Mindre fixar i webb-skaparen
+
+- **Dragbara markörer**: dra punkten på kartan för att finjustera positionen
+  istället för att tvinga klick-om-flödet. Dubbelklick på en markör väljer
+  fortfarande frågan i sidopanelen.
+- **Flaggor på "Mina promenader"**: varje promenadrad visar språkets flagga
+  vid titeln. Tolerant mot vanliga miss-skrivningar — `"se"` (landskoden)
+  hanteras som `"sv"` (språkkoden) så att gamla walks fortfarande får rätt
+  flagga.
+- Samma flagg-normalisering även på `/tipspack`-sidan.
+
 ## 2026-04-30 — Ett-klicks-import till mobilappen från /tipspack
 
 - Varje pack på `/tipspack` har nu en **📲 Öppna i appen**-knapp som
