@@ -11,6 +11,15 @@ användar-orienterad text.
 
 ---
 
+## 2026-04-30 — Riktiga flaggor överallt (Windows-fix)
+
+- Flaggor renderas nu som riktiga PNG-bilder från flagcdn.com istället
+  för emoji. Tidigare visade Windows `🇸🇪` som bokstäverna "SE" eftersom
+  Microsoft inte inkluderar flag-glyfer i default-fonts. Nu ser flaggan
+  likadant ut på Windows, Mac, Linux, Android och iOS.
+- Berör `/tipspack`, "Mina promenader", "Mina tipspacks" och alla andra
+  ställen där språk visas.
+
 ## 2026-04-30 — Ladda upp egna tipspacks från webben
 
 - Ny **"Mina tipspacks"**-sektion på `/skapa`-sidan: ladda upp en

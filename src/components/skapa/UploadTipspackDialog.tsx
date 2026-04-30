@@ -24,7 +24,7 @@ import {
   tipspackExists,
   type TipspackMeta,
 } from "../../lib/tipspackLibrary";
-import { flagForLanguage } from "../../lib/languages";
+import { Flag } from "../Flag";
 
 interface Props {
   user: User;
@@ -184,8 +184,9 @@ export function UploadTipspackDialog({ user, onClose, onUploaded }: Props) {
               <p className="text-xs uppercase tracking-wide text-text-warm mb-2">
                 Förhandsgranskning
               </p>
-              <h3 className="font-serif text-xl text-green-dark mb-1">
-                {flagForLanguage(preview.parsed.language)} {preview.parsed.name}
+              <h3 className="font-serif text-xl text-green-dark mb-1 flex items-center gap-2">
+                <Flag code={preview.parsed.language} height={18} />
+                <span>{preview.parsed.name}</span>
               </h3>
               {preview.parsed.description && (
                 <p className="text-sm text-text-warm mb-2 leading-relaxed">

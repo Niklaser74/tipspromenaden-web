@@ -16,7 +16,7 @@ import {
   getDownloadUrl,
   type TipspackMeta,
 } from "../../lib/tipspackLibrary";
-import { flagForLanguage } from "../../lib/languages";
+import { Flag } from "../Flag";
 
 interface Props {
   user: User;
@@ -130,8 +130,9 @@ export function MyTipspacks({ user, refreshKey }: Props) {
             className="bg-white border border-rule rounded-xl p-4"
           >
             <div className="flex items-start justify-between gap-3 mb-2">
-              <h3 className="font-serif text-lg text-green-dark">
-                {flagForLanguage(p.language)} {p.name}
+              <h3 className="font-serif text-lg text-green-dark flex items-center gap-2">
+                <Flag code={p.language} height={16} />
+                <span>{p.name}</span>
               </h3>
               <span
                 className={`text-xs whitespace-nowrap px-2 py-0.5 rounded-full ${

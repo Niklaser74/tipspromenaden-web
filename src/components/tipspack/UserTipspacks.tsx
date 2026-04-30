@@ -16,7 +16,7 @@ import {
   getDownloadUrl,
   type TipspackMeta,
 } from "../../lib/tipspackLibrary";
-import { flagForLanguage } from "../../lib/languages";
+import { Flag } from "../Flag";
 
 export default function UserTipspacks() {
   const [packs, setPacks] = useState<TipspackMeta[] | null>(null);
@@ -88,8 +88,9 @@ export default function UserTipspacks() {
           >
             <div className="flex items-start justify-between gap-4 flex-wrap">
               <div className="flex-1 min-w-0">
-                <h2 className="font-serif text-2xl text-green-dark mb-1">
-                  {flagForLanguage(p.language) || "🌐"} {p.name}
+                <h2 className="font-serif text-2xl text-green-dark mb-1 flex items-center gap-2">
+                  <Flag code={p.language} height={22} />
+                  <span>{p.name}</span>
                 </h2>
                 {p.description && (
                   <p className="text-sm text-text-warm leading-relaxed mb-3">

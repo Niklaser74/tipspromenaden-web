@@ -31,6 +31,36 @@ export const LANGUAGES: Language[] = [
 ];
 
 /**
+ * ISO 639-1 språkkod → ISO 3166-1 alpha-2 landskod för flaggrendering.
+ * Skiljer sig för engelska (en → gb istället för us). Övriga språk har
+ * samma kod för land och språk.
+ */
+const LANG_TO_COUNTRY: Record<string, string> = {
+  sv: "se",
+  en: "gb",
+  de: "de",
+  no: "no",
+  da: "dk",
+  fi: "fi",
+  fr: "fr",
+  es: "es",
+};
+
+/**
+ * Returnerar URL till en PNG-flagga via flagcdn.com.
+ * Använd det här istället för `flagForLanguage()` när det ska renderas
+ * synligt — Windows har inga flag-emojis i default-fonts så `🇸🇪` blir
+ * bokstäverna "SE" istället för en flagga. PNG-bilder fungerar överallt.
+ */
+export function flagImageUrl(code: string | undefined, height = 20): string | null {
+  const normalized = normalizeLanguageCode(code);
+  if (!normalized) return null;
+  const country = LANG_TO_COUNTRY[normalized];
+  if (!country) return null;
+  return `https://flagcdn.com/h${height}/${country}.png`;
+}
+
+/**
  * Normaliserar en språkkod till en av våra stödda koder.
  * - "se" (felaktig — det är landskod för Sverige, inte språk) → "sv"
  * - "sv-SE", "en-US" (BCP47 med region) → "sv", "en"
