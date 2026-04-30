@@ -66,9 +66,15 @@ export interface TipspackMeta {
   updatedAt: number;
 }
 
-/** Storage-path för en tipspack-fil. */
+/**
+ * Storage-path för en tipspack-fil. Inget `.tipspack`-suffix i path:en
+ * eftersom Storage-rules-syntaxen för att extrahera slug ur filnamn med
+ * extension är klumpig (split() använder regex där `.` matchar valfritt
+ * tecken). Vi sätter Content-Disposition på objektet så download-filen
+ * ändå får `.tipspack`-extensionen.
+ */
 function storagePath(slug: string): string {
-  return `tipspack/${slug}.tipspack`;
+  return `tipspack/${slug}`;
 }
 
 /**
@@ -167,6 +173,10 @@ export async function uploadTipspack(params: {
     await uploadBytes(ref(storage, storagePath(slug)), blob, {
       contentType: "application/json",
       cacheControl: "public, max-age=3600",
+      // Content-Disposition så browsers sparar filen som <slug>.tipspack
+      // när användaren klickar "Ladda ner fil" — Storage-objekt-namnet är
+      // bara <slug> (utan extension).
+      contentDisposition: `attachment; filename="${slug}.tipspack"`,
     });
   } catch (e) {
     // Rollback: ta bort Firestore-doc:en så vi inte lämnar orphan-metadata
