@@ -1,0 +1,160 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Teknik & Naturvetenskap",
+  "description": "15 frågor om teknik och naturvetenskap för den nyfikne – från rymden till kemin och allt däremellan.",
+  "author": "Niklas Eriksson",
+  "language": "sv",
+  "questions": [
+    {
+      "text": "Vilken planet i vårt solsystem har den högsta vulkanen, Olympus Mons?",
+      "options": [
+        "Venus",
+        "Jupiter",
+        "Mars",
+        "Saturnus"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vad mäts i enheten pascal?",
+      "options": [
+        "Elektrisk ström",
+        "Tryck",
+        "Radioaktivitet",
+        "Ljusstyrka"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilken gas utgör ungefär 78 % av jordens atmosfär?",
+      "options": [
+        "Syre",
+        "Koldioxid",
+        "Kväve",
+        "Argon"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vad heter den process där växter omvandlar solljus till energi?",
+      "options": [
+        "Celldelning",
+        "Fotosyntes",
+        "Osmos",
+        "Fermentering"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilket grundämne har den kemiska beteckningen Fe?",
+      "options": [
+        "Fluor",
+        "Francium",
+        "Järn",
+        "Fosfor"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Hur många kromosomer har en normal mänsklig cell?",
+      "options": [
+        "23",
+        "44",
+        "46",
+        "48"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilken svensk uppfinnare patenterade dynamiten 1867?",
+      "options": [
+        "Gustaf Dalén",
+        "Alfred Nobel",
+        "Jonas Wenström",
+        "Baltzar von Platen"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad kallas den minsta enheten av ett grundämne som fortfarande har ämnets kemiska egenskaper?",
+      "options": [
+        "Molekyl",
+        "Proton",
+        "Atom",
+        "Elektron"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilken teknik använder sig av halvledare gjorda av kisel för att omvandla solljus till elektricitet?",
+      "options": [
+        "Solceller",
+        "Bränsleceller",
+        "Termoelektriska generatorer",
+        "Vindturbiner"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Hur lång tid tar det ungefär för ljus att nå jorden från solen?",
+      "options": [
+        "30 sekunder",
+        "8 minuter",
+        "1 timme",
+        "4 minuter"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad heter den kraft som håller planeter i omloppsbana runt solen?",
+      "options": [
+        "Elektromagnetisk kraft",
+        "Gravitationskraft",
+        "Stark kärnkraft",
+        "Centripetalkraft"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilket protokoll ligger till grund för kommunikation på webben?",
+      "options": [
+        "FTP",
+        "SMTP",
+        "HTTP",
+        "SSH"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vad kallas fenomenet att ljus bryts när det passerar mellan olika material?",
+      "options": [
+        "Diffraktion",
+        "Reflektion",
+        "Refraktion",
+        "Interferens"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Ungefär hur stor del av jordens yta täcks av vatten?",
+      "options": [
+        "50 %",
+        "60 %",
+        "80 %",
+        "71 %"
+      ],
+      "correctOptionIndex": 3
+    },
+    {
+      "text": "Vilken partikel i en atom har negativ laddning?",
+      "options": [
+        "Proton",
+        "Neutron",
+        "Foton",
+        "Elektron"
+      ],
+      "correctOptionIndex": 3
+    }
+  ]
+}

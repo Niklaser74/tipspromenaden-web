@@ -1,0 +1,110 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Frukt",
+  "description": "10 roliga frågor om frukt – perfekt för sexåringar som vill lära sig mer om goda frukter!",
+  "author": "Niklas Eriksson",
+  "questions": [
+    {
+      "text": "Vilken frukt är gul och böjd som en båge?",
+      "options": [
+        "Äpple",
+        "Banan",
+        "Päron",
+        "Apelsin"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilken färg har ett vattenmelon på insidan?",
+      "options": [
+        "Gul",
+        "Grön",
+        "Röd",
+        "Blå"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilket litet bär är rött och växer på sommaren i Sverige?",
+      "options": [
+        "Blåbär",
+        "Jordgubbe",
+        "Vindruva",
+        "Kiwi"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad finns inuti en persika?",
+      "options": [
+        "En stor hård kärna",
+        "Många små frön",
+        "Ingenting",
+        "En liten nöt"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken frukt måste man skala innan man äter den?",
+      "options": [
+        "Äpple",
+        "Päron",
+        "Apelsin",
+        "Plommon"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vad heter den gröna frukten som är lurvig på utsidan och grön inuti?",
+      "options": [
+        "Lime",
+        "Kiwi",
+        "Avokado",
+        "Päron"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilken frukt har en krona av gröna blad på toppen?",
+      "options": [
+        "Mango",
+        "Kokosnöt",
+        "Ananas",
+        "Melon"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilket bär är blått och växer i skogen?",
+      "options": [
+        "Hallon",
+        "Lingon",
+        "Jordgubbe",
+        "Blåbär"
+      ],
+      "correctOptionIndex": 3
+    },
+    {
+      "text": "Vilken frukt gör man ofta juice av till frukost?",
+      "options": [
+        "Plommon",
+        "Apelsin",
+        "Banan",
+        "Kiwi"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad kallas det när äpplen växer på träd tillsammans?",
+      "options": [
+        "En äppelbuske",
+        "En fruktskog",
+        "En äppelodling",
+        "En äppellåda"
+      ],
+      "correctOptionIndex": 2
+    }
+  ],
+  "language": "sv"
+}

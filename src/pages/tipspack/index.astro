@@ -1,0 +1,195 @@
+---
+import fs from "node:fs";
+import path from "node:path";
+import Layout from "../../layouts/Layout.astro";
+
+// /tipspack — publik bibliotekssida för färdiga frågebatterier (.tipspack-filer).
+//
+// Filerna ligger som statiska assets i `public/tipspack/` så de är direkt
+// nedladdningsbara via `https://tipspromenaden.app/tipspack/<slug>.tipspack`.
+// Sidan här läser metadata från varje fil vid Astro-build-tid och genererar
+// en lista. När en ny fil läggs till i `public/tipspack/` dyker den upp
+// automatiskt vid nästa deploy.
+//
+// Sidan är publik och cachebar — ingen auth, ingen Firestore.
+
+const dir = path.join(process.cwd(), "public", "tipspack");
+const files = fs
+  .readdirSync(dir)
+  .filter((f) => f.endsWith(".tipspack"))
+  .sort();
+
+interface PackMeta {
+  slug: string;
+  filename: string;
+  url: string;
+  name: string;
+  description: string;
+  author: string;
+  language: string;
+  questionCount: number;
+  fileSizeKb: number;
+}
+
+const flagFor = (lang: string): string => {
+  const map: Record<string, string> = {
+    sv: "🇸🇪",
+    en: "🇬🇧",
+    de: "🇩🇪",
+    no: "🇳🇴",
+    da: "🇩🇰",
+    fi: "🇫🇮",
+    fr: "🇫🇷",
+    es: "🇪🇸",
+  };
+  return map[lang] || "🌐";
+};
+
+const packs: PackMeta[] = files.map((filename) => {
+  const filePath = path.join(dir, filename);
+  const content = fs.readFileSync(filePath, "utf8");
+  const json = JSON.parse(content);
+  const stats = fs.statSync(filePath);
+  return {
+    slug: filename.replace(/\.tipspack$/, ""),
+    filename,
+    url: `/tipspack/${filename}`,
+    name: json.name,
+    description: json.description || "",
+    author: json.author || "Okänd",
+    language: json.language || "sv",
+    questionCount: Array.isArray(json.questions) ? json.questions.length : 0,
+    fileSizeKb: Math.round(stats.size / 1024),
+  };
+});
+---
+
+<Layout
+  title="Färdiga frågebatterier — Tipspromenaden"
+  description="Ladda ner färdiga frågebatterier (.tipspack-filer) gratis och importera dem i Tipspromenaden-appen eller webb-skaparen. Stockholms gamla stan, Visby, populärkultur, naturvetenskap med mera."
+>
+  <main class="min-h-screen bg-cream">
+    <div class="max-w-4xl mx-auto px-6 py-12">
+      <header class="mb-12">
+        <a
+          href="/"
+          class="text-sm text-text-warm hover:text-green-dark mb-6 inline-block"
+        >
+          ← Tipspromenaden.app
+        </a>
+        <h1 class="font-serif text-4xl md:text-5xl text-green-dark mb-4">
+          Färdiga frågebatterier
+        </h1>
+        <p class="text-lg text-text-warm leading-relaxed max-w-2xl">
+          Klara frågesamlingar du kan ladda ner gratis och använda när du
+          skapar en egen tipspromenad. Allt från stadsvandringar till
+          naturquiz för barn.
+        </p>
+      </header>
+
+      <section class="mb-10 bg-white border border-rule rounded-xl p-5">
+        <h2 class="font-serif text-xl text-green-dark mb-3">
+          Så här använder du filerna
+        </h2>
+        <ol class="space-y-2 text-sm text-text-warm leading-relaxed list-decimal list-inside">
+          <li>Klicka <strong>Ladda ner</strong> på paketet du vill ha.</li>
+          <li>
+            Öppna Tipspromenaden-appen på telefonen eller{" "}
+            <a href="/skapa" class="text-green font-semibold hover:underline">
+              webb-skaparen
+            </a>
+            .
+          </li>
+          <li>
+            Skapa en ny promenad och klicka <strong>📥 Importera fil</strong>
+            (eller "Importera frågebatteri" i mobil-appen).
+          </li>
+          <li>
+            Välj <code class="bg-cream px-1 rounded">.tipspack</code>-filen
+            du laddade ner.
+          </li>
+          <li>Placera frågorna på kartan en och en — klar att gå.</li>
+        </ol>
+      </section>
+
+      {packs.length === 0 ? (
+        <p class="text-center text-text-warm py-12">
+          Inga frågebatterier publicerade än.
+        </p>
+      ) : (
+        <ul class="space-y-4">
+          {packs.map((p) => (
+            <li class="bg-white border border-rule rounded-xl p-5 hover:border-green-dark transition">
+              <div class="flex items-start justify-between gap-4 flex-wrap">
+                <div class="flex-1 min-w-0">
+                  <h2 class="font-serif text-2xl text-green-dark mb-1">
+                    {flagFor(p.language)} {p.name}
+                  </h2>
+                  <p class="text-sm text-text-warm leading-relaxed mb-3">
+                    {p.description}
+                  </p>
+                  <p class="text-xs text-sage">
+                    {p.questionCount} frågor · {p.author} · {p.fileSizeKb} KB
+                  </p>
+                </div>
+                <div class="flex flex-col gap-2 shrink-0">
+                  <a
+                    href={p.url}
+                    download={p.filename}
+                    class="bg-green-dark text-cream px-5 py-2 rounded-full text-sm font-semibold shadow hover:shadow-md transition text-center"
+                  >
+                    📥 Ladda ner
+                  </a>
+                  <button
+                    data-copy-url={`https://tipspromenaden.app${p.url}`}
+                    class="copy-btn border border-green-dark text-green-dark px-5 py-2 rounded-full text-sm font-semibold hover:bg-green-dark/5 transition"
+                  >
+                    Kopiera länk
+                  </button>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <section class="mt-12 bg-white border border-rule rounded-xl p-5">
+        <h2 class="font-serif text-xl text-green-dark mb-3">
+          Vill du dela ditt eget batteri?
+        </h2>
+        <p class="text-sm text-text-warm leading-relaxed">
+          Skicka filen till{" "}
+          <a
+            href="mailto:tipspromenaden.app@gmail.com"
+            class="text-green font-semibold hover:underline"
+          >
+            tipspromenaden.app@gmail.com
+          </a>{" "}
+          så plockar vi in den i biblioteket om den passar in. Du behåller
+          upphovsrätten — vi länkar till dig som författare.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Kopiera-länk-knappar — vanlig clipboard.writeText med tillfällig
+    // bekräftelse-text.
+    document.querySelectorAll<HTMLButtonElement>(".copy-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const url = btn.dataset.copyUrl;
+        if (!url) return;
+        try {
+          await navigator.clipboard.writeText(url);
+          const original = btn.textContent;
+          btn.textContent = "Kopierad!";
+          setTimeout(() => {
+            btn.textContent = original;
+          }, 2000);
+        } catch {
+          // ignored — fallback inte kritiskt
+        }
+      });
+    });
+  </script>
+</Layout>

@@ -1,0 +1,110 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Stormar och orkaner",
+  "description": "Tio spännande frågor om stormar, orkaner och extremt väder – anpassade för 9-åringar.",
+  "author": "Niklas Eriksson",
+  "questions": [
+    {
+      "text": "Vad kallas den lugna mitten av en orkan?",
+      "options": [
+        "Hjärtat",
+        "Ögat",
+        "Kärnan",
+        "Navet"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad behöver en orkan för att bildas?",
+      "options": [
+        "Kallt havsvatten",
+        "Varmt havsvatten",
+        "Snötäckta berg",
+        "Torr ökenluft"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad kallas en snurrande vindtratt som rör sig över land?",
+      "options": [
+        "Orkan",
+        "Tornado",
+        "Monsun",
+        "Cyklon"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilken skala används för att mäta hur stark en orkan är?",
+      "options": [
+        "Richterskalan",
+        "Beaufortskalan",
+        "Saffir-Simpson-skalan",
+        "Celsiusskalan"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Åt vilket håll snurrar orkaner på norra halvklotet?",
+      "options": [
+        "Medurs",
+        "Moturs",
+        "Rakt framåt",
+        "De snurrar inte"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad kallas det ljus som blixtrar över himlen under ett åskväder?",
+      "options": [
+        "Norrsken",
+        "Regnbåge",
+        "Blixt",
+        "Stjärnfall"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Ungefär hur snabbt måste vindarna blåsa för att en storm ska kallas orkan?",
+      "options": [
+        "Minst 33 m/s",
+        "Minst 50 m/s",
+        "Minst 80 m/s",
+        "Minst 100 m/s"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad kallas den stora våg som en orkan kan pressa in mot kusten?",
+      "options": [
+        "Tsunami",
+        "Stormflod",
+        "Tidvatten",
+        "Springflod"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "I vilken världsdel drabbas man oftast av orkaner?",
+      "options": [
+        "Europa",
+        "Antarktis",
+        "Nordamerika",
+        "Australien"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Varför får orkaner namn som \"Katrina\" och \"Irma\"?",
+      "options": [
+        "De namnges efter städer de träffar",
+        "De namnges efter forskare",
+        "För att det ska vara lättare att hålla koll på dem",
+        "De namnges efter presidenter"
+      ],
+      "correctOptionIndex": 2
+    }
+  ],
+  "language": "sv"
+}

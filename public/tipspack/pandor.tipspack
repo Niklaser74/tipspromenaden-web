@@ -1,0 +1,160 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Pandor",
+  "description": "15 roliga frågor om jättepandor – perfekt för alla som älskar dessa svartvita björnar!",
+  "author": "Niklas Eriksson",
+  "questions": [
+    {
+      "text": "Vad äter jättepandor allra mest av?",
+      "options": [
+        "Gräs",
+        "Bambu",
+        "Blåbär",
+        "Löv från ekträd"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "I vilket land lever vilda jättepandor?",
+      "options": [
+        "Japan",
+        "Indien",
+        "Kina",
+        "Thailand"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Ungefär hur mycket kan en vuxen jättepanda väga?",
+      "options": [
+        "30–50 kg",
+        "70–120 kg",
+        "200–250 kg",
+        "400–500 kg"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Hur mycket bambu kan en jättepanda äta per dag?",
+      "options": [
+        "Upp till 5 kg",
+        "Upp till 15 kg",
+        "Upp till 38 kg",
+        "Upp till 60 kg"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilken färg har en nyfödd pandaunge?",
+      "options": [
+        "Svartvit precis som en vuxen",
+        "Helt svart",
+        "Rosa och nästan hårlös",
+        "Brun med vita fläckar"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Hur stor är en nyfödd pandaunge jämfört med sin mamma?",
+      "options": [
+        "Ungefär hälften så stor",
+        "Ungefär en tiondel så stor",
+        "Ungefär en tusendel så stor",
+        "Ungefär en hundradel så stor"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vad gör jättepandor största delen av dagen?",
+      "options": [
+        "Simmar i floder",
+        "Äter och vilar",
+        "Klättrar i träd",
+        "Leker med varandra"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Till vilken djurfamilj hör jättepandan?",
+      "options": [
+        "Kattdjur",
+        "Björnar",
+        "Tvättbjörnar",
+        "Halvbjörnar"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Varför har jättepandor en speciell 'tumme' på framtassarna?",
+      "options": [
+        "För att gräva bon",
+        "För att klättra snabbare",
+        "För att gripa tag i bambu",
+        "För att slåss mot fiender"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vad betyder pandans kinesiska namn 'dà xióngmāo' (大熊猫) på svenska?",
+      "options": [
+        "Svartvit björn",
+        "Stor björnkatt",
+        "Bambumästare",
+        "Bergsbjörn"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Hur lever vilda jättepandor helst – ensamma eller i grupp?",
+      "options": [
+        "I stora flockar",
+        "I par",
+        "Ensamma",
+        "I familjegrupper"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Var i Kina bor de flesta vilda jättepandor?",
+      "options": [
+        "I öknar i norr",
+        "I bergsskogar i sydvästra Kina",
+        "På slätter nära kusten",
+        "I tropisk regnskog i söder"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilken organisation använder jättepandan som sin symbol?",
+      "options": [
+        "Greenpeace",
+        "Unicef",
+        "WWF",
+        "Röda Korset"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Hur länge är en pandamamma dräktig ungefär?",
+      "options": [
+        "2 månader",
+        "5 månader",
+        "9 månader",
+        "12 månader"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Är den röda pandan nära släkt med jättepandan?",
+      "options": [
+        "Ja, de tillhör samma familj",
+        "Nej, den röda pandan tillhör en helt egen familj",
+        "Ja, de är nästan samma art",
+        "Nej, den röda pandan är ett kattdjur"
+      ],
+      "correctOptionIndex": 1
+    }
+  ],
+  "language": "sv"
+}

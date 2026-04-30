@@ -1,0 +1,160 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Allmänbildning – Akademiker-quiz",
+  "description": "15 breda quizfrågor i blandade ämnen, riktade till akademiker i 30–40-årsåldern.",
+  "author": "Niklas Eriksson",
+  "language": "sv",
+  "questions": [
+    {
+      "text": "Vilken svensk författare skrev romanen 'Hundraåringen som klev ut genom fönstret och försvann'?",
+      "options": [
+        "Mikael Niemi",
+        "Fredrik Backman",
+        "David Lagercrantz",
+        "Jonas Jonasson"
+      ],
+      "correctOptionIndex": 3
+    },
+    {
+      "text": "Vilket land har flest tidszoner i världen (inklusive utomeuropeiska territorier)?",
+      "options": [
+        "Ryssland",
+        "USA",
+        "Frankrike",
+        "Storbritannien"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilken partikel bekräftades experimentellt vid CERN 2012 efter årtionden av sökande?",
+      "options": [
+        "Gravitonen",
+        "Higgsboson",
+        "Tachyonen",
+        "Gluonen"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilken nyzeeländsk artist hade en världshit med låten 'Royals' 2013?",
+      "options": [
+        "Lorde",
+        "Sia",
+        "Adele",
+        "Lana Del Rey"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "I vilket land startade den arabiska våren i december 2010?",
+      "options": [
+        "Tunisien",
+        "Egypten",
+        "Libyen",
+        "Syrien"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vem har vunnit Ballon d'Or flest gånger (per 2024)?",
+      "options": [
+        "Cristiano Ronaldo",
+        "Johan Cruyff",
+        "Lionel Messi",
+        "Zinedine Zidane"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilken film blev den första icke-engelskspråkiga filmen att vinna Oscar för bästa film?",
+      "options": [
+        "Roma",
+        "Parasite",
+        "Amélie",
+        "Crouching Tiger, Hidden Dragon"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilket grundämne har den kemiska beteckningen W?",
+      "options": [
+        "Vanadin",
+        "Vismut",
+        "Väte",
+        "Volfram"
+      ],
+      "correctOptionIndex": 3
+    },
+    {
+      "text": "Vilken kompositör skrev balettmusiken 'Våroffer' vars premiär orsakade skandal i Paris 1913?",
+      "options": [
+        "Claude Debussy",
+        "Pjotr Tjajkovskij",
+        "Igor Stravinskij",
+        "Maurice Ravel"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilken är världens djupaste sjö?",
+      "options": [
+        "Tanganyikasjön",
+        "Kaspiska havet",
+        "Victoriasjön",
+        "Bajkalsjön"
+      ],
+      "correctOptionIndex": 3
+    },
+    {
+      "text": "Vilket år föll Berlinmuren?",
+      "options": [
+        "1987",
+        "1989",
+        "1991",
+        "1993"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vem skrev den dystopiska romanen 'Du sköna nya värld'?",
+      "options": [
+        "Aldous Huxley",
+        "George Orwell",
+        "Ray Bradbury",
+        "H.G. Wells"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad kallas fenomenet att ljus böjs av när det passerar nära ett massivt objekt, enligt allmänna relativitetsteorin?",
+      "options": [
+        "Refraktion",
+        "Diffraktion",
+        "Rödförskjutning",
+        "Gravitationslinsning"
+      ],
+      "correctOptionIndex": 3
+    },
+    {
+      "text": "Vilken filosof myntade begreppet 'Cogito, ergo sum' (Jag tänker, alltså finns jag)?",
+      "options": [
+        "Baruch Spinoza",
+        "René Descartes",
+        "John Locke",
+        "Immanuel Kant"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Hur många kromosompar har en människa normalt?",
+      "options": [
+        "21 par",
+        "22 par",
+        "23 par",
+        "24 par"
+      ],
+      "correctOptionIndex": 2
+    }
+  ]
+}

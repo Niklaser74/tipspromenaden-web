@@ -11,6 +11,17 @@ användar-orienterad text.
 
 ---
 
+## 2026-04-30 — Bibliotek med färdiga frågebatterier
+
+- Ny sida `tipspromenaden.app/tipspack` med 8 färdiga frågebatterier som
+  alla kan ladda ner gratis: Stockholms gamla stan, Visby, populärkultur
+  för tonåringar, allmänbildning, naturvetenskap, pandor, frukt, stormar.
+- Varje pack visar titel, beskrivning, antal frågor och författare. En
+  knapp för att ladda ner filen, en för att kopiera direktlänken som du
+  kan skicka via Messenger eller mejl.
+- Länkar från startsidan: ett kort som leder till biblioteket, ett som
+  leder till webb-skaparen.
+
 ## 2026-04-30 — Tre nya funktioner i webb-skaparen
 
 - **Dela**-knapp i editorn och på varje rad i "Mina promenader". Visar

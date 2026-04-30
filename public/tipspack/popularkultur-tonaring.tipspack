@@ -1,0 +1,160 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Populärkultur för tonåringar",
+  "description": "15 frågor om film, musik, spel, sport och sociala medier – för dig i lägre tonåren!",
+  "author": "Niklas Eriksson",
+  "language": "sv",
+  "questions": [
+    {
+      "text": "Vad heter trollkarlen som Harry Potter går i skola hos?",
+      "options": [
+        "Dumbledore",
+        "Saruman",
+        "Gandalf",
+        "Merlin"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket spel utspelar sig på en ö där 100 spelare kämpar tills en vinner?",
+      "options": [
+        "Fortnite",
+        "Minecraft",
+        "Roblox",
+        "Among Us"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken artist sjöng 'Blinding Lights'?",
+      "options": [
+        "Drake",
+        "Ed Sheeran",
+        "Post Malone",
+        "The Weeknd"
+      ],
+      "correctOptionIndex": 3
+    },
+    {
+      "text": "I vilken filmserie spelar Robert Downey Jr. Iron Man?",
+      "options": [
+        "DC",
+        "Star Wars",
+        "Transformers",
+        "Marvel"
+      ],
+      "correctOptionIndex": 3
+    },
+    {
+      "text": "Vad heter den svenska YouTubern som är känd för sina Minecraft-videor och har över 30 miljoner prenumeranter?",
+      "options": [
+        "Jelly",
+        "PewDiePie",
+        "MrBeast",
+        "Dream"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilket lag vann fotbolls-VM för herrar 2022?",
+      "options": [
+        "Frankrike",
+        "Brasilien",
+        "Argentina",
+        "Kroatien"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vad heter appen där man delar korta videor med musik och filter?",
+      "options": [
+        "Snapchat",
+        "TikTok",
+        "Instagram",
+        "YouTube"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "I vilken animerad film lever leksaker som vaknar till liv när människor inte ser?",
+      "options": [
+        "Toy Story",
+        "Bilar",
+        "Monsters, Inc.",
+        "Shrek"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad heter huvudkaraktären i spelserien 'The Legend of Zelda'?",
+      "options": [
+        "Zelda",
+        "Link",
+        "Ganondorf",
+        "Mario"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilken svensk artist sjöng 'Dance You Off' i Eurovision 2018?",
+      "options": [
+        "Loreen",
+        "Måns Zelmerlöw",
+        "Benjamin Ingrosso",
+        "Frans"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vad heter den fiktiva kontinenten där 'Game of Thrones' utspelar sig?",
+      "options": [
+        "Narnia",
+        "Midgård",
+        "Mordor",
+        "Westeros"
+      ],
+      "correctOptionIndex": 3
+    },
+    {
+      "text": "Vilket land kommer K-pop-gruppen BTS från?",
+      "options": [
+        "Japan",
+        "Kina",
+        "Thailand",
+        "Sydkorea"
+      ],
+      "correctOptionIndex": 3
+    },
+    {
+      "text": "Vad heter karaktären med pilbåge i 'Hunger Games'?",
+      "options": [
+        "Katniss Everdeen",
+        "Tris Prior",
+        "Hermione Granger",
+        "Rey"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket block i Minecraft är hårdast att bryta?",
+      "options": [
+        "Diamant",
+        "Bedrock",
+        "Obsidian",
+        "Emerald"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vem har flest följare på Instagram i hela världen (2025)?",
+      "options": [
+        "Kylie Jenner",
+        "Cristiano Ronaldo",
+        "Selena Gomez",
+        "Lionel Messi"
+      ],
+      "correctOptionIndex": 1
+    }
+  ]
+}

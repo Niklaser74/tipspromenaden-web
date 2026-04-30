@@ -1,0 +1,110 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Visby",
+  "description": "Tio frågor om Visby – Gotlands pärla, hansastad och UNESCO-världsarv.",
+  "author": "Niklas Eriksson",
+  "questions": [
+    {
+      "text": "Vilket år upptogs Visby på UNESCO:s världsarvslista?",
+      "options": [
+        "1991",
+        "1995",
+        "1998",
+        "2002"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vad kallas Visby ofta tack vare sitt milda klimat och rika växtlighet?",
+      "options": [
+        "Solens stad",
+        "Ruinernas stad",
+        "Rosornas stad",
+        "Murens stad"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilken dansk kung erövrade Gotland efter slaget vid Visby 1361?",
+      "options": [
+        "Valdemar Atterdag",
+        "Kristian II",
+        "Erik av Pommern",
+        "Kristofer av Bayern"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Hur lång är Visbys medeltida ringmur ungefär?",
+      "options": [
+        "1,5 km",
+        "2,3 km",
+        "3,4 km",
+        "5,0 km"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilken medeltida kyrka i Visby är fortfarande i bruk som domkyrka?",
+      "options": [
+        "Sankt Nicolai",
+        "Sankt Lars",
+        "Helge And",
+        "Sankta Maria"
+      ],
+      "correctOptionIndex": 3
+    },
+    {
+      "text": "Vilket handelsförbund var Visby en viktig del av under medeltiden?",
+      "options": [
+        "Kalmarunionen",
+        "Hansan",
+        "Nordiska förbundet",
+        "Lübeckförbundet"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "Vilket stort årligt evenemang lockar tiotusentals besökare till Visby varje sommar?",
+      "options": [
+        "Stångaspelen",
+        "Medeltidsveckan",
+        "Gotlandstravet",
+        "Visbyfestivalen"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "text": "I vilken park i Visby hålls Almedalsveckan, den svenska politikerveckan?",
+      "options": [
+        "Stadsparken",
+        "Palissaderna",
+        "Almedalen",
+        "Botaniska trädgården"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Ungefär hur många medeltida kyrkoruiner finns det inom Visbys murar?",
+      "options": [
+        "3",
+        "6",
+        "10",
+        "15"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "text": "Vilken gotländsk produkt är en välkänd lokal delikatess som ofta förknippas med ön?",
+      "options": [
+        "Saffranspannkaka",
+        "Surströmming",
+        "Tunnbrödsrulle",
+        "Kroppkakor"
+      ],
+      "correctOptionIndex": 0
+    }
+  ],
+  "language": "sv"
+}
