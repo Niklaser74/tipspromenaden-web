@@ -60,7 +60,48 @@ export interface Walk {
     startDate: string; // ISO 8601 (YYYY-MM-DD)
     endDate: string;
   };
+  /**
+   * Opt-in till app:ens publika bibliotek. Driven av "Publicera"-toggle
+   * i CreateWalk (mobil + web). Default off.
+   */
+  public?: boolean;
+  /** Stad — fritext, valfri. Visas i biblioteket, sökbar. */
+  city?: string;
+  /**
+   * Kategori-tagg. Begränsad enum:
+   * `"natur" | "stad" | "historia" | "barn" | "cykel" | "mat" | "kultur" | "annat"`
+   */
+  category?: string;
+  /**
+   * Centroid (mittpunkt) av alla frågekoordinater. Auto-beräknas vid
+   * save. Driver "nära mig"-sortering i biblioteket.
+   */
+  centroid?: Coordinate;
 }
+
+/** Tillåtna kategori-koder för publika walks. */
+export const WALK_CATEGORIES = [
+  "natur",
+  "stad",
+  "historia",
+  "barn",
+  "cykel",
+  "mat",
+  "kultur",
+  "annat",
+] as const;
+
+/** Sv-label för kategori-koderna (mobile-app:en speglar samma). */
+export const CATEGORY_LABELS_SV: Record<string, string> = {
+  natur: "Natur",
+  stad: "Stad",
+  historia: "Historia",
+  barn: "Barn",
+  cykel: "Cykel",
+  mat: "Mat",
+  kultur: "Kultur",
+  annat: "Annat",
+};
 
 /**
  * Genererar ett kort, någorlunda unikt id för Walks/Questions.

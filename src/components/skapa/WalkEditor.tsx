@@ -182,7 +182,31 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
     setSaving(true);
     setError(null);
     try {
-      await saveWalk(walk);
+      // Auto-centroid: medelvärde av frågekoordinater. Driver "nära mig"-
+      // sortering i mobil-bibliotekets walks-flik. Bara meningsfullt om
+      // walken har minst en placerad fråga (default-koord (0,0) skippas).
+      const placed = walk.questions.filter(
+        (q) => q.coordinate.latitude !== 0 || q.coordinate.longitude !== 0
+      );
+      const centroid =
+        placed.length > 0
+          ? {
+              latitude:
+                placed.reduce((s, q) => s + q.coordinate.latitude, 0) /
+                placed.length,
+              longitude:
+                placed.reduce((s, q) => s + q.coordinate.longitude, 0) /
+                placed.length,
+            }
+          : undefined;
+
+      // Lägg på centroid bara om public är på — privat = skriv inte spaminfo
+      const toSave: Walk =
+        walk.public && centroid
+          ? { ...walk, centroid }
+          : walk;
+
+      await saveWalk(toSave);
       setSavedAt(Date.now());
     } catch (e: any) {
       setError(e?.message || "Kunde inte spara");
@@ -328,6 +352,79 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
               <option value="fr">🇫🇷 Français</option>
               <option value="es">🇪🇸 Español</option>
             </select>
+
+            {/* Publicera till bibliotek */}
+            <label className="flex items-start gap-2 mt-5 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={!!walk.public}
+                onChange={(e) => update({ public: e.target.checked })}
+                className="mt-1 accent-green-dark"
+              />
+              <span className="text-sm">
+                <strong>Publicera till bibliotek</strong>
+                <br />
+                <span className="text-text-warm text-xs">
+                  Andra användare kan hitta och spela din promenad i appens
+                  bibliotek-flik.
+                </span>
+              </span>
+            </label>
+
+            {walk.public && (
+              <div className="mt-3 space-y-3 bg-cream/50 border border-rule rounded-lg p-3">
+                <div>
+                  <label className="block text-xs uppercase tracking-wide text-text-warm mb-1">
+                    Stad
+                  </label>
+                  <input
+                    value={walk.city ?? ""}
+                    onChange={(e) => update({ city: e.target.value })}
+                    placeholder="T.ex. Visby"
+                    maxLength={100}
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-green-dark focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs uppercase tracking-wide text-text-warm mb-2">
+                    Kategori
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {(["natur","stad","historia","barn","cykel","mat","kultur","annat"] as const).map(
+                      (cat) => {
+                        const labels: Record<string, string> = {
+                          natur: "Natur",
+                          stad: "Stad",
+                          historia: "Historia",
+                          barn: "Barn",
+                          cykel: "Cykel",
+                          mat: "Mat",
+                          kultur: "Kultur",
+                          annat: "Annat",
+                        };
+                        const active = walk.category === cat;
+                        return (
+                          <button
+                            key={cat}
+                            onClick={() =>
+                              update({ category: active ? undefined : cat })
+                            }
+                            className={`text-xs px-3 py-1.5 rounded-full border transition ${
+                              active
+                                ? "bg-green-dark text-cream border-green-dark"
+                                : "bg-white text-text-warm border-rule hover:border-green-dark"
+                            }`}
+                          >
+                            {labels[cat]}
+                          </button>
+                        );
+                      }
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="p-5">
