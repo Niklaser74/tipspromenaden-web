@@ -45,7 +45,10 @@ import Layout from "../layouts/Layout.astro";
       "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
 
     const path = window.location.pathname;
-    const walkMatch = path.match(/^\/walk\/([^/]+)\/?$/);
+    // Strikt validering — slug ska bara innehålla URL-säkra tecken så att
+    // angripare inte kan stoppa in `javascript:` eller path-traversal i
+    // den deep-link vi senare bygger.
+    const walkMatch = path.match(/^\/walk\/([a-zA-Z0-9_-]{1,100})\/?$/);
     const ua = navigator.userAgent.toLowerCase();
     const isAndroid = /android/.test(ua);
     const isIos = /iphone|ipad|ipod/.test(ua);
@@ -59,7 +62,7 @@ import Layout from "../layouts/Layout.astro";
         // Försök öppna appen via custom-scheme. Om OS:et fångar göms
         // sidan; annars fortsätter vi och redirectar till Play Store.
         const start = Date.now();
-        window.location.href = `tipspromenaden://walk/${walkId}`;
+        window.location.href = `tipspromenaden://walk/${encodeURIComponent(walkId)}`;
         setTimeout(() => {
           // Om vi fortfarande är här — appen finns inte installerad.
           if (Date.now() - start < 2500) {
