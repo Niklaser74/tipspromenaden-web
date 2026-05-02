@@ -11,6 +11,19 @@ användar-orienterad text.
 
 ---
 
+## 2026-04-30 — Publicera promenader till bibliotek + index.json
+
+- WalkEditor på `/skapa` har nu en **"Publicera till bibliotek"**-toggle.
+  Slå på → fält dyker upp för **stad** och **kategori** (Natur / Stad /
+  Historia / Barn / Cykel / Mat / Kultur / Annat). Promenaden blir då
+  synlig i mobilappens bibliotek under Promenader-fliken.
+- När en publicerad walk sparas beräknas automatiskt en mittpunkt av
+  alla frågekoordinater. Driver mobil-bibliotekets "📍 Nära mig"-
+  sortering.
+- Ny `/tipspack/index.json` — maskin-vänlig JSON-vy av alla curated
+  tipspack med metadata. Konsumeras av mobilappens nya bibliotek-flik
+  som visar curated + uppladdade pack i en gemensam lista.
+
 ## 2026-04-30 — Riktiga flaggor överallt (Windows-fix)
 
 - Flaggor renderas nu som riktiga PNG-bilder från flagcdn.com istället
