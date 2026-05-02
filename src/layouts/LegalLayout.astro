@@ -1,0 +1,130 @@
+---
+/**
+ * Layout för legala sidor (villkor, integritet). Använder bas-Layouten
+ * + en typografi-wrapper som ger snygg läsupplevelse för längre text.
+ */
+import Layout from "./Layout.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<Layout title={`${title} — Tipspromenaden`} description={description}>
+  <main class="min-h-screen bg-cream">
+    <article class="max-w-3xl mx-auto px-6 py-12">
+      <a
+        href="/"
+        class="text-sm text-text-warm hover:text-green-dark mb-6 inline-block"
+      >
+        ← Tipspromenaden.app
+      </a>
+      <div class="prose-content">
+        <slot />
+      </div>
+      <footer class="mt-16 pt-8 border-t border-rule text-sm text-text-warm">
+        <p>
+          Frågor? Mejla
+          <a
+            href="mailto:tipspromenaden.app@gmail.com"
+            class="text-green font-semibold hover:underline"
+          >
+            tipspromenaden.app@gmail.com
+          </a>
+        </p>
+      </footer>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  /* Enkel prose-styling utan Tailwind typography-plugin (inte installerad).
+     Speglar Friluft Folio-stilen som resten av sajten använder. */
+  .prose-content :global(h1) {
+    font-family: "Lora", Georgia, serif;
+    font-size: 2.5rem;
+    line-height: 1.15;
+    color: #1B3D2B;
+    margin-bottom: 0.5rem;
+  }
+  .prose-content :global(h2) {
+    font-family: "Lora", Georgia, serif;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    color: #1B3D2B;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose-content :global(h3) {
+    font-family: "Lora", Georgia, serif;
+    font-size: 1.15rem;
+    color: #1B3D2B;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  .prose-content :global(p),
+  .prose-content :global(li) {
+    color: #2C3E2D;
+    line-height: 1.65;
+    margin-bottom: 0.85rem;
+  }
+  .prose-content :global(ul),
+  .prose-content :global(ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .prose-content :global(li) {
+    margin-bottom: 0.4rem;
+  }
+  .prose-content :global(strong) {
+    color: #1B3D2B;
+  }
+  .prose-content :global(a) {
+    color: #1B6B35;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose-content :global(a:hover) {
+    text-decoration: none;
+  }
+  .prose-content :global(code) {
+    background: #F5F0E8;
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.92em;
+  }
+  .prose-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+  .prose-content :global(th),
+  .prose-content :global(td) {
+    border: 1px solid #D9D2C2;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  .prose-content :global(th) {
+    background: #F5F0E8;
+    font-family: "Lora", Georgia, serif;
+    color: #1B3D2B;
+  }
+  .prose-content :global(hr) {
+    border: 0;
+    border-top: 1px solid #D9D2C2;
+    margin: 2rem 0;
+  }
+  .prose-content :global(blockquote) {
+    border-left: 3px solid #1B6B35;
+    padding-left: 1rem;
+    color: #4A5E4C;
+    margin: 1rem 0;
+    font-style: italic;
+  }
+</style>
