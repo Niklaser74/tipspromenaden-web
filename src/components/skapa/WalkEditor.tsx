@@ -18,10 +18,13 @@ import type { User } from "firebase/auth";
 import { getWalk, saveWalk, deleteWalk } from "../../lib/walks";
 import {
   generateId,
+  WALK_CATEGORIES,
+  CATEGORY_LABELS_SV,
   type Walk,
   type Question,
   type Coordinate,
 } from "../../lib/types";
+import { walkCentroid } from "../../lib/walkGeo";
 import { parseTipspackFile } from "../../lib/tipspack";
 import { MapEditor } from "./MapEditor";
 import { QuestionForm } from "./QuestionForm";
@@ -182,30 +185,10 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
     setSaving(true);
     setError(null);
     try {
-      // Auto-centroid: medelvärde av frågekoordinater. Driver "nära mig"-
-      // sortering i mobil-bibliotekets walks-flik. Bara meningsfullt om
-      // walken har minst en placerad fråga (default-koord (0,0) skippas).
-      const placed = walk.questions.filter(
-        (q) => q.coordinate.latitude !== 0 || q.coordinate.longitude !== 0
-      );
-      const centroid =
-        placed.length > 0
-          ? {
-              latitude:
-                placed.reduce((s, q) => s + q.coordinate.latitude, 0) /
-                placed.length,
-              longitude:
-                placed.reduce((s, q) => s + q.coordinate.longitude, 0) /
-                placed.length,
-            }
-          : undefined;
-
-      // Lägg på centroid bara om public är på — privat = skriv inte spaminfo
-      const toSave: Walk =
-        walk.public && centroid
-          ? { ...walk, centroid }
-          : walk;
-
+      // Centroid används av mobil-bibliotekets "nära mig"-sortering —
+      // beräknas bara när walken faktiskt publiceras.
+      const centroid = walk.public ? walkCentroid(walk) : null;
+      const toSave = centroid ? { ...walk, centroid } : walk;
       await saveWalk(toSave);
       setSavedAt(Date.now());
     } catch (e: any) {
@@ -391,36 +374,24 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
                     Kategori
                   </label>
                   <div className="flex flex-wrap gap-2">
-                    {(["natur","stad","historia","barn","cykel","mat","kultur","annat"] as const).map(
-                      (cat) => {
-                        const labels: Record<string, string> = {
-                          natur: "Natur",
-                          stad: "Stad",
-                          historia: "Historia",
-                          barn: "Barn",
-                          cykel: "Cykel",
-                          mat: "Mat",
-                          kultur: "Kultur",
-                          annat: "Annat",
-                        };
-                        const active = walk.category === cat;
-                        return (
-                          <button
-                            key={cat}
-                            onClick={() =>
-                              update({ category: active ? undefined : cat })
-                            }
-                            className={`text-xs px-3 py-1.5 rounded-full border transition ${
-                              active
-                                ? "bg-green-dark text-cream border-green-dark"
-                                : "bg-white text-text-warm border-rule hover:border-green-dark"
-                            }`}
-                          >
-                            {labels[cat]}
-                          </button>
-                        );
-                      }
-                    )}
+                    {WALK_CATEGORIES.map((cat) => {
+                      const active = walk.category === cat;
+                      return (
+                        <button
+                          key={cat}
+                          onClick={() =>
+                            update({ category: active ? undefined : cat })
+                          }
+                          className={`text-xs px-3 py-1.5 rounded-full border transition ${
+                            active
+                              ? "bg-green-dark text-cream border-green-dark"
+                              : "bg-white text-text-warm border-rule hover:border-green-dark"
+                          }`}
+                        >
+                          {CATEGORY_LABELS_SV[cat]}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

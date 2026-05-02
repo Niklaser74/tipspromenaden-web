@@ -1,56 +1,18 @@
 ---
-import fs from "node:fs";
-import path from "node:path";
 import Layout from "../../layouts/Layout.astro";
 import { Flag } from "../../components/Flag.tsx";
 import UserTipspacks from "../../components/tipspack/UserTipspacks.tsx";
+import { getCuratedTipspacks } from "../../lib/curatedTipspacks";
 
-// /tipspack — publik bibliotekssida för färdiga frågebatterier (.tipspack-filer).
-//
-// Filerna ligger som statiska assets i `public/tipspack/` så de är direkt
-// nedladdningsbara via `https://tipspromenaden.app/tipspack/<slug>.tipspack`.
-// Sidan här läser metadata från varje fil vid Astro-build-tid och genererar
-// en lista. När en ny fil läggs till i `public/tipspack/` dyker den upp
-// automatiskt vid nästa deploy.
-//
-// Sidan är publik och cachebar — ingen auth, ingen Firestore.
+// /tipspack — publik bibliotekssida för färdiga frågebatterier.
+// Filerna ligger som statiska assets i `public/tipspack/`. Metadata
+// läses vid build-tid via getCuratedTipspacks (delas med /tipspack/index.json).
 
-const dir = path.join(process.cwd(), "public", "tipspack");
-const files = fs
-  .readdirSync(dir)
-  .filter((f) => f.endsWith(".tipspack"))
-  .sort();
-
-interface PackMeta {
-  slug: string;
-  filename: string;
-  url: string;
-  name: string;
-  description: string;
-  author: string;
-  language: string;
-  questionCount: number;
-  fileSizeKb: number;
-}
-
-
-const packs: PackMeta[] = files.map((filename) => {
-  const filePath = path.join(dir, filename);
-  const content = fs.readFileSync(filePath, "utf8");
-  const json = JSON.parse(content);
-  const stats = fs.statSync(filePath);
-  return {
-    slug: filename.replace(/\.tipspack$/, ""),
-    filename,
-    url: `/tipspack/${filename}`,
-    name: json.name,
-    description: json.description || "",
-    author: json.author || "Okänd",
-    language: json.language || "sv",
-    questionCount: Array.isArray(json.questions) ? json.questions.length : 0,
-    fileSizeKb: Math.round(stats.size / 1024),
-  };
-});
+const packs = getCuratedTipspacks().map((p) => ({
+  ...p,
+  url: `/tipspack/${p.filename}`,
+  fileSizeKb: Math.round(p.fileSizeBytes / 1024),
+}));
 ---
 
 <Layout

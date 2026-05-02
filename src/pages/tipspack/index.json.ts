@@ -1,61 +1,30 @@
 /**
  * @file index.json.ts
  * @description Statisk JSON-endpoint som listar alla curated `.tipspack`-paket
- * + deras metadata. Genereras vid Astro-build, serveras som statisk fil från
+ * + metadata. Genereras vid Astro-build och serveras som
  * `https://tipspromenaden.app/tipspack/index.json`.
  *
- * Konsumeras av:
- *   - Mobilappens LibraryScreen (visar curated + Firestore-uppladdade
- *     tipspacks i ett gemensamt bibliotek)
- *   - Eventuellt framtida widgets / integrationer som vill veta vilka
- *     curated paket som finns
- *
- * Datat speglar det som /tipspack-sidan genererar — samma fält, samma
- * källa (public/tipspack/-mappen).
+ * Konsumeras av mobilappens LibraryScreen som mergar curated-listan med
+ * Firestore-uppladdade pack i ett gemensamt bibliotek.
  */
 
 import type { APIRoute } from "astro";
-import fs from "node:fs";
-import path from "node:path";
+import { getCuratedTipspacks } from "../../lib/curatedTipspacks";
 
 export const prerender = true;
 
-export interface CuratedTipspackMeta {
-  slug: string;
-  filename: string;
-  url: string; // absolut URL för nedladdning
-  name: string;
-  description: string;
-  author: string;
-  language: string;
-  questionCount: number;
-  fileSizeBytes: number;
-}
-
 export const GET: APIRoute = () => {
-  const dir = path.join(process.cwd(), "public", "tipspack");
-  const files = fs
-    .readdirSync(dir)
-    .filter((f) => f.endsWith(".tipspack"))
-    .sort();
-
-  const packs: CuratedTipspackMeta[] = files.map((filename) => {
-    const filePath = path.join(dir, filename);
-    const content = fs.readFileSync(filePath, "utf8");
-    const json = JSON.parse(content);
-    const stats = fs.statSync(filePath);
-    return {
-      slug: filename.replace(/\.tipspack$/, ""),
-      filename,
-      url: `https://tipspromenaden.app/tipspack/${filename}`,
-      name: json.name,
-      description: json.description || "",
-      author: json.author || "Okänd",
-      language: json.language || "sv",
-      questionCount: Array.isArray(json.questions) ? json.questions.length : 0,
-      fileSizeBytes: stats.size,
-    };
-  });
+  const packs = getCuratedTipspacks().map((p) => ({
+    slug: p.slug,
+    filename: p.filename,
+    url: `https://tipspromenaden.app/tipspack/${p.filename}`,
+    name: p.name,
+    description: p.description,
+    author: p.author,
+    language: p.language,
+    questionCount: p.questionCount,
+    fileSizeBytes: p.fileSizeBytes,
+  }));
 
   return new Response(JSON.stringify({ packs }, null, 2), {
     status: 200,
