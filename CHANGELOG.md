@@ -11,6 +11,14 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-04 — Mobil-fix: startsidan svämmade över i sidled
+
+- Rubriken "Tipspromenaden" var för stor på smala telefonskärmar och
+  drog ut hela sidan i sidled, så texten såg avhuggen ut. Skalar nu
+  ner H1 och underrubriker på mobil och växer på större skärmar.
+- Lade till ett säkerhetsnät så att inget framtida element av misstag
+  kan trigga horisontell scroll på sidan.
+
 ## 2026-04-30 — Publicera promenader till bibliotek + index.json
 
 - WalkEditor på `/skapa` har nu en **"Publicera till bibliotek"**-toggle.
