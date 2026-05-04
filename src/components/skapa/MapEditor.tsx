@@ -20,7 +20,35 @@
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet.gridlayer.googlemutant";
+import { Loader as GoogleMapsLoader } from "@googlemaps/js-api-loader";
 import type { Coordinate, Question } from "../../lib/types";
+
+/** Maps JavaScript API key — restricted to tipspromenaden.app + localhost
+ *  i Google Cloud Console. Säker att committa eftersom domänlås gör att
+ *  ingen annan kan använda nyckeln. */
+const GOOGLE_MAPS_API_KEY = "AIzaSyDdi3vZt9H4y97FzmazSciP6CYebQV3cN0";
+
+// Singleton-loader så vi inte kallar Google's script flera gånger om
+// MapEditor remount:as. Loadar lazily — först när användaren faktiskt
+// väljer "standard"-vyn (vilket är default men kan toggla bort innan
+// användaren landar på sidan).
+let googleMapsPromise: Promise<typeof google> | null = null;
+function loadGoogleMaps(): Promise<typeof google> {
+  if (!googleMapsPromise) {
+    googleMapsPromise = new GoogleMapsLoader({
+      apiKey: GOOGLE_MAPS_API_KEY,
+      version: "weekly",
+    })
+      .load()
+      .catch((err) => {
+        // Reset så nästa försök kan retrya (t.ex. efter nätverksfel)
+        googleMapsPromise = null;
+        throw err;
+      });
+  }
+  return googleMapsPromise;
+}
 
 /**
  * Karttyp — speglar appens `MapType` (services/storage.ts) så samma
@@ -102,13 +130,36 @@ export function MapEditor({
         }
       ).addTo(map);
     } else {
-      baseLayerRef.current = L.tileLayer(
+      // Standard = Google Maps via leaflet.gridlayer.googlemutant. Vi
+      // använder Googles roadmap-stil för att matcha mobil-appen
+      // ("Karta"-vyn där). Loader:n är async så vi sätter en temporär
+      // OSM-layer omedelbart och swappar till Google när det är klart —
+      // användaren ser aldrig en blank karta.
+      const placeholder = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          attribution: "&copy; OpenStreetMap-bidragsgivare",
-          maxZoom: 19,
-        }
+        { attribution: "Loading…", maxZoom: 19 }
       ).addTo(map);
+      baseLayerRef.current = placeholder;
+
+      loadGoogleMaps()
+        .then(() => {
+          // Race-skydd: användaren kan ha tryckt på toggle:n innan
+          // Google laddat. Acceptera bara byte om vi fortfarande är
+          // på "standard" och placeholder fortfarande är aktiv layer.
+          if (baseLayerRef.current !== placeholder) return;
+          map.removeLayer(placeholder);
+          // @ts-ignore — googleMutant lägger till sig som L.gridLayer.googleMutant
+          const gm = L.gridLayer.googleMutant({ type: "roadmap" });
+          gm.addTo(map);
+          baseLayerRef.current = gm as unknown as L.TileLayer;
+        })
+        .catch((err) => {
+          console.warn(
+            "Google Maps kunde inte laddas, kör vidare med OSM:",
+            err
+          );
+          // Lämna placeholder OSM-layer kvar — bättre än blank karta.
+        });
     }
   }
 
