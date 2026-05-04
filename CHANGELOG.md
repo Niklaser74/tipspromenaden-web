@@ -11,6 +11,15 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-04 — /stod: app-ikon i mitten av QR-koden
+
+- QR-koden genererad om med felkorrigeringsnivå H (30% recovery)
+  istället för M, vilket tillåter en logo i mitten utan att skanning
+  går sönder. App-ikonen positionerad ovanpå QR-koden med en
+  cream-färgad ring som maskerar de underliggande modulerna snyggt.
+- Visuellt tydligare avsändare — folk vet direkt vad de stöttar när
+  de scannar.
+
 ## 2026-05-04 — /stod: tap-to-open Swish på mobil
 
 - QR-koden + ny "📱 Öppna i Swish-appen"-knapp använder Swish:s

@@ -114,13 +114,18 @@ const description =
           valfritt belopp i Swish-appen.
         </p>
 
-        {/* QR-kod — också klickbar för universal link (öppnar Swish på
-            telefon, swish.nu landningssida på desktop). På mobilen där
-            man redan tittar på sidan är det enklare att trycka än att
-            försöka skanna sin egen skärm. */}
+        {/* QR-kod med app-ikon i mitten — också klickbar för universal
+            link (öppnar Swish på telefon, swish.nu landningssida på
+            desktop). På mobilen där man redan tittar på sidan är det
+            enklare att trycka än att försöka skanna sin egen skärm.
+
+            QR är genererad med felkorrigeringsnivå H (30%), vilket
+            innebär att en ikon i mitten som täcker ~20% av ytan kan
+            maskeras utan att skanningen påverkas. Cream-färgad ring
+            runt ikonen blender mot QR-bakgrunden. */}
         <a
           href={SWISH_LINK}
-          class="bg-cream rounded-2xl p-4 inline-block mb-4 hover:shadow-lg transition"
+          class="bg-cream rounded-2xl p-4 inline-block mb-4 hover:shadow-lg transition relative"
           aria-label="Öppna betalning i Swish-appen"
         >
           <img
@@ -129,6 +134,14 @@ const description =
             width="220"
             height="220"
             class="w-44 h-44 sm:w-56 sm:h-56 block"
+          />
+          <img
+            src="/icon.png"
+            alt=""
+            aria-hidden="true"
+            width="64"
+            height="64"
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 sm:w-14 sm:h-14 rounded-xl ring-4 ring-cream"
           />
         </a>
 
