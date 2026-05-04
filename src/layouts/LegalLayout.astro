@@ -1,16 +1,26 @@
 ---
 /**
- * Layout för legala sidor (villkor, integritet). Använder bas-Layouten
- * + en typografi-wrapper som ger snygg läsupplevelse för längre text.
+ * Layout för legala sidor (villkor, integritet, sa-funkar-det).
+ * Använder bas-Layouten + en typografi-wrapper som ger snygg
+ * läsupplevelse för längre text.
+ *
+ * VIKTIGT: när en .md-fil använder `layout: ...`-frontmatter skickar
+ * Astro frontmatter-fälten under `Astro.props.frontmatter`, INTE
+ * direkt på `Astro.props`. Direkt destruktur ger undefined → bl.a.
+ * "undefined — Tipspromenaden" i browser-tabbtiteln. Vi accepterar
+ * båda formerna så .astro-anrop med direkta props också funkar.
  */
 import Layout from "./Layout.astro";
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
+  frontmatter?: { title?: string; description?: string };
 }
 
-const { title, description } = Astro.props;
+const { title: directTitle, description: directDesc, frontmatter } = Astro.props as Props;
+const title = directTitle ?? frontmatter?.title ?? "Tipspromenaden";
+const description = directDesc ?? frontmatter?.description;
 ---
 
 <Layout title={`${title} — Tipspromenaden`} description={description}>
