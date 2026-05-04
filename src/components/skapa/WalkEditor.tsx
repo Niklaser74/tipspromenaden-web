@@ -238,6 +238,13 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
       {/* Header-bar */}
       <header className="flex items-center justify-between gap-4 px-6 py-3 border-b border-gray-200 bg-white">
         <div className="flex items-center gap-3 min-w-0">
+          <a
+            href="/"
+            className="text-text-warm hover:text-green-dark whitespace-nowrap text-sm"
+            title="Till hemsidan"
+          >
+            ← Hem
+          </a>
           <button
             onClick={onClose}
             className="text-text-warm hover:text-green-dark whitespace-nowrap"

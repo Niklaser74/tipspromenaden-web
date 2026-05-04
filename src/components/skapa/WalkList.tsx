@@ -69,6 +69,15 @@ export function WalkList({ user, onOpenWalk }: Props) {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-12">
+      {/* Tillbaka till hemsidan — samma mönster som /villkor, /integritet
+          och Login-vyn använder. Stannar inte kvar i React-routern utan
+          går till Astro-renderade /. */}
+      <a
+        href="/"
+        className="text-sm text-text-warm hover:text-green-dark mb-6 inline-block"
+      >
+        ← Tipspromenaden.app
+      </a>
       <header className="flex items-center justify-between mb-10">
         <div>
           <h1 className="font-serif text-3xl md:text-4xl text-green-dark">
