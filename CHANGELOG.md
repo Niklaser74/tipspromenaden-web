@@ -11,6 +11,17 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-04 — /stod: fixa QR-format så Swish-appen accepterar det
+
+- Den första QR-koden använde C-prefix-formatet (`C{phone};{amount};
+  {message};{lock}`) som dokumenterat är för Swish-företag (merchant
+  Swish) — inte för privata Swish-nummer. Swish-appen kunde inte
+  parsa den korrekt vid skanning.
+- Bytt till URL-formatet `https://app.swish.nu/1/p/sw/?sw=...&amt=...`
+  som är samma format som tap-knappen redan använde. Fungerar med
+  både Swish-appens scanner OCH iOS/Android-kameran (som universal
+  link).
+
 ## 2026-05-04 — /stod: app-ikon i mitten av QR-koden
 
 - QR-koden genererad om med felkorrigeringsnivå H (30% recovery)
