@@ -186,7 +186,7 @@ export function WalkList({ user, onOpenWalk }: Props) {
           <a
             href="/tipspack"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             className="text-green font-semibold hover:underline"
           >
             biblioteket på /tipspack

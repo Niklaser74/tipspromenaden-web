@@ -54,8 +54,12 @@ const description =
       "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
 
     // Extrahera walkId ur path:en. Format: /walk/<walkId>[/...]
-    const m = window.location.pathname.match(/^\/walk\/([^\/?#]+)/);
-    const walkId = m ? decodeURIComponent(m[1]) : null;
+    // Strikt regex som matchar 404.astro — walkId är 96-bit random base64url
+    // (genereras via expo-crypto i appen, ASCII alfanumeriskt + _-).
+    // Avvisa allt annat så att path:en inte kan användas till scheme-injection
+    // när vi senare lägger in värdet i en tipspromenaden://-URL.
+    const m = window.location.pathname.match(/^\/walk\/([a-zA-Z0-9_-]{1,100})\/?$/);
+    const walkId = m ? m[1] : null;
 
     const ua = navigator.userAgent.toLowerCase();
     const isAndroid = /android/.test(ua);

@@ -11,6 +11,19 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-04 — Säkerhetshärdning: headers + striktare walk-länkar
+
+- Lägger till HTTP-säkerhets-headers (CSP, X-Frame-Options, nosniff,
+  Referrer-Policy, Permissions-Policy) via Cloudflare Pages `_headers`.
+  Skyddar mot clickjacking och begränsar vart browsern får ladda
+  scripts, bilder, fonts och nätverksanrop ifrån.
+- Striktare validering av `/walk/<id>`-länkar — accepterar nu bara
+  alfanumeriska id:n, inte godtyckliga path-segment.
+- Pinnar tredjeparts-leaflet-pluginen från unpkg med SRI-hash så en
+  framtida unpkg-kompromiss inte kan injicera kod på `/skapa`.
+- Mindre städ: `.gitignore` täcker nu alla `.env*`-filer; externa
+  länkar har `rel="noopener noreferrer"`.
+
 ## 2026-05-04 — Mobil-fix: startsidan svämmade över i sidled
 
 - Rubriken "Tipspromenaden" var för stor på smala telefonskärmar och

@@ -47,6 +47,10 @@ function loadGoogleMutantPlugin(): Promise<void> {
 
     const script = document.createElement("script");
     script.src = `https://unpkg.com/leaflet.gridlayer.googlemutant@${GOOGLEMUTANT_VERSION}/dist/Leaflet.GoogleMutant.js`;
+    // SRI-pin mot unpkg-version 0.16.0. Om GOOGLEMUTANT_VERSION bumpas
+    // måste hash:en räknas om: openssl dgst -sha384 -binary <fil> | openssl base64 -A
+    script.integrity = "sha384-NVeApJLhFaaKalRqZ2xBNeRECGMKMkF5VMTDJtXWk2g0Tq+5Jo1N7CZjhL3gQSFW";
+    script.crossOrigin = "anonymous";
     script.async = true;
     script.onload = () => resolve();
     script.onerror = (e) => {
