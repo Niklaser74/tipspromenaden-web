@@ -46,6 +46,9 @@ hamnar i din samling i appen så fort du loggar in.
 ### Vad du kan ställa in
 
 - **Bilder per fråga** — ladda upp en bild som visas tillsammans med frågan.
+- **Aktivitetstyp** — välj **🚶 Promenad** eller **🚲 Cykel**. Cykelläge ger
+  bredare GPS-trigger (50 m istället för 15 m), en förvarning vid 100 m
+  så cyklisten hinner stanna, och bredare default-zoom på kartan.
 - **Kategori och stad** — för att andra ska hitta din promenad om du publicerar den.
 - **Event-läge** — sätt start- och slutdatum så får alla en gemensam topplista.
 - **Publicera till bibliotek** — gör promenaden öppen för alla att hitta i appens bibliotek.
@@ -121,6 +124,9 @@ in the app as soon as you sign in.
 ### What you can configure
 
 - **Images per question** — upload an image shown together with the question.
+- **Activity type** — pick **🚶 Walk** or **🚲 Bike**. Bike mode uses a
+  wider GPS trigger (50 m instead of 15 m), an "approaching" warning at
+  100 m so the cyclist has time to slow down, and a wider default map zoom.
 - **Category and city** — so others can find your walk if you publish it.
 - **Event mode** — set start and end dates so everyone shares one common leaderboard.
 - **Publish to library** — make the walk discoverable for everyone in the app's library.
