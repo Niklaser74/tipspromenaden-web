@@ -11,8 +11,19 @@ const description =
 
 <Layout title={title} description={description}>
   <main class="min-h-screen">
+    {/* Tillbaka-länk samma mönster som LegalLayout (sa-funkar-det,
+        villkor, integritet) — högst upp, vänsterställd. */}
+    <div class="max-w-3xl mx-auto px-6 pt-12">
+      <a
+        href="/"
+        class="text-sm text-text-warm hover:text-green-dark inline-block"
+      >
+        ← Tipspromenaden.app
+      </a>
+    </div>
+
     {/* ─── HERO ──────────────────────────────────────────── */}
-    <section class="max-w-3xl mx-auto px-6 pt-20 pb-10 text-center">
+    <section class="max-w-3xl mx-auto px-6 pt-8 pb-10 text-center">
       <p class="text-sm tracking-[0.25em] text-sage uppercase mb-4">
         Stötta projektet
       </p>
@@ -140,13 +151,5 @@ const description =
       </p>
     </section>
 
-    {/* ─── FOOTER ────────────────────────────────────────── */}
-    <footer class="max-w-3xl mx-auto px-6 pb-12 text-center text-sage text-sm">
-      <p class="text-xs">
-        <a href="/" class="text-text-warm hover:text-green-dark hover:underline">
-          ← Till startsidan
-        </a>
-      </p>
-    </footer>
   </main>
 </Layout>
