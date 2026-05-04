@@ -17,10 +17,26 @@
  * per app-bundle.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Coordinate, Question } from "../../lib/types";
+
+/**
+ * Karttyp — speglar appens `MapType` (services/storage.ts) så samma
+ * tre val finns på båda plattformar:
+ * - standard: OpenStreetMap (visar stigar bra)
+ * - hybrid:   Esri World Imagery + reference-overlay (satellit + etiketter)
+ * - terrain:  OpenTopoMap (topografi + stigar + höjdkurvor)
+ */
+type MapType = "standard" | "hybrid" | "terrain";
+const MAP_TYPE_STORAGE_KEY = "tp.mapType";
+const CYCLE_ORDER: MapType[] = ["standard", "hybrid", "terrain"];
+const LABEL: Record<MapType, string> = {
+  standard: "🗺 Karta",
+  hybrid: "🛰 Hybrid",
+  terrain: "⛰ Terräng",
+};
 
 interface Props {
   questions: Question[];
@@ -44,6 +60,70 @@ export function MapEditor({
   const mapRef = useRef<L.Map | null>(null);
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
   const polylineRef = useRef<L.Polyline | null>(null);
+  // Tile-lager (bas + ev. overlay) refas så vi kan ta bort dem vid byte
+  // av karttyp. Hybrid har en ref-overlay (etiketter) ovanpå satelliten.
+  const baseLayerRef = useRef<L.TileLayer | null>(null);
+  const overlayLayerRef = useRef<L.TileLayer | null>(null);
+
+  // Persisterad mellan sessions så användaren inte behöver byta varje gång.
+  const [mapType, setMapType] = useState<MapType>(() => {
+    if (typeof window === "undefined") return "standard";
+    const saved = window.localStorage.getItem(MAP_TYPE_STORAGE_KEY);
+    return CYCLE_ORDER.includes(saved as MapType)
+      ? (saved as MapType)
+      : "standard";
+  });
+
+  function applyMapType(map: L.Map, type: MapType) {
+    if (baseLayerRef.current) {
+      map.removeLayer(baseLayerRef.current);
+      baseLayerRef.current = null;
+    }
+    if (overlayLayerRef.current) {
+      map.removeLayer(overlayLayerRef.current);
+      overlayLayerRef.current = null;
+    }
+
+    if (type === "hybrid") {
+      baseLayerRef.current = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        { attribution: "Tiles &copy; Esri", maxZoom: 19 }
+      ).addTo(map);
+      overlayLayerRef.current = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+        { maxZoom: 19 }
+      ).addTo(map);
+    } else if (type === "terrain") {
+      baseLayerRef.current = L.tileLayer(
+        "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+        {
+          attribution: "Map: &copy; OpenTopoMap (CC-BY-SA)",
+          maxZoom: 17,
+        }
+      ).addTo(map);
+    } else {
+      baseLayerRef.current = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution: "&copy; OpenStreetMap-bidragsgivare",
+          maxZoom: 19,
+        }
+      ).addTo(map);
+    }
+  }
+
+  function cycleMapType() {
+    setMapType((curr) => {
+      const idx = CYCLE_ORDER.indexOf(curr);
+      const next = CYCLE_ORDER[(idx + 1) % CYCLE_ORDER.length];
+      try {
+        window.localStorage.setItem(MAP_TYPE_STORAGE_KEY, next);
+      } catch {
+        // Quota / private mode — strunta i, fungerar för session ändå
+      }
+      return next;
+    });
+  }
 
   // Init kartan en gång
   useEffect(() => {
@@ -55,18 +135,25 @@ export function MapEditor({
       zoomControl: true,
     });
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "&copy; OpenStreetMap-bidragsgivare",
-      maxZoom: 19,
-    }).addTo(map);
+    applyMapType(map, mapType);
 
     mapRef.current = map;
 
     return () => {
       map.remove();
       mapRef.current = null;
+      baseLayerRef.current = null;
+      overlayLayerRef.current = null;
     };
+    // mapType läses bara vid mount — efterföljande byten hanteras av nästa effekt
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Byt tile-lager när mapType ändras (utan att forsa om hela kartan)
+  useEffect(() => {
+    if (!mapRef.current) return;
+    applyMapType(mapRef.current, mapType);
+  }, [mapType]);
 
   // Klick-handler — uppdateras varje render eftersom callbacks kan ändra
   useEffect(() => {
@@ -163,5 +250,19 @@ export function MapEditor({
     }
   }, [questions, selectedQuestionId, onMarkerClick]);
 
-  return <div ref={containerRef} className="absolute inset-0" />;
+  return (
+    <div className="absolute inset-0">
+      <div ref={containerRef} className="absolute inset-0" />
+      {/* Karttyp-toggle — överst till höger ovanpå kartan. z-1000 ligger
+          över Leaflets default-controls. */}
+      <button
+        type="button"
+        onClick={cycleMapType}
+        className="absolute top-3 right-3 z-[1000] bg-white/95 hover:bg-white border border-rule rounded-full px-3 py-1.5 text-sm font-semibold text-green-dark shadow-md cursor-pointer"
+        title="Byt karttyp"
+      >
+        {LABEL[mapType]}
+      </button>
+    </div>
+  );
 }
