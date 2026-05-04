@@ -1,0 +1,152 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const SWISH_NUMBER = "070-520 54 52";
+const SWISH_NUMBER_RAW = "0705205452";
+
+const title = "Stötta projektet — Tipspromenaden";
+const description =
+  "Tipspromenaden drivs som hobbyprojekt. Vill du bidra till att täcka driftkostnader och möjliggöra en iPhone-version? Stötta via Swish.";
+---
+
+<Layout title={title} description={description}>
+  <main class="min-h-screen">
+    {/* ─── HERO ──────────────────────────────────────────── */}
+    <section class="max-w-3xl mx-auto px-6 pt-20 pb-10 text-center">
+      <p class="text-sm tracking-[0.25em] text-sage uppercase mb-4">
+        Stötta projektet
+      </p>
+      <hr class="w-12 border-t border-green mx-auto mb-12" />
+
+      <h1 class="font-serif font-bold text-4xl sm:text-5xl md:text-6xl text-green-dark leading-tight mb-6">
+        Tack om du vill bidra
+      </h1>
+      <p class="font-serif italic text-lg sm:text-xl md:text-2xl text-green">
+        Tipspromenaden är gratis att använda — och kommer förbli det.
+      </p>
+    </section>
+
+    {/* ─── STORY ─────────────────────────────────────────── */}
+    <section class="max-w-2xl mx-auto px-6 pb-12">
+      <div class="space-y-5 text-lg leading-relaxed">
+        <p>
+          Projektet började när Hofors kommun gick igenom en tuff
+          ekonomisk period och jag ville göra något för skol- och
+          fritidsbarnen — en app som lärare kunde bygga upplevelser
+          i och återanvända i undervisningen, ute i naturen istället
+          för i klassrummet.
+        </p>
+        <p>
+          Det blev större och roligare än jag tänkte mig, och idag
+          driver jag det vidare som hobbyprojekt. Det är gratis att
+          använda och kommer förbli det.
+        </p>
+        <p>
+          Just nu har jag förfrågningar från flera iPhone-användare
+          som vill testa appen. För att kunna lansera den även på iOS
+          krävs Apples utvecklarprogram — en löpande årsavgift jag
+          gärna täcker via bidrag istället för egen ficka.
+        </p>
+      </div>
+    </section>
+
+    {/* Hairline */}
+    <hr class="w-24 border-t border-rule mx-auto mb-16" />
+
+    {/* ─── KOSTNADSBREAKDOWN ─────────────────────────────── */}
+    <section class="max-w-2xl mx-auto px-6 pb-16">
+      <h2 class="font-serif text-2xl sm:text-3xl text-center mb-8">
+        Vad pengarna går till
+      </h2>
+      <div class="bg-white border border-rule rounded-2xl overflow-hidden">
+        <div class="flex justify-between px-6 py-4 border-b border-rule">
+          <span>Domän + hosting (Cloudflare)</span>
+          <span class="font-semibold text-text-warm">~120 kr/år</span>
+        </div>
+        <div class="flex justify-between px-6 py-4 border-b border-rule">
+          <span>Firebase (data, auth, lagring)</span>
+          <span class="font-semibold text-text-warm">0 kr (gratis-tier)</span>
+        </div>
+        <div class="flex justify-between px-6 py-4 border-b border-rule">
+          <span>Apple Developer Program <span class="text-sm text-sage">(om iOS)</span></span>
+          <span class="font-semibold text-text-warm">~1 100 kr/år</span>
+        </div>
+        <div class="flex justify-between px-6 py-4 bg-cream font-semibold text-green-dark">
+          <span>Total med iOS</span>
+          <span>~1 220 kr/år</span>
+        </div>
+      </div>
+      <p class="text-sm text-sage mt-4 text-center italic">
+        Transparent: alla bidrag går till driften av projektet, ingen
+        utvecklingstid faktureras.
+      </p>
+    </section>
+
+    {/* ─── SWISH-CTA ─────────────────────────────────────── */}
+    <section class="max-w-3xl mx-auto px-6 pb-20">
+      <div class="bg-green-dark text-cream rounded-3xl p-8 sm:p-12 text-center">
+        <p class="text-sm tracking-[0.25em] uppercase text-cta-body mb-3">
+          Swish
+        </p>
+        <h2 class="font-serif text-cream text-3xl sm:text-4xl mb-2">
+          Stötta via Swish
+        </h2>
+        <p class="text-cta-body text-base mb-8">
+          Förslag: <strong class="text-cream">50 kr</strong> — eller
+          valfritt belopp i Swish-appen.
+        </p>
+
+        {/* QR-kod */}
+        <div class="bg-cream rounded-2xl p-4 inline-block mb-6">
+          <img
+            src="/swish-qr.svg"
+            alt={`Swish QR-kod till ${SWISH_NUMBER}`}
+            width="220"
+            height="220"
+            class="w-44 h-44 sm:w-56 sm:h-56 block"
+          />
+        </div>
+
+        <p class="text-cta-body text-sm mb-2">
+          Skanna med Swish-appen — eller skriv numret manuellt:
+        </p>
+        <p class="font-mono text-cream text-2xl sm:text-3xl font-semibold tracking-wider mb-2">
+          {SWISH_NUMBER}
+        </p>
+        <p class="text-cta-body text-xs mb-8 opacity-80">
+          Meddelande: <em>Tipspromenaden — Bidrag</em>
+        </p>
+
+        <div class="w-14 h-1 bg-yellow mx-auto mb-6"></div>
+
+        <p class="text-cta-body text-sm leading-relaxed max-w-md mx-auto">
+          Tack ❤️ — varje bidrag, oavsett storlek, gör skillnad och
+          räcker långt på en hobby-budget.
+        </p>
+      </div>
+    </section>
+
+    {/* ─── ALTERNATIV ────────────────────────────────────── */}
+    <section class="max-w-2xl mx-auto px-6 pb-20 text-center">
+      <p class="text-sm text-sage italic">
+        Har du inte Swish men vill bidra? Hör av dig på{" "}
+        <a
+          href="mailto:tipspromenaden.app@gmail.com"
+          class="text-green font-semibold hover:underline"
+        >
+          tipspromenaden.app@gmail.com
+        </a>
+        {" "}så löser vi det.
+      </p>
+    </section>
+
+    {/* ─── FOOTER ────────────────────────────────────────── */}
+    <footer class="max-w-3xl mx-auto px-6 pb-12 text-center text-sage text-sm">
+      <p class="text-xs">
+        <a href="/" class="text-text-warm hover:text-green-dark hover:underline">
+          ← Till startsidan
+        </a>
+      </p>
+    </footer>
+  </main>
+</Layout>

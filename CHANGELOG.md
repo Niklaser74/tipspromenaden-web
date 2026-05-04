@@ -11,6 +11,18 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-04 — Ny sida: Stötta projektet (Swish)
+
+- Ny sida `/stod` med Swish-QR och bakgrund till projektet (started
+  som hjälp för Hofors-skolor när kommun-ekonomin var ansträngd, idag
+  hobby-driftet).
+- Transparent kostnadsbreakdown: Cloudflare ~120 kr/år + ev. Apple
+  Developer ~1 100 kr/år för iOS-version.
+- QR-kod genereras vid build-tid med `qrcode`-paketet, inbyggd i grön
+  brand-färg och beige bakgrund. Locked recipient (1) så belopp/
+  meddelande är ändringsbart i Swish-appen.
+- Länk i footer på startsidan.
+
 ## 2026-05-04 — Säkerhetshärdning: headers + striktare walk-länkar
 
 - Lägger till HTTP-säkerhets-headers (CSP, X-Frame-Options, nosniff,
