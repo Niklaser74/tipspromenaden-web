@@ -21,7 +21,7 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.gridlayer.googlemutant";
-import { Loader as GoogleMapsLoader } from "@googlemaps/js-api-loader";
+import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 import type { Coordinate, Question } from "../../lib/types";
 
 /** Maps JavaScript API key — restricted to tipspromenaden.app + localhost
@@ -31,21 +31,25 @@ const GOOGLE_MAPS_API_KEY = "AIzaSyDdi3vZt9H4y97FzmazSciP6CYebQV3cN0";
 
 // Singleton-loader så vi inte kallar Google's script flera gånger om
 // MapEditor remount:as. Loadar lazily — först när användaren faktiskt
-// väljer "standard"-vyn (vilket är default men kan toggla bort innan
-// användaren landar på sidan).
-let googleMapsPromise: Promise<typeof google> | null = null;
-function loadGoogleMaps(): Promise<typeof google> {
+// väljer "standard"-vyn.
+//
+// @googlemaps/js-api-loader v2 tog bort `Loader`-klassen. Nytt API:
+// `setOptions(...)` konfigurerar dynamic loader, sedan `importLibrary(...)`
+// hämtar det vi behöver. Vi laddar "maps"-modulen som populerar
+// `window.google.maps` — vilket googlemutant räknar med.
+let googleMapsPromise: Promise<unknown> | null = null;
+let optionsSet = false;
+function loadGoogleMaps(): Promise<unknown> {
   if (!googleMapsPromise) {
-    googleMapsPromise = new GoogleMapsLoader({
-      apiKey: GOOGLE_MAPS_API_KEY,
-      version: "weekly",
-    })
-      .load()
-      .catch((err) => {
-        // Reset så nästa försök kan retrya (t.ex. efter nätverksfel)
-        googleMapsPromise = null;
-        throw err;
-      });
+    if (!optionsSet) {
+      setOptions({ key: GOOGLE_MAPS_API_KEY, v: "weekly" });
+      optionsSet = true;
+    }
+    googleMapsPromise = importLibrary("maps").catch((err) => {
+      // Reset så nästa försök kan retrya (t.ex. efter nätverksfel)
+      googleMapsPromise = null;
+      throw err;
+    });
   }
   return googleMapsPromise;
 }
