@@ -11,6 +11,15 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-04 — Banner på startsidan: "Har du iPhone? Stöd så släpper vi iOS"
+
+- Synlig banner direkt under hero som riktar sig till iPhone-användare:
+  "Stöd projektet så släpper vi iOS-versionen. Just nu finns appen
+  bara på Android — ett par tusen kronor i bidrag täcker Apple-
+  avgiften och vi kör." Klick → `/stod`.
+- Yellow-accent vänsterkant för att sticka ut utan att konkurrera med
+  primär testpilot-CTA längre ner.
+
 ## 2026-05-04 — /stod: tillbaka-länken till toppen
 
 - Liten konsistensfix: tillbaka-länken på `/stod` flyttad från botten
