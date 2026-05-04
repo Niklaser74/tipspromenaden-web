@@ -11,6 +11,12 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-04 — /stod: tillbaka-länken till toppen
+
+- Liten konsistensfix: tillbaka-länken på `/stod` flyttad från botten
+  till toppen, samma plats som på `/sa-funkar-det`, `/villkor`,
+  `/integritet`.
+
 ## 2026-05-04 — Ny sida: Stötta projektet (Swish)
 
 - Ny sida `/stod` med Swish-QR och bakgrund till projektet (started
