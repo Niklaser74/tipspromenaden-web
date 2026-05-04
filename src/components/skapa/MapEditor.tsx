@@ -20,8 +20,24 @@
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "leaflet.gridlayer.googlemutant";
 import type { Coordinate, Question } from "../../lib/types";
+
+// leaflet.gridlayer.googlemutant förväntar sig att hitta L på window
+// (gör en CommonJS-require internt som inte deduplicerar med vår ES-
+// import). Vi sätter window.L och dynamic-importerar plugin:en på
+// första användning så monkey-patchen sker mot rätt L-instance.
+let googleMutantPluginLoaded: Promise<void> | null = null;
+async function loadGoogleMutantPlugin(): Promise<void> {
+  if (googleMutantPluginLoaded) return googleMutantPluginLoaded;
+  googleMutantPluginLoaded = (async () => {
+    if (typeof window !== "undefined") {
+      (window as any).L = L;
+    }
+    // @ts-ignore — paketet saknar typer, side-effect-import räcker
+    await import("leaflet.gridlayer.googlemutant");
+  })();
+  return googleMutantPluginLoaded;
+}
 
 /** Maps JavaScript API key — restricted to tipspromenaden.app + localhost
  *  i Google Cloud Console. Säker att committa eftersom domänlås gör att
@@ -153,7 +169,7 @@ export function MapEditor({
       ).addTo(map);
       baseLayerRef.current = placeholder;
 
-      loadGoogleMaps()
+      Promise.all([loadGoogleMaps(), loadGoogleMutantPlugin()])
         .then(() => {
           // Race-skydd: användaren kan ha tryckt på toggle:n innan
           // Google laddat. Acceptera bara byte om vi fortfarande är
