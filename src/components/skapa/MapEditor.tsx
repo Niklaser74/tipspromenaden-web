@@ -301,11 +301,14 @@ export function MapEditor({
     }
   }, [questions, selectedQuestionId, onMarkerClick]);
 
+  // Två syskon-element, båda absolute mot samma föräldercontainer
+  // (WalkEditor:s "relative"-div). Att INTE wrappa kart-divet i en
+  // till-div är viktigt — Leaflet behöver kart-divet som direkt-barn
+  // till en sized container för att mäta dimensioner korrekt vid mount.
+  // Wrapper bröt blank-rendering tidigare.
   return (
-    <div className="absolute inset-0">
+    <>
       <div ref={containerRef} className="absolute inset-0" />
-      {/* Karttyp-toggle — överst till höger ovanpå kartan. z-1000 ligger
-          över Leaflets default-controls. */}
       <button
         type="button"
         onClick={cycleMapType}
@@ -314,6 +317,6 @@ export function MapEditor({
       >
         {LABEL[mapType]}
       </button>
-    </div>
+    </>
   );
 }
