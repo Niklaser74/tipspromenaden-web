@@ -11,6 +11,15 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-04 — /stod: tap-to-open Swish på mobil
+
+- QR-koden + ny "📱 Öppna i Swish-appen"-knapp använder Swish:s
+  universal-link-format. På telefon öppnas Swish-appen direkt med
+  belopp och meddelande förifyllda — ingen skanning av egen skärm.
+- Hela QR-kortet är nu klickbart med samma effekt.
+- På desktop landar länken på `app.swish.nu`-sidan som är harmlöst
+  fallback.
+
 ## 2026-05-04 — Banner på startsidan: "Har du iPhone? Stöd så släpper vi iOS"
 
 - Synlig banner direkt under hero som riktar sig till iPhone-användare:

@@ -2,7 +2,14 @@
 import Layout from "../layouts/Layout.astro";
 
 const SWISH_NUMBER = "070-520 54 52";
-const SWISH_NUMBER_RAW = "0705205452";
+const SWISH_NUMBER_RAW = "46705205452"; // E.164-format för Swish-länk
+const SWISH_AMOUNT = "50";
+const SWISH_MESSAGE = "Tipspromenaden -- Bidrag";
+
+// Universal link enligt Swish:s officiella format. Öppnar Swish-appen
+// direkt på iOS/Android med betalning förifylld. På desktop landar man
+// på app.swish.nu som visar ett harmlöst informationssida.
+const SWISH_LINK = `https://app.swish.nu/1/p/sw/?sw=${SWISH_NUMBER_RAW}&amt=${SWISH_AMOUNT}&cur=SEK&msg=${encodeURIComponent(SWISH_MESSAGE)}`;
 
 const title = "Stötta projektet — Tipspromenaden";
 const description =
@@ -107,8 +114,15 @@ const description =
           valfritt belopp i Swish-appen.
         </p>
 
-        {/* QR-kod */}
-        <div class="bg-cream rounded-2xl p-4 inline-block mb-6">
+        {/* QR-kod — också klickbar för universal link (öppnar Swish på
+            telefon, swish.nu landningssida på desktop). På mobilen där
+            man redan tittar på sidan är det enklare att trycka än att
+            försöka skanna sin egen skärm. */}
+        <a
+          href={SWISH_LINK}
+          class="bg-cream rounded-2xl p-4 inline-block mb-4 hover:shadow-lg transition"
+          aria-label="Öppna betalning i Swish-appen"
+        >
           <img
             src="/swish-qr.svg"
             alt={`Swish QR-kod till ${SWISH_NUMBER}`}
@@ -116,10 +130,19 @@ const description =
             height="220"
             class="w-44 h-44 sm:w-56 sm:h-56 block"
           />
-        </div>
+        </a>
+
+        {/* Tydlig tap-knapp för mobil — desktop ser den också men
+            träffar då bara swish.nu landningssida vilket är harmlöst. */}
+        <a
+          href={SWISH_LINK}
+          class="inline-block bg-cream text-green-dark font-semibold text-base sm:text-lg px-6 py-3 rounded-xl hover:bg-white transition mb-6"
+        >
+          📱 Öppna i Swish-appen
+        </a>
 
         <p class="text-cta-body text-sm mb-2">
-          Skanna med Swish-appen — eller skriv numret manuellt:
+          Eller skanna QR-koden ovan — eller skriv numret manuellt:
         </p>
         <p class="font-mono text-cream text-2xl sm:text-3xl font-semibold tracking-wider mb-2">
           {SWISH_NUMBER}
