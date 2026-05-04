@@ -30,6 +30,24 @@ import { MapEditor } from "./MapEditor";
 import { QuestionForm } from "./QuestionForm";
 import { ShareDialog } from "./ShareDialog";
 import { ReuseRouteDialog } from "./ReuseRouteDialog";
+import { Flag } from "../Flag";
+
+/**
+ * Språkalternativ för walks. Måste matcha appens
+ * `src/constants/languages.ts` så samma flagg-emoji + autonym visas
+ * på båda plattformar. Native HTML <select> kan inte rendera bilder
+ * så vi bygger en custom flagg-grid istället för dropdown.
+ */
+const LANGUAGE_OPTIONS: { code: string; label: string }[] = [
+  { code: "sv", label: "Svenska" },
+  { code: "en", label: "English" },
+  { code: "de", label: "Deutsch" },
+  { code: "no", label: "Norsk" },
+  { code: "da", label: "Dansk" },
+  { code: "fi", label: "Suomi" },
+  { code: "fr", label: "Français" },
+  { code: "es", label: "Español" },
+];
 
 interface Props {
   walkId: string;
@@ -328,20 +346,32 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
             <label className="block text-xs uppercase tracking-wide text-text-warm mt-4 mb-2">
               Språk
             </label>
-            <select
-              value={walk.language ?? "sv"}
-              onChange={(e) => update({ language: e.target.value })}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-green-dark focus:outline-none"
-            >
-              <option value="sv">🇸🇪 Svenska</option>
-              <option value="en">🇬🇧 English</option>
-              <option value="de">🇩🇪 Deutsch</option>
-              <option value="no">🇳🇴 Norsk</option>
-              <option value="da">🇩🇰 Dansk</option>
-              <option value="fi">🇫🇮 Suomi</option>
-              <option value="fr">🇫🇷 Français</option>
-              <option value="es">🇪🇸 Español</option>
-            </select>
+            {/* Custom flagg-grid istället för <select>: native HTML
+                option-element kan inte rendera bilder, och Windows
+                har inga emoji-fonter för regional indicator-flaggor —
+                så "🇸🇪" blir bokstäverna "SE" där. PNG-bilder via
+                <Flag> funkar konsekvent på alla plattformar. */}
+            <div className="flex flex-wrap gap-2">
+              {LANGUAGE_OPTIONS.map((lang) => {
+                const active = (walk.language ?? "sv") === lang.code;
+                return (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    onClick={() => update({ language: lang.code })}
+                    className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border text-xs transition ${
+                      active
+                        ? "bg-green-dark text-cream border-green-dark"
+                        : "bg-white text-text-warm border-rule hover:border-green-dark"
+                    }`}
+                    title={lang.label}
+                  >
+                    <Flag code={lang.code} height={14} />
+                    <span>{lang.label}</span>
+                  </button>
+                );
+              })}
+            </div>
 
             {/* Publicera till bibliotek */}
             <label className="flex items-start gap-2 mt-5 cursor-pointer">
