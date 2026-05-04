@@ -21,7 +21,6 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.gridlayer.googlemutant";
-import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 import type { Coordinate, Question } from "../../lib/types";
 
 /** Maps JavaScript API key — restricted to tipspromenaden.app + localhost
@@ -30,27 +29,36 @@ import type { Coordinate, Question } from "../../lib/types";
 const GOOGLE_MAPS_API_KEY = "AIzaSyDdi3vZt9H4y97FzmazSciP6CYebQV3cN0";
 
 // Singleton-loader så vi inte kallar Google's script flera gånger om
-// MapEditor remount:as. Loadar lazily — först när användaren faktiskt
-// väljer "standard"-vyn.
+// MapEditor remount:as.
 //
-// @googlemaps/js-api-loader v2 tog bort `Loader`-klassen. Nytt API:
-// `setOptions(...)` konfigurerar dynamic loader, sedan `importLibrary(...)`
-// hämtar det vi behöver. Vi laddar "maps"-modulen som populerar
-// `window.google.maps` — vilket googlemutant räknar med.
-let googleMapsPromise: Promise<unknown> | null = null;
-let optionsSet = false;
-function loadGoogleMaps(): Promise<unknown> {
-  if (!googleMapsPromise) {
-    if (!optionsSet) {
-      setOptions({ key: GOOGLE_MAPS_API_KEY, v: "weekly" });
-      optionsSet = true;
-    }
-    googleMapsPromise = importLibrary("maps").catch((err) => {
-      // Reset så nästa försök kan retrya (t.ex. efter nätverksfel)
-      googleMapsPromise = null;
-      throw err;
-    });
+// Vi injicerar Maps API-scripten direkt istället för att använda
+// @googlemaps/js-api-loader — v2 av paketet tog bort Loader-klassen
+// och dess nya importLibrary("maps") populerar inte window.google.maps
+// på det sätt som leaflet.gridlayer.googlemutant räknar med. Direkt
+// scriptinjection är hur Google själva rekommenderar och ger oss
+// ett komplett window.google.maps-namespace direkt.
+let googleMapsPromise: Promise<void> | null = null;
+function loadGoogleMaps(): Promise<void> {
+  if (
+    typeof window !== "undefined" &&
+    (window as any).google?.maps?.Map
+  ) {
+    return Promise.resolve();
   }
+  if (googleMapsPromise) return googleMapsPromise;
+
+  googleMapsPromise = new Promise<void>((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&v=weekly&loading=async`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => resolve();
+    script.onerror = (e) => {
+      googleMapsPromise = null; // tillåt retry
+      reject(e);
+    };
+    document.head.appendChild(script);
+  });
   return googleMapsPromise;
 }
 
