@@ -22,20 +22,39 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Coordinate, Question } from "../../lib/types";
 
-// leaflet.gridlayer.googlemutant förväntar sig att hitta L på window
-// (gör en CommonJS-require internt som inte deduplicerar med vår ES-
-// import). Vi sätter window.L och dynamic-importerar plugin:en på
-// första användning så monkey-patchen sker mot rätt L-instance.
+// leaflet.gridlayer.googlemutant är en gammal IIFE-plugin som förlitar
+// sig på ett globalt `L` när den evaluerar. Med Vite/Rollup-bundling
+// hittar dess inbäddade `L`-referens inte vår ES-importerade L —
+// resultatet: monkey-patchen sker på en annan L-instance och vår
+// `L.gridLayer.googleMutant` är `undefined` ("is not a constructor").
+//
+// Lösning: hoppa över bundlern. Sätt `window.L` till vår L först,
+// injicera sedan plugin:en som <script>-tagg från unpkg. Plugin:en
+// evaluerar i en fresh global scope där `L === window.L === vår L`
+// och monkey-patchar rätt instans.
+const GOOGLEMUTANT_VERSION = "0.16.0";
 let googleMutantPluginLoaded: Promise<void> | null = null;
-async function loadGoogleMutantPlugin(): Promise<void> {
+function loadGoogleMutantPlugin(): Promise<void> {
+  if ((L as any).gridLayer?.googleMutant) return Promise.resolve();
   if (googleMutantPluginLoaded) return googleMutantPluginLoaded;
-  googleMutantPluginLoaded = (async () => {
-    if (typeof window !== "undefined") {
-      (window as any).L = L;
+
+  googleMutantPluginLoaded = new Promise<void>((resolve, reject) => {
+    if (typeof window === "undefined") {
+      resolve();
+      return;
     }
-    // @ts-ignore — paketet saknar typer, side-effect-import räcker
-    await import("leaflet.gridlayer.googlemutant");
-  })();
+    (window as any).L = L; // måste vara satt INNAN script:et evaluerar
+
+    const script = document.createElement("script");
+    script.src = `https://unpkg.com/leaflet.gridlayer.googlemutant@${GOOGLEMUTANT_VERSION}/dist/Leaflet.GoogleMutant.js`;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = (e) => {
+      googleMutantPluginLoaded = null;
+      reject(e);
+    };
+    document.head.appendChild(script);
+  });
   return googleMutantPluginLoaded;
 }
 
