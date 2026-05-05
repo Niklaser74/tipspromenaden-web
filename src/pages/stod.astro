@@ -122,37 +122,44 @@ const description =
             QR är genererad med felkorrigeringsnivå H (30%), vilket
             innebär att en ikon i mitten som täcker ~20% av ytan kan
             maskeras utan att skanningen påverkas. Cream-färgad ring
-            runt ikonen blender mot QR-bakgrunden. */}
-        <a
-          href={SWISH_LINK}
-          class="bg-cream rounded-2xl p-4 inline-block mb-4 hover:shadow-lg transition relative"
-          aria-label="Öppna betalning i Swish-appen"
-        >
-          <img
-            src="/swish-qr.svg"
-            alt={`Swish QR-kod till ${SWISH_NUMBER}`}
-            width="220"
-            height="220"
-            class="w-44 h-44 sm:w-56 sm:h-56 block"
-          />
-          <img
-            src="/icon.png"
-            alt=""
-            aria-hidden="true"
-            width="64"
-            height="64"
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 sm:w-14 sm:h-14 rounded-xl ring-4 ring-cream"
-          />
-        </a>
+            runt ikonen blender mot QR-bakgrunden.
 
-        {/* Tydlig tap-knapp för mobil — desktop ser den också men
-            träffar då bara swish.nu landningssida vilket är harmlöst. */}
-        <a
-          href={SWISH_LINK}
-          class="inline-block bg-cream text-green-dark font-semibold text-base sm:text-lg px-6 py-3 rounded-xl hover:bg-white transition mb-6"
-        >
-          📱 Öppna i Swish-appen
-        </a>
+            Använder explicit flex-column för att tvinga QR och knapp
+            att stacka vertikalt — text-center på parent räcker inte
+            eftersom inline-block-element kan hamna sida vid sida om
+            viewporten råkar vara bredare än de tillsammans. */}
+        <div class="flex flex-col items-center gap-4 mb-6">
+          <a
+            href={SWISH_LINK}
+            class="bg-cream rounded-2xl p-4 hover:shadow-lg transition relative"
+            aria-label="Öppna betalning i Swish-appen"
+          >
+            <img
+              src="/swish-qr.svg"
+              alt={`Swish QR-kod till ${SWISH_NUMBER}`}
+              width="220"
+              height="220"
+              class="w-48 h-48 sm:w-56 sm:h-56 block"
+            />
+            <img
+              src="/icon.png"
+              alt=""
+              aria-hidden="true"
+              width="48"
+              height="48"
+              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 sm:w-12 sm:h-12 rounded-xl ring-4 ring-cream"
+            />
+          </a>
+
+          {/* Tydlig tap-knapp för mobil — desktop ser den också men
+              träffar då bara swish.nu landningssida vilket är harmlöst. */}
+          <a
+            href={SWISH_LINK}
+            class="inline-block bg-cream text-green-dark font-semibold text-base sm:text-lg px-6 py-3 rounded-xl hover:bg-white transition"
+          >
+            📱 Öppna i Swish-appen
+          </a>
+        </div>
 
         <p class="text-cta-body text-sm mb-2">
           Eller skanna QR-koden ovan — eller skriv numret manuellt:

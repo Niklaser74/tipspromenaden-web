@@ -11,6 +11,15 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-04 — /stod: fixa layout så QR och knapp stackar
+
+- Layout-fix: QR-kortet och "Öppna i Swish-appen"-knappen hamnade
+  sida vid sida på vissa viewporter (text-center + inline-block tog
+  bara ny rad om de inte fick plats). Bytt till `flex flex-col
+  items-center` så de garanterat stackar vertikalt.
+- Krympte ikonen i mitten av QR-koden från ~25% till ~20% av QR-ytan
+  för säkrare skanning.
+
 ## 2026-05-04 — /stod: fixa QR-format så Swish-appen accepterar det
 
 - Den första QR-koden använde C-prefix-formatet (`C{phone};{amount};
