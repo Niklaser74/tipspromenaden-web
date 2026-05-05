@@ -11,9 +11,14 @@ const SWISH_MESSAGE = "Tipspromenaden -- Bidrag";
 // på app.swish.nu som visar ett harmlöst informationssida.
 const SWISH_LINK = `https://app.swish.nu/1/p/sw/?sw=${SWISH_NUMBER_RAW}&amt=${SWISH_AMOUNT}&cur=SEK&msg=${encodeURIComponent(SWISH_MESSAGE)}`;
 
+// PayPal.me-länk för utländska bidrag (Swish funkar bara i Sverige).
+// Donatorn kan välja valuta och belopp på PayPal:s sida.
+const PAYPAL_HANDLE = "niklaser3d";
+const PAYPAL_LINK = `https://paypal.me/${PAYPAL_HANDLE}`;
+
 const title = "Stötta projektet — Tipspromenaden";
 const description =
-  "Tipspromenaden drivs som hobbyprojekt. Vill du bidra till att täcka driftkostnader och möjliggöra en iPhone-version? Stötta via Swish.";
+  "Tipspromenaden drivs som hobbyprojekt. Vill du bidra till att täcka driftkostnader och möjliggöra en iPhone-version? Stötta via Swish (Sverige) eller PayPal (internationellt).";
 ---
 
 <Layout title={title} description={description}>
@@ -180,10 +185,74 @@ const description =
       </div>
     </section>
 
-    {/* ─── ALTERNATIV ────────────────────────────────────── */}
+    {/* ─── PAYPAL-CTA (internationellt) ──────────────────
+        Mindre framträdande än Swish-blocket eftersom svensk publik är
+        primär målgrupp. Vit bakgrund med grön border istället för
+        green-dark — visuellt sekundärt utan att gömma sig.
+        Samma flex-column-mönster som Swish-blocket så QR + knapp
+        stackar konsistent. */}
+    <section class="max-w-3xl mx-auto px-6 pb-12">
+      <div class="bg-white border-2 border-green-dark rounded-3xl p-8 sm:p-12 text-center">
+        <p class="text-sm tracking-[0.25em] uppercase text-sage mb-3">
+          🌍 Internationellt
+        </p>
+        <h2 class="font-serif text-green-dark text-2xl sm:text-3xl mb-2">
+          Stötta från utlandet via PayPal
+        </h2>
+        <p class="text-text-warm text-base mb-8">
+          Swish funkar bara i Sverige — utländska supportrar kan
+          använda PayPal istället. Du väljer valuta och belopp.
+        </p>
+
+        <div class="flex flex-col items-center gap-4 mb-6">
+          <a
+            href={PAYPAL_LINK}
+            class="bg-cream rounded-2xl p-4 hover:shadow-lg transition relative"
+            aria-label="Öppna PayPal-länken"
+          >
+            <img
+              src="/paypal-qr.svg"
+              alt={`PayPal QR-kod till ${PAYPAL_HANDLE}`}
+              width="220"
+              height="220"
+              class="w-48 h-48 sm:w-56 sm:h-56 block"
+            />
+            <img
+              src="/icon.png"
+              alt=""
+              aria-hidden="true"
+              width="48"
+              height="48"
+              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 sm:w-12 sm:h-12 rounded-xl ring-4 ring-cream"
+            />
+          </a>
+
+          <a
+            href={PAYPAL_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block bg-green-dark text-cream font-semibold text-base sm:text-lg px-6 py-3 rounded-xl hover:bg-green transition"
+          >
+            🌍 Öppna PayPal-länken
+          </a>
+        </div>
+
+        <p class="text-text-warm text-sm mb-2">
+          Eller skriv adressen direkt:
+        </p>
+        <p class="font-mono text-green-dark text-lg sm:text-xl font-semibold mb-2 break-all">
+          paypal.me/{PAYPAL_HANDLE}
+        </p>
+        <p class="text-sage text-xs opacity-80">
+          PayPal-konto behövs inte — gäst-betalning med kort fungerar.
+        </p>
+      </div>
+    </section>
+
+    {/* ─── ALTERNATIV (sista utvägen) ───────────────────── */}
     <section class="max-w-2xl mx-auto px-6 pb-20 text-center">
       <p class="text-sm text-sage italic">
-        Har du inte Swish men vill bidra? Hör av dig på{" "}
+        Annan väg du föredrar? Hör av dig på{" "}
         <a
           href="mailto:tipspromenaden.app@gmail.com"
           class="text-green font-semibold hover:underline"

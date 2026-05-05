@@ -11,6 +11,17 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — /stod: PayPal-sektion för utländska bidrag
+
+- Ny PayPal-sektion under Swish-blocket på `/stod` så icke-svenska
+  supportrar kan bidra (Swish funkar bara i Sverige). Donatorn kan
+  använda PayPal-konto eller gäst-betala med kort.
+- Egen QR-kod genererad i samma gröna palett som Swish-koden för
+  visuell konsistens (PayPals egen blå hade krockat med brand-färgen).
+  Tap-knapp som öppnar `paypal.me/niklaser3d` direkt.
+- Visuellt sekundärt jämfört med Swish (vit bakgrund med grön border
+  istället för green-dark fill) — svensk publik är primär målgrupp.
+
 ## 2026-05-05 — Admin: datum på walks och tipspacks
 
 - Walks-flikens kort visar nu "Skapad YYYY-MM-DD" och "senast utförd
