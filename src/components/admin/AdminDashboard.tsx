@@ -49,6 +49,7 @@ import type { Walk } from "../../lib/types";
 import { Flag } from "../Flag";
 import WalkMiniMap from "./WalkMiniMap";
 import BatchUploadDropZone from "./BatchUploadDropZone";
+import TipspackEditor from "./TipspackEditor";
 
 type Tab = "overview" | "walks" | "tipspacks" | "sessions";
 
@@ -163,6 +164,16 @@ function AdminContent({ user }: { user: User }) {
     tipspacks: new Set(),
   });
   const [error, setError] = useState<string | null>(null);
+  const [editorState, setEditorState] = useState<
+    | { mode: "create" }
+    | { mode: "edit"; pack: TipspackMeta }
+    | null
+  >(null);
+
+  async function refreshPacks() {
+    const fresh = await getAllTipspacks();
+    setPacks(fresh);
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -306,19 +317,35 @@ function AdminContent({ user }: { user: User }) {
 
       {tab === "tipspacks" && (
         <>
-          <BatchUploadDropZone
-            user={user}
-            onUploaded={async () => {
-              const refreshed = await getAllTipspacks();
-              setPacks(refreshed);
-            }}
-          />
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-serif text-xl text-green-dark">Tipspacks</h2>
+            <button
+              onClick={() => setEditorState({ mode: "create" })}
+              className="bg-green-dark text-cream px-4 py-1.5 rounded-full text-sm font-semibold shadow"
+            >
+              ➕ Skapa nytt
+            </button>
+          </div>
+          <BatchUploadDropZone user={user} onUploaded={refreshPacks} />
           <TipspacksList
             uploaded={packs}
             curated={curated ?? []}
             flags={flags}
+            currentUid={user.uid}
             onToggleHidden={toggleTipspackHidden}
+            onEdit={(pack) => setEditorState({ mode: "edit", pack })}
           />
+          {editorState && (
+            <TipspackEditor
+              mode={editorState.mode}
+              user={user}
+              initialPack={
+                editorState.mode === "edit" ? editorState.pack : undefined
+              }
+              onClose={() => setEditorState(null)}
+              onSaved={refreshPacks}
+            />
+          )}
         </>
       )}
 
@@ -557,12 +584,16 @@ function TipspacksList({
   uploaded,
   curated,
   flags,
+  currentUid,
   onToggleHidden,
+  onEdit,
 }: {
   uploaded: TipspackMeta[];
   curated: CuratedPack[];
   flags: ModerationFlags;
+  currentUid: string;
   onToggleHidden: (slug: string) => void;
+  onEdit: (pack: TipspackMeta) => void;
 }) {
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -578,11 +609,18 @@ function TipspacksList({
     source: "curated" | "uploaded";
     isPublic?: boolean;
     ownerName?: string;
+    ownerUid?: string;
+    /** Original-pack:n så vi kan skicka in den till editor:n. */
+    raw?: TipspackMeta;
   };
 
   const combined: Combined[] = [
     ...curated.map((c) => ({ ...c, source: "curated" as const })),
-    ...uploaded.map((u) => ({ ...u, source: "uploaded" as const })),
+    ...uploaded.map((u) => ({
+      ...u,
+      source: "uploaded" as const,
+      raw: u,
+    })),
   ];
 
   const filtered = combined.filter((p) =>
@@ -678,6 +716,16 @@ function TipspacksList({
                   >
                     {isExpanded ? "Dölj" : "Inspektera"}
                   </button>
+                  {p.source === "uploaded" &&
+                    p.ownerUid === currentUid &&
+                    p.raw && (
+                      <button
+                        onClick={() => onEdit(p.raw!)}
+                        className="text-xs border border-green-dark text-green-dark px-3 py-1 rounded-full hover:bg-green-dark/5"
+                      >
+                        📝 Redigera
+                      </button>
+                    )}
                   <button
                     onClick={() => onToggleHidden(p.slug)}
                     className={`text-xs px-3 py-1 rounded-full ${

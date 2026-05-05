@@ -11,6 +11,18 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Admin: skapa/redigera tipspack-modal
+
+- Ny `➕ Skapa nytt`-knapp överst på admin Tipspacks-fliken som
+  öppnar editor-modal med tomma fält och auto-genererad slug.
+- Ny `📝 Redigera`-knapp på tipspack-kort som ägs av admin (uploaded
+  + ownerUid match). Laddar JSON från Storage, fyller formuläret,
+  spara skriver tillbaka Firestore-meta + ny Storage-fil och bevarar
+  `createdAt` + `ownerUid`.
+- Editor: titel/beskrivning/författare/språk/synlighet, full frågelista
+  med radio för rätt svar, +/- alternativ (2–10), flytta upp/ner och ta
+  bort frågor. Validering via `validateBattery` innan save.
+
 ## 2026-05-05 — Admin: batch-uppladdning av tipspacks
 
 - Ny drop-zone överst på Tipspacks-fliken i `/admin`. Släpp eller välj
