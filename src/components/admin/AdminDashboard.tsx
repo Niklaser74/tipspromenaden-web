@@ -40,7 +40,7 @@ import {
   type ModerationFlags,
 } from "../../lib/admin";
 import {
-  getPublicTipspacks,
+  getAllTipspacks,
   getDownloadUrl,
   type TipspackMeta,
 } from "../../lib/tipspackLibrary";
@@ -48,6 +48,7 @@ import { getCuratedTipspacks } from "../../lib/curatedTipspacks";
 import type { Walk } from "../../lib/types";
 import { Flag } from "../Flag";
 import WalkMiniMap from "./WalkMiniMap";
+import BatchUploadDropZone from "./BatchUploadDropZone";
 
 type Tab = "overview" | "walks" | "tipspacks" | "sessions";
 
@@ -172,7 +173,7 @@ function AdminContent({ user }: { user: User }) {
             // Hämta ALLA walks (inte bara public). Admin-rättigheter behövs
             // inte för read i Firestore-rules, så denna går igenom.
             getDocs(collection(db, "walks")),
-            getPublicTipspacks(),
+            getAllTipspacks(),
             getDocs(collection(db, "sessions")),
             getModerationFlags(),
           ]);
@@ -304,12 +305,21 @@ function AdminContent({ user }: { user: User }) {
       )}
 
       {tab === "tipspacks" && (
-        <TipspacksList
-          uploaded={packs}
-          curated={curated ?? []}
-          flags={flags}
-          onToggleHidden={toggleTipspackHidden}
-        />
+        <>
+          <BatchUploadDropZone
+            user={user}
+            onUploaded={async () => {
+              const refreshed = await getAllTipspacks();
+              setPacks(refreshed);
+            }}
+          />
+          <TipspacksList
+            uploaded={packs}
+            curated={curated ?? []}
+            flags={flags}
+            onToggleHidden={toggleTipspackHidden}
+          />
+        </>
       )}
 
       {tab === "sessions" && (

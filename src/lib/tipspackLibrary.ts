@@ -93,6 +93,17 @@ export async function getPublicTipspacks(): Promise<TipspackMeta[]> {
   return list;
 }
 
+/**
+ * Admin-helper: hämtar ALLA tipspacks oavsett isPublic-flagga. Bör inte
+ * användas i publika listor — där vill vi behålla isPublic-filtret.
+ */
+export async function getAllTipspacks(): Promise<TipspackMeta[]> {
+  const snap = await getDocs(collection(db, TIPSPACKS));
+  const list = snap.docs.map((d) => d.data() as TipspackMeta);
+  list.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
+  return list;
+}
+
 /** Hämtar alla tipspacks ägda av en specifik uid. */
 export async function getMyTipspacks(uid: string): Promise<TipspackMeta[]> {
   const q = query(collection(db, TIPSPACKS), where("ownerUid", "==", uid));

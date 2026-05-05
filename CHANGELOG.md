@@ -11,6 +11,19 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Admin: batch-uppladdning av tipspacks
+
+- Ny drop-zone överst på Tipspacks-fliken i `/admin`. Släpp eller välj
+  flera `.tipspack`-filer på en gång — varje fil parse:as, valideras,
+  slug genereras från filnamnet, och uppladdningen körs sekvensiellt
+  med per-fil-status (väntar / laddar upp / klar / hoppad / fel).
+- Default-synlighet är hemlig länk; checkbox för att direkt göra dem
+  publika. Slug-konflikter hoppas över med tooltip — admin döper om
+  filen och försöker igen.
+- Tipspacks-listan i admin hämtar nu via `getAllTipspacks()` som
+  returnerar både publika och hemliga (admin behöver se hemliga för
+  att kunna toggla synlighet).
+
 ## 2026-05-05 — Admin: granska-knapp på walk-kartan
 
 - 🔍 Granska-knapp i hörnet på walk-mini-kartan slår på drag/zoom när
