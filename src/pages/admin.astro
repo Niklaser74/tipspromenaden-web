@@ -1,0 +1,28 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AdminDashboard from "../components/admin/AdminDashboard.tsx";
+---
+
+<Layout
+  title="Admin — Tipspromenaden"
+  description="Moderationsdashboard för Tipspromenaden — bara admin-användare har åtkomst."
+>
+  <main class="min-h-screen bg-cream">
+    <div class="max-w-6xl mx-auto px-6 py-8">
+      <header class="mb-8">
+        <a
+          href="/"
+          class="text-sm text-text-warm hover:text-green-dark mb-4 inline-block"
+        >
+          ← Tipspromenaden.app
+        </a>
+        <h1 class="font-serif text-3xl text-green-dark">Admin</h1>
+        <p class="text-sm text-text-warm mt-1">
+          Översikt, statistik och innehållsmoderation. Endast admin-UID:n.
+        </p>
+      </header>
+
+      <AdminDashboard client:only="react" />
+    </div>
+  </main>
+</Layout>

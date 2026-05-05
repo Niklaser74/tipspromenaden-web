@@ -82,9 +82,13 @@ function storagePath(slug: string): string {
  * Sortering klient-side på createdAt desc — undviker att kräva composite index.
  */
 export async function getPublicTipspacks(): Promise<TipspackMeta[]> {
-  const q = query(collection(db, TIPSPACKS), where("isPublic", "==", true));
-  const snap = await getDocs(q);
-  const list = snap.docs.map((d) => d.data() as TipspackMeta);
+  const [snap, flags] = await Promise.all([
+    getDocs(query(collection(db, TIPSPACKS), where("isPublic", "==", true))),
+    import("./admin").then((m) => m.getModerationFlags()),
+  ]);
+  const list = snap.docs
+    .map((d) => d.data() as TipspackMeta)
+    .filter((p) => !flags.tipspacks.has(p.slug));
   list.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
   return list;
 }

@@ -11,6 +11,19 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Ny /admin-sida för moderation + statistik
+
+- Ny sida `/admin` med moderationsdashboard. Login-gated mot
+  Firebase Auth + en hardcoded `ADMIN_UIDS`-lista (i
+  `src/lib/admin.ts`). Icke-admin får se sin UID för bootstrap.
+- Tabs: Översikt (counts + topp-walks efter sessioner), Walks
+  (alla med expanderbar fråge-/facit-vy + flag-knapp), Tipspacks
+  (curated + uppladdade, expanderbara, flag-knapp), Sessioner
+  (50 senaste).
+- Moderation-flaggor lever i `moderation/hidden`-doc i Firestore;
+  publika listor (`getPublicTipspacks`, app:s `getPublicWalks` /
+  `getLibraryTipspacks`) filtrerar bort flaggade items klient-side.
+
 ## 2026-05-05 — Fixa /tipspack: knappar fungerar igen
 
 - Buggfix: "Kopiera länk" och "Förhandsgranska frågor"-knapparna på
