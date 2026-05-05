@@ -11,6 +11,17 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Fixa CSP: tillåt apis.google.com för Firebase Auth-popup
+
+- Buggfix: Logga in med Google på `/skapa` och `/admin` failade på
+  desktop med `auth/internal-error` eftersom CSP:n blockade
+  `apis.google.com/js/api.js` (signInWithPopup laddar den i en iframe).
+  Vår CSP tillät `*.googleapis.com` men `apis.google.com` är en
+  separat host. Telefonen funkade fortfarande eftersom mobil-Firebase
+  väljer en annan kodväg som inte beror på det scriptet.
+- Lagt till `https://apis.google.com` i script-src och connect-src,
+  och `https://accounts.google.com` i frame-src för OAuth-popup:en.
+
 ## 2026-05-05 — Tillfälligt: stäng av App Check på web
 
 - Adblockers/browser-tillägg på desktop kan blockera reCAPTCHA
