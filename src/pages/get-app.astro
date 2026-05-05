@@ -1,0 +1,131 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// /get-app — smart redirect baserat på OS.
+//
+// Används av flygblads-QR-koden ("Bli testare"-QR) så ETT QR-id räcker
+// för båda operativsystem:
+//   - Android → testpilot-Google-Group (där appen distribueras)
+//   - iOS    → /stod (eller /en/support) eftersom det inte finns någon
+//             iOS-app att testa ännu — be om bidrag istället
+//   - Desktop → visa båda alternativen + brand-länk till sidan
+//
+// Astro renderar statiskt, så all detektering sker client-side med
+// navigator.userAgent + navigator.language. Robust nog för det här
+// use-caset (vi behöver bara grov OS-info).
+
+const title = "Tipspromenaden — för dig";
+const description =
+  "Vi skickar dig vidare till rätt sida beroende på din enhet.";
+---
+
+<Layout title={title} description={description}>
+  <main class="min-h-screen flex flex-col items-center justify-center px-6 text-center">
+    <img
+      src="/icon.png"
+      alt=""
+      width="96"
+      height="96"
+      class="w-24 h-24 rounded-2xl mb-8"
+    />
+
+    <h1 id="heading" class="font-serif text-4xl md:text-5xl text-green-dark mb-4">
+      Skickar dig vidare…
+    </h1>
+
+    <p id="status" class="text-lg max-w-md mb-4 leading-relaxed">
+      Detekterar enhet…
+    </p>
+
+    <p id="status-en" class="text-base max-w-md mb-10 leading-relaxed text-text-warm italic">
+      Detecting device…
+    </p>
+
+    {/* Manuell fallback — visas på desktop direkt, eller om JS misslyckas */}
+    <div id="manual-choices" class="hidden flex flex-col sm:flex-row gap-3 max-w-md w-full">
+      <a
+        id="link-android"
+        href="https://groups.google.com/g/tipspromenaden-testers"
+        class="flex-1 bg-green-dark text-cream px-5 py-3 rounded-xl font-semibold hover:opacity-90"
+      >
+        🤖 Android — bli testare
+      </a>
+      <a
+        id="link-ios"
+        href="/stod"
+        class="flex-1 bg-white border-2 border-green-dark text-green-dark px-5 py-3 rounded-xl font-semibold hover:bg-green-dark/5"
+      >
+        📱 iPhone — stötta projektet
+      </a>
+    </div>
+
+    <a
+      href="/"
+      class="mt-12 text-green font-semibold hover:underline text-sm"
+    >
+      ← tipspromenaden.app
+    </a>
+  </main>
+
+  <script>
+    const TESTERS = "https://groups.google.com/g/tipspromenaden-testers";
+    const SUPPORT_SV = "/stod";
+    const SUPPORT_EN = "/en/support";
+
+    const ua = navigator.userAgent.toLowerCase();
+    const isAndroid = /android/.test(ua);
+    const isIos = /iphone|ipad|ipod/.test(ua);
+    const lang = (navigator.language || "sv").toLowerCase();
+    const wantsEnglish = lang.startsWith("en");
+
+    const heading = document.getElementById("heading");
+    const status = document.getElementById("status");
+    const statusEn = document.getElementById("status-en");
+    const manualChoices = document.getElementById("manual-choices");
+    const linkIos = document.getElementById("link-ios") as HTMLAnchorElement | null;
+
+    function setText(el: HTMLElement | null, txt: string) {
+      if (el) el.textContent = txt;
+    }
+
+    if (linkIos) {
+      linkIos.href = wantsEnglish ? SUPPORT_EN : SUPPORT_SV;
+    }
+
+    if (isAndroid) {
+      setText(
+        status,
+        "Öppnar testpilot-gruppen där appen distribueras…"
+      );
+      setText(
+        statusEn,
+        "Opening the tester group where the app is distributed…"
+      );
+      window.location.href = TESTERS;
+    } else if (isIos) {
+      setText(
+        status,
+        "iOS-versionen finns inte än. Vill du hjälpa till att finansiera den?"
+      );
+      setText(
+        statusEn,
+        "The iOS version isn't out yet. Would you like to help fund it?"
+      );
+      window.location.href = wantsEnglish ? SUPPORT_EN : SUPPORT_SV;
+    } else {
+      // Desktop / okänd — visa manuella val
+      if (heading) heading.textContent = wantsEnglish
+        ? "Pick your device"
+        : "Välj din enhet";
+      setText(
+        status,
+        "Vi vet inte vilken enhet du har — välj nedan."
+      );
+      setText(
+        statusEn,
+        "We can't tell which device you have — pick below."
+      );
+      if (manualChoices) manualChoices.classList.remove("hidden");
+    }
+  </script>
+</Layout>

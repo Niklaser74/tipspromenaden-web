@@ -11,6 +11,22 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Admin: A5-flygblad-generator + smart get-app-redirect
+
+- Ny "📄 Flygblad"-knapp på varje walk i `/admin`. Öppnar modal med
+  printbart A5-flygblad i Friluft Folio-stil (matchar Hammardammen-
+  mallen från docs/marketing/): cream bakgrund, Lora-rubriker,
+  Instrument Sans eyebrow, två QR-kort med vit ram. Print-CSS satt
+  så browserns Skriv ut → Spara som PDF ger pixel-perfekt A5-output.
+- Språkväljare i modalen: SV / EN. Default-språk följer walken.
+- Walk-titel blir flygbladets headline; antal kontroller visas i
+  spec-raden ("15 KONTROLLER · GRATIS").
+- Ny sida `/get-app` som smart-redirectar QR-skanningar baserat på
+  OS: Android → testpilot-Google-Group, iPhone → /stod (eller
+  /en/support beroende på språk), desktop → manuella val. Detta
+  betyder att flygbladets "Få appen"-QR fungerar för båda OS:n
+  utan att vi behöver två olika QR-koder.
+
 ## 2026-05-05 — Engelska översättningar (Fas 2): /skapa-creatorn
 
 - Walk-creatorn på `/skapa` är nu också på engelska — finns på

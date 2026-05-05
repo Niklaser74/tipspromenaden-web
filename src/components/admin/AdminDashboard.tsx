@@ -50,6 +50,7 @@ import { Flag } from "../Flag";
 import WalkMiniMap from "./WalkMiniMap";
 import BatchUploadDropZone from "./BatchUploadDropZone";
 import TipspackEditor from "./TipspackEditor";
+import { FlyerDialog } from "./FlyerDialog";
 
 type Tab = "overview" | "walks" | "tipspacks" | "sessions";
 
@@ -479,6 +480,7 @@ function WalksList({
 }) {
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [flyerWalk, setFlyerWalk] = useState<Walk | null>(null);
   const filtered = walks.filter(
     (w) =>
       w.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -550,6 +552,13 @@ function WalksList({
                     {isExpanded ? "Dölj" : "Inspektera"}
                   </button>
                   <button
+                    onClick={() => setFlyerWalk(w)}
+                    className="text-xs border border-green-dark text-green-dark px-3 py-1 rounded-full hover:bg-green-dark/5"
+                    title="Skapa printbart A5-flygblad med QR-koder"
+                  >
+                    📄 Flygblad
+                  </button>
+                  <button
                     onClick={() => onToggleHidden(w.id)}
                     className={`text-xs px-3 py-1 rounded-full ${
                       isHidden
@@ -596,6 +605,10 @@ function WalksList({
           );
         })}
       </ul>
+
+      {flyerWalk && (
+        <FlyerDialog walk={flyerWalk} onClose={() => setFlyerWalk(null)} />
+      )}
     </div>
   );
 }
