@@ -8,7 +8,7 @@
  * varandra.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Coordinate } from "../../lib/types";
@@ -32,18 +32,20 @@ export default function WalkMiniMap({
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<L.Map | null>(null);
+  const [interactive, setInteractive] = useState(false);
 
   useEffect(() => {
     if (!containerRef.current || points.length === 0) return;
 
     const map = L.map(containerRef.current, {
-      zoomControl: false,
+      zoomControl: interactive,
       attributionControl: true,
-      dragging: false,
-      scrollWheelZoom: false,
-      doubleClickZoom: false,
-      touchZoom: false,
-      keyboard: false,
+      dragging: interactive,
+      scrollWheelZoom: interactive,
+      doubleClickZoom: interactive,
+      touchZoom: interactive,
+      boxZoom: interactive,
+      keyboard: interactive,
     });
     mapRef.current = map;
 
@@ -74,7 +76,9 @@ export default function WalkMiniMap({
       map.remove();
       mapRef.current = null;
     };
-  }, [points, tileUrl]);
+    // Återskapa kartan när interactive-läget byts — Leaflets handler-toggles
+    // är pjåkiga att uppdatera in-flight, det är säkrare att rebuild:a.
+  }, [points, tileUrl, interactive]);
 
   if (points.length === 0) {
     return (
@@ -85,10 +89,18 @@ export default function WalkMiniMap({
   }
 
   return (
-    <div
-      ref={containerRef}
-      className="rounded-lg border border-rule overflow-hidden"
-      style={{ width: "100%", height: 200 }}
-    />
+    <div className="relative">
+      <div
+        ref={containerRef}
+        className="rounded-lg border border-rule overflow-hidden"
+        style={{ width: "100%", height: interactive ? 360 : 200 }}
+      />
+      <button
+        onClick={() => setInteractive((v) => !v)}
+        className="absolute top-2 right-2 z-[1000] bg-white/95 border border-rule px-3 py-1 rounded-full text-xs font-semibold text-green-dark shadow hover:shadow-md"
+      >
+        {interactive ? "Lås karta" : "🔍 Granska"}
+      </button>
+    </div>
   );
 }

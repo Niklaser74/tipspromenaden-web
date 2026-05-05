@@ -11,6 +11,12 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Admin: granska-knapp på walk-kartan
+
+- 🔍 Granska-knapp i hörnet på walk-mini-kartan slår på drag/zoom när
+  man behöver inspektera närmare. Klick igen ("Lås karta") slår av.
+  I granskningsläget växer kartan till 360 px höjd för bättre arbetsyta.
+
 ## 2026-05-05 — Admin: liten karta vid inspektera-walk
 
 - Inspektera en walk på `/admin` visar nu en kompakt Leaflet-karta
