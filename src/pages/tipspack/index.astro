@@ -146,84 +146,59 @@ const packs = getCuratedTipspacks().map((p) => ({
     </div>
   </main>
 
-  <script>
-    // Kopiera-länk-knappar — vanlig clipboard.writeText med tillfällig
-    // bekräftelse-text.
-    document.querySelectorAll<HTMLButtonElement>(".copy-btn").forEach((btn) => {
-      btn.addEventListener("click", async () => {
+  <script is:inline>
+    /* is:inline + endast block-kommentarer eftersom Astro kollapsar
+       newlines vid serialisering, vilket gör att //-kommentarer äter
+       upp resten av skriptet. */
+    document.querySelectorAll(".copy-btn").forEach(function (btn) {
+      btn.addEventListener("click", async function () {
         const url = btn.dataset.copyUrl;
         if (!url) return;
         try {
           await navigator.clipboard.writeText(url);
           const original = btn.textContent;
           btn.textContent = "Kopierad!";
-          setTimeout(() => {
-            btn.textContent = original;
-          }, 2000);
-        } catch {
-          // ignored — fallback inte kritiskt
+          setTimeout(function () { btn.textContent = original; }, 2000);
+        } catch (e) { /* tyst */ }
+      });
+    });
+
+    const __loadedTipspacks = new Set();
+    document.querySelectorAll(".preview-btn").forEach(function (btn) {
+      btn.addEventListener("click", async function () {
+        const url = btn.dataset.previewUrl;
+        const slug = btn.dataset.previewSlug;
+        if (!url || !slug) return;
+        const target = document.querySelector('[data-preview-for="' + slug + '"]');
+        if (!target) return;
+        if (!target.classList.contains("hidden")) {
+          target.classList.add("hidden");
+          btn.textContent = "Förhandsgranska frågor";
+          return;
+        }
+        target.classList.remove("hidden");
+        btn.textContent = "Dölj frågor";
+        if (__loadedTipspacks.has(slug)) return;
+        try {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          const data = await res.json();
+          const questions = data.questions || [];
+          const list = questions.map(function (q, i) {
+            return "<li>" + (i + 1) + ". " + __escapeHtml(q.text) + "</li>";
+          }).join("");
+          target.innerHTML =
+            '<p class="text-xs text-text-warm mb-2 italic">Frågor visas utan svar för att inte spoila spelet.</p>' +
+            '<ol class="space-y-1 text-sm text-green-dark">' + list + '</ol>';
+          __loadedTipspacks.add(slug);
+        } catch (e) {
+          target.innerHTML = '<p class="text-sm text-red-700">Kunde inte ladda frågorna.</p>';
         }
       });
     });
 
-    // Förhandsgranskning av curated-paketens frågor (utan svar). Lazy-fetch
-    // när knappen klickas första gången, sedan toggle av synlighet.
-    const loaded = new Set<string>();
-    document
-      .querySelectorAll<HTMLButtonElement>(".preview-btn")
-      .forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          const url = btn.dataset.previewUrl;
-          const slug = btn.dataset.previewSlug;
-          if (!url || !slug) return;
-          const target = document.querySelector<HTMLDivElement>(
-            `[data-preview-for="${slug}"]`
-          );
-          if (!target) return;
-
-          const isHidden = target.classList.contains("hidden");
-          if (!isHidden) {
-            target.classList.add("hidden");
-            btn.textContent = "Förhandsgranska frågor";
-            return;
-          }
-          target.classList.remove("hidden");
-          btn.textContent = "Dölj frågor";
-
-          if (loaded.has(slug)) return;
-          try {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const data = await res.json();
-            const questions: { text: string }[] = data.questions ?? [];
-            const list = questions
-              .map(
-                (q, i) =>
-                  `<li>${i + 1}. ${escapeHtml(q.text)}</li>`
-              )
-              .join("");
-            target.innerHTML = `
-              <p class="text-xs text-text-warm mb-2 italic">
-                Frågor visas utan svar för att inte spoila spelet.
-              </p>
-              <ol class="space-y-1 text-sm text-green-dark">${list}</ol>
-            `;
-            loaded.add(slug);
-          } catch {
-            target.innerHTML =
-              '<p class="text-sm text-red-700">Kunde inte ladda frågorna.</p>';
-          }
-        });
-      });
-
-    // Minimal HTML-escape så frågetext inte injicerar markup.
-    function escapeHtml(s: string): string {
-      return s
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
+    function __escapeHtml(s) {
+      return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
     }
   </script>
 </Layout>

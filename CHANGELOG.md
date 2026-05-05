@@ -11,6 +11,16 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Fixa /tipspack: knappar fungerar igen
+
+- Buggfix: "Kopiera länk" och "Förhandsgranska frågor"-knapparna på
+  `/tipspack` gjorde ingenting. Astro/Rolldown bundlar `<script>`-block
+  till en `type="module"` som tystade allt JavaScript på sidan
+  (vidareförd regression — kopiera-länk hade också varit trasig sedan
+  bundle-bytet). Lösning: byt till `<script is:inline>` och håll bara
+  block-kommentarer (Astro kollapsar newlines i raw-scripts, så
+  `//`-rader äter upp resten av filen).
+
 ## 2026-05-05 — Förhandsgranska frågor i tipspack-listor
 
 - Ny "Förhandsgranska frågor"-knapp på alla sidor med tipspack-listor:
