@@ -11,6 +11,17 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Tillfälligt: stäng av App Check på web
+
+- Adblockers/browser-tillägg på desktop kan blockera reCAPTCHA
+  Enterprise-scriptet vilket fick Firebase Auth att svara
+  `auth/internal-error` även om vi formellt körde i monitor mode.
+  Resultat: vissa användare kunde inte logga in på `/skapa` eller
+  `/admin` från sina datorer (telefonbrowser fungerade fortfarande).
+- Lösning: stäng av App Check-initialiseringen tills vidare. Re-enable
+  när Stage 2 (native Play Integrity) är klar och vi flippar enforce
+  i Firebase Console.
+
 ## 2026-05-05 — Ny /admin-sida för moderation + statistik
 
 - Ny sida `/admin` med moderationsdashboard. Login-gated mot
