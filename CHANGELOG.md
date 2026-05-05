@@ -11,6 +11,15 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Återinför App Check (monitor mode)
+
+- Nu när CSP släpper igenom `apis.google.com` fungerar Firebase Auth
+  korrekt och App Check kan vara på utan att tysta inloggning. Kör
+  fortfarande monitor mode — backend rejectar inget än, men loggar
+  vilka requests som har giltig reCAPTCHA-token. Flippas till enforce
+  när Stage 2 (native Play Integrity) är klar och båda klienterna
+  presenterar token.
+
 ## 2026-05-05 — Fixa CSP: tillåt apis.google.com för Firebase Auth-popup
 
 - Buggfix: Logga in med Google på `/skapa` och `/admin` failade på
