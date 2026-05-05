@@ -11,6 +11,15 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Admin: datum på walks och tipspacks
+
+- Walks-flikens kort visar nu "Skapad YYYY-MM-DD" och "senast utförd
+  YYYY-MM-DD" (= senaste session-createdAt). Senast utförd visas
+  bara om walken har minst en session.
+- Tipspacks-flikens kort visar "Uppladdad YYYY-MM-DD" och "ändrad
+  YYYY-MM-DD" om paketet uppdaterats efter create. Curated-pack
+  saknar dessa fält och visar inget datum.
+
 ## 2026-05-05 — Admin: skapa/redigera tipspack-modal
 
 - Ny `➕ Skapa nytt`-knapp överst på admin Tipspacks-fliken som

@@ -230,8 +230,13 @@ function AdminContent({ user }: { user: User }) {
   }
 
   const sessionsByWalk = new Map<string, number>();
+  const lastSessionByWalk = new Map<string, number>();
   sessions.forEach((s) => {
     sessionsByWalk.set(s.walkId, (sessionsByWalk.get(s.walkId) ?? 0) + 1);
+    if (s.createdAt) {
+      const prev = lastSessionByWalk.get(s.walkId) ?? 0;
+      if (s.createdAt > prev) lastSessionByWalk.set(s.walkId, s.createdAt);
+    }
   });
 
   const walksByMostUsed = [...walks]
@@ -310,6 +315,7 @@ function AdminContent({ user }: { user: User }) {
         <WalksList
           walks={walks}
           sessionsByWalk={sessionsByWalk}
+          lastSessionByWalk={lastSessionByWalk}
           flags={flags}
           onToggleHidden={toggleWalkHidden}
         />
@@ -354,6 +360,12 @@ function AdminContent({ user }: { user: User }) {
       )}
     </>
   );
+}
+
+/** ISO-datum (YYYY-MM-DD) i sv-SE från ms-timestamp. Tom sträng om saknas. */
+function fmtDate(ts?: number): string {
+  if (!ts) return "—";
+  return new Date(ts).toLocaleDateString("sv-SE");
 }
 
 function tabLabel(t: Tab): string {
@@ -455,11 +467,13 @@ function Stat({
 function WalksList({
   walks,
   sessionsByWalk,
+  lastSessionByWalk,
   flags,
   onToggleHidden,
 }: {
   walks: Walk[];
   sessionsByWalk: Map<string, number>;
+  lastSessionByWalk: Map<string, number>;
   flags: ModerationFlags;
   onToggleHidden: (walkId: string) => void;
 }) {
@@ -488,6 +502,7 @@ function WalksList({
           const isExpanded = expanded === w.id;
           const isHidden = flags.walks.has(w.id);
           const count = sessionsByWalk.get(w.id) ?? 0;
+          const lastSession = lastSessionByWalk.get(w.id);
           return (
             <li
               key={w.id}
@@ -518,7 +533,12 @@ function WalksList({
                   )}
                   <p className="text-xs text-sage mt-1">
                     {w.questions.length} kontroller · {count} sessioner ·{" "}
-                    {(w as any).city || "okänd stad"} ·{" "}
+                    {(w as any).city || "okänd stad"}
+                  </p>
+                  <p className="text-xs text-sage mt-0.5">
+                    Skapad {fmtDate(w.createdAt)}
+                    {lastSession ? ` · senast utförd ${fmtDate(lastSession)}` : ""}
+                    {" · "}
                     <code className="text-text-warm">{w.id.slice(0, 12)}…</code>
                   </p>
                 </div>
@@ -610,6 +630,8 @@ function TipspacksList({
     isPublic?: boolean;
     ownerName?: string;
     ownerUid?: string;
+    createdAt?: number;
+    updatedAt?: number;
     /** Original-pack:n så vi kan skicka in den till editor:n. */
     raw?: TipspackMeta;
   };
@@ -708,6 +730,14 @@ function TipspacksList({
                     {p.questionCount} frågor · {p.author || p.ownerName || "okänd"} ·{" "}
                     <code className="text-text-warm">{p.slug}</code>
                   </p>
+                  {p.source === "uploaded" && (
+                    <p className="text-xs text-sage mt-0.5">
+                      Uppladdad {fmtDate(p.createdAt)}
+                      {p.updatedAt && p.updatedAt !== p.createdAt
+                        ? ` · ändrad ${fmtDate(p.updatedAt)}`
+                        : ""}
+                    </p>
+                  )}
                 </div>
                 <div className="flex flex-col gap-2 shrink-0">
                   <button
