@@ -2,8 +2,13 @@
 layout: ../layouts/LegalLayout.astro
 title: Användarvillkor
 description: Användarvillkor för Tipspromenaden — gratis hobbyprojekt, ansvar och innehåll.
+lang: sv
 ---
 
+> **In English:** This page is the official Terms of Service and is
+> only available in Swedish. The Swedish version is the legally
+> authoritative one. If you need help understanding it, email
+> [tipspromenaden.app@gmail.com](mailto:tipspromenaden.app@gmail.com).
 
 ## 1. Vem driver tjänsten
 

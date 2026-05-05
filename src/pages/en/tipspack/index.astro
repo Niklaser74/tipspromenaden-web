@@ -1,12 +1,12 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import { Flag } from "../../components/Flag.tsx";
-import UserTipspacks from "../../components/tipspack/UserTipspacks.tsx";
-import { getCuratedTipspacks } from "../../lib/curatedTipspacks";
+import Layout from "../../../layouts/Layout.astro";
+import { Flag } from "../../../components/Flag.tsx";
+import UserTipspacks from "../../../components/tipspack/UserTipspacks.tsx";
+import { getCuratedTipspacks } from "../../../lib/curatedTipspacks";
 
-// /tipspack — publik bibliotekssida för färdiga frågebatterier.
-// Filerna ligger som statiska assets i `public/tipspack/`. Metadata
-// läses vid build-tid via getCuratedTipspacks (delas med /tipspack/index.json).
+// /en/tipspack — English version of the curated question-pack library.
+// Same .tipspack files (statiska assets i public/tipspack/), bara
+// engelsk UI runt om.
 
 const packs = getCuratedTipspacks().map((p) => ({
   ...p,
@@ -16,56 +16,61 @@ const packs = getCuratedTipspacks().map((p) => ({
 ---
 
 <Layout
-  title="Färdiga frågebatterier — Tipspromenaden"
-  description="Ladda ner färdiga frågebatterier (.tipspack-filer) gratis och importera dem i Tipspromenaden-appen eller webb-skaparen. Stockholms gamla stan, Visby, populärkultur, naturvetenskap med mera."
-  lang="sv"
-  alternateUrl="/en/tipspack"
+  title="Ready-made question packs — Tipspromenaden"
+  description="Download ready-made question packs (.tipspack files) for free and import them into the Tipspromenaden app or web creator. Stockholm Old Town, Visby, pop culture, science and more."
+  lang="en"
+  alternateUrl="/tipspack"
 >
   <main class="min-h-screen bg-cream">
     <div class="max-w-4xl mx-auto px-6 py-12">
       <header class="mb-12">
         <a
-          href="/"
+          href="/en/"
           class="text-sm text-text-warm hover:text-green-dark mb-6 inline-block"
         >
           ← Tipspromenaden.app
         </a>
         <h1 class="font-serif text-4xl md:text-5xl text-green-dark mb-4">
-          Färdiga frågebatterier
+          Ready-made question packs
         </h1>
         <p class="text-lg text-text-warm leading-relaxed max-w-2xl">
-          Klara frågesamlingar du kan ladda ner gratis och använda när du
-          skapar en egen tipspromenad. Allt från stadsvandringar till
-          naturquiz för barn.
+          Free question collections you can download and use when
+          building your own quiz walk. Anything from city tours to
+          nature quizzes for kids.
+        </p>
+        <p class="text-sm text-sage italic mt-3 max-w-2xl">
+          Heads up: most curated packs are in Swedish — the language
+          flag on each pack tells you which.
         </p>
       </header>
 
       <section class="mb-10 bg-white border border-rule rounded-xl p-5">
         <h2 class="font-serif text-xl text-green-dark mb-3">
-          Så här använder du filerna
+          How to use the files
         </h2>
         <p class="text-sm text-text-warm leading-relaxed mb-3">
-          <strong>Snabbast (Tipspromenaden 1.4.0+):</strong> Klicka{" "}
-          <strong>📲 Öppna i appen</strong>. Telefonen frågar om du vill öppna
-          appen — välj Tipspromenaden, så hoppar du rakt in i karta-läget med
-          alla frågor förladdade. Placera dem en och en, klart att gå.
+          <strong>Fastest (Tipspromenaden 1.4.0+):</strong> Tap{" "}
+          <strong>📲 Open in app</strong>. Your phone asks if you want to
+          open the app — pick Tipspromenaden, and you jump straight into
+          map mode with all questions preloaded. Place them one by one,
+          ready to go.
         </p>
         <p class="text-sm text-text-warm leading-relaxed">
-          <strong>Alternativ:</strong> Klicka <strong>📥 Ladda ner fil</strong>{" "}
-          för att spara <code class="bg-cream px-1 rounded">.tipspack</code>-filen
-          lokalt. Importera den sen via <strong>Importera frågebatteri</strong>{" "}
-          i mobil-appen eller{" "}
+          <strong>Alternative:</strong> Tap <strong>📥 Download file</strong>{" "}
+          to save the <code class="bg-cream px-1 rounded">.tipspack</code> file
+          locally. Then import it via <strong>Import question pack</strong>{" "}
+          in the mobile app or the{" "}
           <a href="/skapa" class="text-green font-semibold hover:underline">
-            webb-skaparen
+            web creator
           </a>
-          . Använd det här om du vill arkivera filen, redigera den manuellt eller
-          dela den vidare.
+          . Use this if you want to archive the file, edit it manually,
+          or pass it along.
         </p>
       </section>
 
       {packs.length === 0 ? (
         <p class="text-center text-text-warm py-12">
-          Inga frågebatterier publicerade än.
+          No question packs published yet.
         </p>
       ) : (
         <ul class="space-y-4">
@@ -81,29 +86,29 @@ const packs = getCuratedTipspacks().map((p) => ({
                     {p.description}
                   </p>
                   <p class="text-xs text-sage">
-                    {p.questionCount} frågor · {p.author} · {p.fileSizeKb} KB
+                    {p.questionCount} questions · {p.author} · {p.fileSizeKb} KB
                   </p>
                 </div>
                 <div class="flex flex-col gap-2 shrink-0">
                   <a
                     href={`tipspromenaden://tipspack/${p.slug}`}
                     class="bg-green-dark text-cream px-5 py-2 rounded-full text-sm font-semibold shadow hover:shadow-md transition text-center"
-                    title="Öppna direkt i Tipspromenaden-appen (kräver appen installerad, v1.4.0+)"
+                    title="Open directly in the Tipspromenaden app (requires the app installed, v1.4.0+)"
                   >
-                    📲 Öppna i appen
+                    📲 Open in app
                   </a>
                   <a
                     href={p.url}
                     download={p.filename}
                     class="border border-green-dark text-green-dark px-5 py-2 rounded-full text-sm font-semibold hover:bg-green-dark/5 transition text-center"
                   >
-                    📥 Ladda ner fil
+                    📥 Download file
                   </a>
                   <button
                     data-copy-url={`https://tipspromenaden.app${p.url}`}
                     class="copy-btn text-text-warm text-xs hover:text-green-dark"
                   >
-                    Kopiera länk
+                    Copy link
                   </button>
                 </div>
               </div>
@@ -113,13 +118,13 @@ const packs = getCuratedTipspacks().map((p) => ({
                   data-preview-slug={p.slug}
                   class="preview-btn text-xs text-green-dark hover:underline"
                 >
-                  Förhandsgranska frågor
+                  Preview questions
                 </button>
                 <div
                   class="preview-target hidden mt-2 bg-cream/50 border border-rule rounded-lg p-3"
                   data-preview-for={p.slug}
                 >
-                  <p class="text-sm text-text-warm">Hämtar frågor…</p>
+                  <p class="text-sm text-text-warm">Loading questions…</p>
                 </div>
               </div>
             </li>
@@ -127,21 +132,21 @@ const packs = getCuratedTipspacks().map((p) => ({
         </ul>
       )}
 
-      {/* Inskickade paket från användare — laddas client-side från Firestore */}
       <section class="mt-16">
         <h2 class="font-serif text-3xl text-green-dark mb-3">
-          Inskickade av användare
+          User-uploaded packs
         </h2>
         <p class="text-sm text-text-warm mb-6 leading-relaxed">
-          Frågebatterier som andra Tipspromenaden-användare laddat upp och
-          delar publikt. Vill du själv lägga till ett pack?{" "}
+          Question packs other Tipspromenaden users uploaded and shared
+          publicly. Want to add one yourself?{" "}
           <a
             href="/skapa"
             class="text-green font-semibold hover:underline"
           >
-            Logga in på /skapa
+            Sign in at /skapa
           </a>{" "}
-          och tryck "Ladda upp" under "Mina tipspacks".
+          and tap "Upload" under "My tipspacks". (The creator interface
+          is currently Swedish-only.)
         </p>
         <UserTipspacks client:idle />
       </section>
@@ -149,9 +154,8 @@ const packs = getCuratedTipspacks().map((p) => ({
   </main>
 
   <script is:inline>
-    /* is:inline + endast block-kommentarer eftersom Astro kollapsar
-       newlines vid serialisering, vilket gör att //-kommentarer äter
-       upp resten av skriptet. */
+    /* Block comments only — Astro collapses newlines in inline scripts,
+       so //-comments would eat the rest of the script. */
     document.querySelectorAll(".copy-btn").forEach(function (btn) {
       btn.addEventListener("click", async function () {
         const url = btn.dataset.copyUrl;
@@ -159,9 +163,9 @@ const packs = getCuratedTipspacks().map((p) => ({
         try {
           await navigator.clipboard.writeText(url);
           const original = btn.textContent;
-          btn.textContent = "Kopierad!";
+          btn.textContent = "Copied!";
           setTimeout(function () { btn.textContent = original; }, 2000);
-        } catch (e) { /* tyst */ }
+        } catch (e) { /* silent */ }
       });
     });
 
@@ -175,11 +179,11 @@ const packs = getCuratedTipspacks().map((p) => ({
         if (!target) return;
         if (!target.classList.contains("hidden")) {
           target.classList.add("hidden");
-          btn.textContent = "Förhandsgranska frågor";
+          btn.textContent = "Preview questions";
           return;
         }
         target.classList.remove("hidden");
-        btn.textContent = "Dölj frågor";
+        btn.textContent = "Hide questions";
         if (__loadedTipspacks.has(slug)) return;
         try {
           const res = await fetch(url);
@@ -190,11 +194,11 @@ const packs = getCuratedTipspacks().map((p) => ({
             return "<li>" + (i + 1) + ". " + __escapeHtml(q.text) + "</li>";
           }).join("");
           target.innerHTML =
-            '<p class="text-xs text-text-warm mb-2 italic">Frågor visas utan svar för att inte spoila spelet.</p>' +
+            '<p class="text-xs text-text-warm mb-2 italic">Questions are shown without answers so the game isn\'t spoiled.</p>' +
             '<ol class="space-y-1 text-sm text-green-dark">' + list + '</ol>';
           __loadedTipspacks.add(slug);
         } catch (e) {
-          target.innerHTML = '<p class="text-sm text-red-700">Kunde inte ladda frågorna.</p>';
+          target.innerHTML = '<p class="text-sm text-red-700">Couldn\'t load the questions.</p>';
         }
       });
     });

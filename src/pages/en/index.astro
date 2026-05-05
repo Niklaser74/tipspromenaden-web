@@ -1,44 +1,46 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
 import { Image } from "astro:assets";
-import skarmHem from "../assets/screenshots/skarm-hem.jpg";
-import skarmGaMed from "../assets/screenshots/skarm-ga-med.jpg";
-import skarmAktiv from "../assets/screenshots/skarm-aktiv.jpg";
+import skarmHem from "../../assets/screenshots/skarm-hem.jpg";
+import skarmGaMed from "../../assets/screenshots/skarm-ga-med.jpg";
+import skarmAktiv from "../../assets/screenshots/skarm-aktiv.jpg";
 
-// Två-stegs-flöde för att bli testpilot:
-//   1. Gå med i Google Group `tipspromenaden-testers` (CTA-knappen nedan)
-//   2. Niklas godkänner i Google Groups → välkomstmeddelandet skickas
-//      automatiskt och innehåller opt-in-URL:en för Play Store Closed
-//      Testing. Klick på den ger åtkomst till appen i Play.
-// Vi länkar därför INTE direkt till Play-listningen — appen är inte publikt
-// synlig än, så icke-testare skulle få "Objektet kunde inte hittas".
+// Two-step flow to become a tester:
+//   1. Join the Google Group `tipspromenaden-testers` (CTA button below)
+//   2. Niklas approves the request → welcome email is sent automatically
+//      with the Play Store Closed Testing opt-in URL.
 const TESTERS_GROUP_URL = "https://groups.google.com/g/tipspromenaden-testers";
 
 const screenshots = [
   {
     src: skarmHem,
-    alt: "Hemskärm med rubriken Tipspromenaden, Skapa promenad-knapp och en lista över egna sparade promenader",
-    caption: "Din egen samling av promenader",
+    alt: "Home screen showing the Tipspromenaden header, a Create walk button and a list of saved walks",
+    caption: "Your collection of walks",
   },
   {
     src: skarmGaMed,
-    alt: "Gå med-skärm där en deltagare skriver in sitt namn för att starta en pågående promenad",
-    caption: "Skriv namn — anslut till en pågående omgång",
+    alt: "Join screen where a participant types their name to start an ongoing walk",
+    caption: "Type a name — join an ongoing round",
   },
   {
     src: skarmAktiv,
-    alt: "Karta som visar 13 numrerade kontrollpunkter och avståndet till nästa kontroll",
-    caption: "GPS visar var nästa kontroll finns",
+    alt: "Map showing 13 numbered control points and the distance to the next checkpoint",
+    caption: "GPS shows where the next checkpoint is",
   },
 ];
 ---
 
-<Layout lang="sv" alternateUrl="/en/">
+<Layout
+  title="Tipspromenaden — quiz walks in your pocket"
+  description="A free app for creating and joining outdoor quiz walks. Checkpoints on a map, questions unlocked by GPS, share via QR code. Currently in closed testing on Android."
+  lang="en"
+  alternateUrl="/"
+>
   <main class="min-h-screen">
     {/* ─── HERO ──────────────────────────────────────────── */}
     <section class="max-w-3xl mx-auto px-6 pt-20 pb-12 text-center">
       <p class="text-sm tracking-[0.25em] text-sage uppercase mb-4">
-        Quizpromenad i fickan
+        Quiz walk in your pocket
       </p>
       <hr class="w-12 border-t border-green mx-auto mb-12" />
 
@@ -54,32 +56,32 @@ const screenshots = [
         Tipspromenaden
       </h1>
       <p class="font-serif italic text-lg sm:text-xl md:text-2xl text-green">
-        En quiz­promenad ni går utomhus — med mobilen som frågepapper.
+        An outdoor quiz walk — with your phone as the question paper.
       </p>
     </section>
 
     {/* ─── iPhone-banner ─────────────────────────────────
-        Synlig direkt under hero så iPhone-användare ser den utan att
-        scrolla. Yellow-accent för att sticka ut utan att konkurrera
-        med den primära testpilot-CTA:n längre ner. */}
+        Visible right under the hero so iPhone users see it without
+        scrolling. Yellow accent to stand out without competing with
+        the primary tester CTA further down. */}
     <section class="max-w-2xl mx-auto px-6 pb-12">
       <a
-        href="/stod"
+        href="/en/support"
         class="block bg-white border-l-4 border-yellow rounded-r-2xl ring-1 ring-rule shadow-sm hover:shadow-md hover:ring-green transition px-5 py-4 sm:px-6 sm:py-5 text-left"
       >
         <p class="text-xs tracking-[0.2em] uppercase text-sage mb-1">
-          Har du iPhone?
+          On iPhone?
         </p>
         <p class="text-base sm:text-lg leading-snug">
           <span class="font-serif text-green-dark font-semibold">
-            Stöd projektet så släpper vi iOS-versionen.
+            Support the project and we'll release the iOS version.
           </span>
           <span class="text-text-warm">
-            {" "}Just nu finns appen bara på Android — ett par tusen
-            kronor i bidrag täcker Apple-avgiften och vi kör.
+            {" "}Right now the app is Android-only — a few hundred crowns
+            in donations covers the Apple fee and we'll ship.
           </span>
           <span class="text-green font-semibold whitespace-nowrap">
-            {" "}Läs mer →
+            {" "}Read more →
           </span>
         </p>
       </a>
@@ -88,34 +90,35 @@ const screenshots = [
     {/* ─── INTRO ─────────────────────────────────────────── */}
     <section class="max-w-2xl mx-auto px-6 pb-16 text-center">
       <p class="text-lg leading-relaxed">
-        Skaparen ritar kontroll­punkter på en karta och kopplar en fråga till
-        varje punkt. Deltagarna skannar QR-koden och går till varje punkt med
-        GPS — frågan låses upp automatiskt när de kommer fram. Familje­turen
-        blir plötsligt en lagom-tävling.
+        The creator draws checkpoints on a map and links a question to
+        each one. Participants scan the QR code and walk to each
+        checkpoint with GPS — the question unlocks automatically when
+        they arrive. The family outing suddenly becomes a friendly
+        competition.
       </p>
     </section>
 
-    {/* Hairline — andas innan tre features */}
+    {/* Hairline */}
     <hr class="w-24 border-t border-rule mx-auto mb-20" />
 
     {/* ─── FEATURES ──────────────────────────────────────── */}
     <section class="max-w-5xl mx-auto px-6 pb-20 grid md:grid-cols-3 gap-12">
       {[
         {
-          title: "Bygg själv",
-          body: "Karta, frågor, bilder, QR-kod — på minuter. Eller importera ett färdigt frågebatteri."
+          title: "Build it yourself",
+          body: "Map, questions, images, QR code — in minutes. Or import a ready-made question pack."
         },
         {
-          title: "GPS låser frågorna",
-          body: "Ingen kan hoppa över kontroller. Tävlings­känsla utan stress, fusk-skydd utan fri­ktion."
+          title: "GPS unlocks the questions",
+          body: "No one can skip a checkpoint. Competitive feel without stress, anti-cheat without friction."
         },
         {
-          title: "Topplista i realtid",
-          body: "Hela familjen tävlar samtidigt och alla ser ställningen. Snittsteg, snittpoäng och svars­fördelning för skaparen."
+          title: "Live leaderboard",
+          body: "The whole family competes simultaneously and everyone sees the standings. Average steps, average score and answer distribution for the creator."
         }
       ].map(({ title, body }) => (
         <div class="text-center md:text-left">
-          {/* Diamantmarkör i Friluft Folio-anda */}
+          {/* Diamond marker in the Friluft Folio spirit */}
           <div class="inline-block w-3 h-3 bg-green rotate-45 mb-4"></div>
           <h3 class="font-serif font-bold text-2xl mb-3">{title}</h3>
           <p class="text-base leading-relaxed">{body}</p>
@@ -123,14 +126,10 @@ const screenshots = [
       ))}
     </section>
 
-    {/* ─── SKÄRMDUMPAR ───────────────────────────────────── */}
-    {/* Visuellt bevis innan CTA — "så här ser det faktiskt ut".
-        Mobil: horisontell snap-scroll så fingret kan svepa mellan dem
-        utan att hela sidan blir orimligt lång.
-        Desktop: 3-up grid, lugnt och paralllelt likt Friluft Folio-rytmen. */}
+    {/* ─── SCREENSHOTS ──────────────────────────────────── */}
     <section class="max-w-6xl mx-auto pb-24">
       <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl text-center mb-12 px-6">
-        Så ser det ut
+        How it looks
       </h2>
 
       <div
@@ -160,47 +159,45 @@ const screenshots = [
     <section class="max-w-3xl mx-auto px-6 pb-20">
       <div class="bg-green-dark text-cream rounded-3xl p-10 md:p-14 text-center">
         <p class="text-sm tracking-[0.25em] uppercase text-cta-body mb-3">
-          Just nu i sluten test
+          Currently in closed testing
         </p>
         <h2 class="font-serif text-cream text-3xl sm:text-4xl md:text-5xl mb-6">
-          Vi söker fler testpiloter
+          We're looking for more testers
         </h2>
         <p class="text-cta-body text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-          Hjälp oss kvalitets­säkra appen innan publik release. Du får tidig
-          tillgång och din feedback formar slut­produkten.
+          Help us polish the app before the public release. You get
+          early access and your feedback shapes the final product.
         </p>
         <a
           href={TESTERS_GROUP_URL}
           class="inline-block bg-cream text-green-dark font-semibold text-lg px-8 py-4 rounded-xl hover:bg-white transition-colors"
         >
-          Be om att bli testpilot
+          Ask to become a tester
         </a>
         <p class="text-cta-body text-sm mt-6 max-w-md mx-auto leading-relaxed opacity-80">
-          Du går med i en Google-grupp. När jag godkänt får du en länk
-          till Play Store där appen kan installeras — oftast inom några minuter.
+          You join a Google Group. Once I approve, you get a Play Store
+          link where the app can be installed — usually within minutes.
         </p>
-        {/* Gul accent under knappen — den ena varmgula glimt som palettens
-            restraint tillåter, samma plats som CTA-blocket på social-postern */}
         <div class="w-14 h-1 bg-yellow mx-auto mt-8"></div>
       </div>
     </section>
 
-    {/* ─── Sekundära länkar — tipspack + skapa ────────────── */}
+    {/* ─── Secondary links — tipspack + create ────────────── */}
     <section class="max-w-3xl mx-auto px-6 pb-16">
       <div class="grid md:grid-cols-2 gap-4">
         <a
-          href="/tipspack"
+          href="/en/tipspack"
           class="block bg-white border border-rule rounded-2xl p-6 hover:border-green-dark transition"
         >
           <h3 class="font-serif text-2xl text-green-dark mb-2">
-            Färdiga frågebatterier
+            Ready-made question packs
           </h3>
           <p class="text-text-warm text-sm leading-relaxed">
-            Ladda ner gratis frågesamlingar — Stockholms gamla stan, Visby,
-            populärkultur, naturvetenskap och fler. Importera direkt i appen.
+            Download free question collections — Stockholm Old Town, Visby,
+            pop culture, science and more. Import directly into the app.
           </p>
           <p class="mt-3 text-green font-semibold text-sm">
-            Bläddra biblioteket →
+            Browse the library →
           </p>
         </a>
         <a
@@ -208,14 +205,17 @@ const screenshots = [
           class="block bg-white border border-rule rounded-2xl p-6 hover:border-green-dark transition"
         >
           <h3 class="font-serif text-2xl text-green-dark mb-2">
-            Skapa i webbläsaren
+            Create in the browser
           </h3>
           <p class="text-text-warm text-sm leading-relaxed">
-            Bygg en tipspromenad från laptop eller iPad — tangentbord för
-            text, klick på kartan för kontroller, dela med en QR-kod.
+            Build a quiz walk from your laptop or iPad — keyboard for
+            text, click on the map for checkpoints, share via QR code.
+            <span class="block mt-1 text-xs italic text-sage">
+              The creator interface is currently Swedish-only.
+            </span>
           </p>
           <p class="mt-3 text-green font-semibold text-sm">
-            Öppna skaparen →
+            Open the creator →
           </p>
         </a>
       </div>
@@ -233,20 +233,20 @@ const screenshots = [
         </a>
       </p>
       <p class="text-xs">
-        <a href="/sa-funkar-det" class="text-text-warm hover:text-green-dark hover:underline">
-          Så funkar det
+        <a href="/en/how-it-works" class="text-text-warm hover:text-green-dark hover:underline">
+          How it works
         </a>
         {" · "}
-        <a href="/stod" class="text-text-warm hover:text-green-dark hover:underline">
-          Stötta projektet
+        <a href="/en/support" class="text-text-warm hover:text-green-dark hover:underline">
+          Support the project
         </a>
         {" · "}
         <a href="/villkor" class="text-text-warm hover:text-green-dark hover:underline">
-          Användarvillkor
+          Terms (Swedish)
         </a>
         {" · "}
         <a href="/integritet" class="text-text-warm hover:text-green-dark hover:underline">
-          Integritetspolicy
+          Privacy (Swedish)
         </a>
       </p>
     </footer>

@@ -2,8 +2,13 @@
 layout: ../layouts/LegalLayout.astro
 title: Integritetspolicy
 description: Integritetspolicy för Tipspromenaden — så hanterar vi personuppgifter (GDPR-kompatibel).
+lang: sv
 ---
 
+> **In English:** This page is the official Privacy Policy and is
+> only available in Swedish. The Swedish version is the legally
+> authoritative one. If you need help understanding it, email
+> [tipspromenaden.app@gmail.com](mailto:tipspromenaden.app@gmail.com).
 
 ## 1. Personuppgiftsansvarig
 

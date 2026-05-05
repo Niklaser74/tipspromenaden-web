@@ -11,6 +11,21 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Engelska översättningar (Fas 1)
+
+- Hela marknadssidan översatt till engelska. Engelska versioner
+  finns nu på `/en/`, `/en/support`, `/en/how-it-works` och
+  `/en/tipspack`.
+- Litet språkväljar-element fixed top-right på alla publika sidor
+  (admin oförändrad, ingen växlare där).
+- 404 + walk-redirect visar nu både svensk och engelsk text så att
+  utländska besökare som klickat en delad länk förstår vad som händer.
+- Användarvillkor + integritetspolicy förblir på svenska tills vidare
+  (legalt auktoritativ version) men har en engelsk notis högst upp
+  med kontakt-mejl för folk som behöver hjälp att förstå.
+- `/skapa` (interaktiva walk-creatorn) är fortsatt svensk-only —
+  översättning av React-islands kommer i Fas 2.
+
 ## 2026-05-05 — /stod: PayPal-sektion för utländska bidrag
 
 - Ny PayPal-sektion under Swish-blocket på `/stod` så icke-svenska

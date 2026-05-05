@@ -1,0 +1,43 @@
+---
+/**
+ * Liten språkväljare för översta hörnet av varje sida.
+ *
+ * Pages anger sitt eget alternateUrl via Layout-prop:en — om det saknas
+ * faller vi tillbaka på URL_MAP i src/i18n/locale.ts. Det betyder att
+ * en sida som glömt props ändå får en fungerande switcher (även om den
+ * landar på fel sida).
+ */
+import { getLocaleFromPath, getAlternateUrl, type Locale } from "../i18n/locale";
+
+interface Props {
+  /** Explicit URL för "andra språket". Om null används URL_MAP-fallback. */
+  alternateUrl?: string;
+}
+
+const { alternateUrl } = Astro.props as Props;
+const currentLocale: Locale = getLocaleFromPath(Astro.url.pathname);
+const otherLocale: Locale = currentLocale === "sv" ? "en" : "sv";
+const otherUrl = alternateUrl ?? getAlternateUrl(Astro.url.pathname);
+
+const labels: Record<Locale, string> = { sv: "Svenska", en: "English" };
+const currentLabel = currentLocale.toUpperCase();
+const otherLabel = otherLocale.toUpperCase();
+---
+
+<div class="fixed top-3 right-3 z-50 bg-cream/90 backdrop-blur-sm border border-rule rounded-full shadow-sm text-xs font-semibold flex overflow-hidden">
+  <span
+    class="px-3 py-1.5 text-green-dark cursor-default select-none"
+    aria-current="true"
+    title={labels[currentLocale]}
+  >
+    {currentLabel}
+  </span>
+  <a
+    href={otherUrl}
+    class="px-3 py-1.5 bg-green-dark text-cream hover:bg-green transition"
+    title={`Switch to ${labels[otherLocale]}`}
+    aria-label={`Switch to ${labels[otherLocale]}`}
+  >
+    {otherLabel}
+  </a>
+</div>

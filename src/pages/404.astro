@@ -28,8 +28,13 @@ import Layout from "../layouts/Layout.astro";
       Öppnar promenaden…
     </h1>
 
-    <p id="status" class="text-lg max-w-md mb-10 leading-relaxed">
+    <p id="status" class="text-lg max-w-md mb-6 leading-relaxed">
       Om appen inte öppnas automatiskt skickas du vidare om en stund.
+    </p>
+
+    <p id="status-en" class="text-base max-w-md mb-10 leading-relaxed text-text-warm italic">
+      If the app doesn't open automatically you'll be redirected
+      shortly.
     </p>
 
     <a
@@ -54,6 +59,12 @@ import Layout from "../layouts/Layout.astro";
     const isIos = /iphone|ipad|ipod/.test(ua);
 
     const status = document.getElementById("status");
+    const statusEn = document.getElementById("status-en");
+
+    function setStatus(sv, en) {
+      if (status) status.textContent = sv;
+      if (statusEn) statusEn.textContent = en;
+    }
 
     if (walkMatch) {
       const walkId = walkMatch[1];
@@ -70,23 +81,24 @@ import Layout from "../layouts/Layout.astro";
           }
         }, 1500);
       } else if (isIos) {
-        if (status) {
-          status.textContent =
-            "iOS-versionen är inte släppt än. Be skaparen om en Android-installation, eller kom tillbaka när iOS-appen lanseras.";
-        }
+        setStatus(
+          "iOS-versionen är inte släppt än. Be skaparen om en Android-installation, eller kom tillbaka när iOS-appen lanseras.",
+          "The iOS version isn't released yet. Ask the creator for an Android installation, or come back once the iOS app launches."
+        );
       } else {
-        if (status) {
-          status.textContent =
-            "Öppna länken på en Android-telefon med Tipspromenaden installerad för att starta promenaden.";
-        }
+        setStatus(
+          "Öppna länken på en Android-telefon med Tipspromenaden installerad för att starta promenaden.",
+          "Open this link on an Android phone with Tipspromenaden installed to start the walk."
+        );
       }
     } else {
       // Vanlig 404 — inte en walk-länk
       const h1 = document.querySelector("h1");
-      if (h1) h1.textContent = "Sidan finns inte";
-      if (status) {
-        status.textContent = "Den här sidan kunde vi inte hitta.";
-      }
+      if (h1) h1.textContent = "Sidan finns inte / Page not found";
+      setStatus(
+        "Den här sidan kunde vi inte hitta.",
+        "We couldn't find this page."
+      );
     }
   </script>
 </Layout>

@@ -40,8 +40,13 @@ const description =
       Öppnar promenaden…
     </h1>
 
-    <p id="status" class="text-lg max-w-md mb-10 leading-relaxed">
+    <p id="status" class="text-lg max-w-md mb-4 leading-relaxed">
       Om appen inte öppnas automatiskt skickas du vidare om en stund.
+    </p>
+
+    <p id="status-en" class="text-base max-w-md mb-10 leading-relaxed text-text-warm italic">
+      If the app doesn't open automatically you'll be redirected
+      shortly.
     </p>
 
     <a href="/" class="text-green font-semibold hover:underline">
@@ -65,13 +70,18 @@ const description =
     const isAndroid = /android/.test(ua);
     const isIos = /iphone|ipad|ipod/.test(ua);
     const status = document.getElementById("status");
+    const statusEn = document.getElementById("status-en");
+
+    function setStatus(sv, en) {
+      if (status) status.textContent = sv;
+      if (statusEn) statusEn.textContent = en;
+    }
 
     if (!walkId) {
-      // Ingen walkId i path:en — visa generisk text och länk hem
-      if (status) {
-        status.textContent =
-          "Saknar walk-id i länken. Be avsändaren om en ny länk.";
-      }
+      setStatus(
+        "Saknar walk-id i länken. Be avsändaren om en ny länk.",
+        "The link is missing the walk id. Ask the sender for a new link."
+      );
     } else if (isAndroid) {
       // Försök deep-link först, fallback till Play Store om appen
       // inte fångar inom 1.5 s.
@@ -83,15 +93,15 @@ const description =
         }
       }, 1500);
     } else if (isIos) {
-      if (status) {
-        status.textContent =
-          "iOS-versionen är inte släppt än. Be skaparen om en Android-installation, eller kom tillbaka när iOS-appen lanseras.";
-      }
+      setStatus(
+        "iOS-versionen är inte släppt än. Be skaparen om en Android-installation, eller kom tillbaka när iOS-appen lanseras.",
+        "The iOS version isn't released yet. Ask the creator for an Android installation, or come back once the iOS app launches."
+      );
     } else {
-      if (status) {
-        status.textContent =
-          "Öppna länken på en Android-telefon med Tipspromenaden installerad för att starta promenaden.";
-      }
+      setStatus(
+        "Öppna länken på en Android-telefon med Tipspromenaden installerad för att starta promenaden.",
+        "Open this link on an Android phone with Tipspromenaden installed to start the walk."
+      );
     }
   </script>
 </Layout>

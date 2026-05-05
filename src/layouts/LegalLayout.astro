@@ -15,15 +15,37 @@ import Layout from "./Layout.astro";
 interface Props {
   title?: string;
   description?: string;
-  frontmatter?: { title?: string; description?: string };
+  /** Språk för <html lang>. Default sv. */
+  lang?: "sv" | "en";
+  /** Explicit alternativ-URL för språkväljaren. */
+  alternateUrl?: string;
+  frontmatter?: {
+    title?: string;
+    description?: string;
+    lang?: "sv" | "en";
+    alternateUrl?: string;
+  };
 }
 
-const { title: directTitle, description: directDesc, frontmatter } = Astro.props as Props;
+const {
+  title: directTitle,
+  description: directDesc,
+  lang: directLang,
+  alternateUrl: directAltUrl,
+  frontmatter,
+} = Astro.props as Props;
 const title = directTitle ?? frontmatter?.title ?? "Tipspromenaden";
 const description = directDesc ?? frontmatter?.description;
+const lang = directLang ?? frontmatter?.lang;
+const alternateUrl = directAltUrl ?? frontmatter?.alternateUrl;
 ---
 
-<Layout title={`${title} — Tipspromenaden`} description={description}>
+<Layout
+  title={`${title} — Tipspromenaden`}
+  description={description}
+  lang={lang}
+  alternateUrl={alternateUrl}
+>
   <main class="min-h-screen bg-cream">
     <article class="max-w-3xl mx-auto px-6 py-12">
       <a

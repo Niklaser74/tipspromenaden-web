@@ -1,24 +1,44 @@
 ---
 import "../styles/global.css";
+import LanguageSwitcher from "../components/LanguageSwitcher.astro";
+import { getLocaleFromPath } from "../i18n/locale";
 
 interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  /** Språk för <html lang>. Default sv. */
+  lang?: "sv" | "en";
+  /**
+   * Explicit URL till motsvarande sida på det andra språket. Används av
+   * LanguageSwitcher. Om null faller switcher tillbaka på URL_MAP i
+   * src/i18n/locale.ts (som bara täcker huvudsidor — så ange explicit
+   * när du kan).
+   */
+  alternateUrl?: string;
 }
 
 const {
   title = "Tipspromenaden — quizpromenad i fickan",
   description = "En app för att skapa och delta i tipspromenader utomhus. Kontrollpunkter på karta, frågor som låses upp via GPS, QR-kod för delning. Just nu i sluten test på Android.",
   ogImage = "/og-image.png",
+  lang,
+  alternateUrl,
 } = Astro.props;
+
+// Auto-detektera lang från URL om inte explicit angivet — gör att md-sidor
+// utan frontmatter får rätt språk-tagg automatiskt baserat på path.
+const effectiveLang = lang ?? getLocaleFromPath(Astro.url.pathname);
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageURL = new URL(ogImage, Astro.site).toString();
+
+// Visa inte språkväljaren på admin-sidor (admin är svensk-only).
+const isAdmin = Astro.url.pathname.startsWith("/admin");
 ---
 
 <!doctype html>
-<html lang="sv">
+<html lang={effectiveLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -52,6 +72,7 @@ const ogImageURL = new URL(ogImage, Astro.site).toString();
     />
   </head>
   <body class="bg-cream text-text-warm overflow-x-hidden">
+    {!isAdmin && <LanguageSwitcher alternateUrl={alternateUrl} />}
     <slot />
   </body>
 </html>

@@ -1,33 +1,25 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
 
 const SWISH_NUMBER = "070-520 54 52";
-const SWISH_NUMBER_RAW = "46705205452"; // E.164-format för Swish-länk
+const SWISH_NUMBER_RAW = "46705205452";
 const SWISH_AMOUNT = "50";
 const SWISH_MESSAGE = "Tipspromenaden -- Bidrag";
-
-// Universal link enligt Swish:s officiella format. Öppnar Swish-appen
-// direkt på iOS/Android med betalning förifylld. På desktop landar man
-// på app.swish.nu som visar ett harmlöst informationssida.
 const SWISH_LINK = `https://app.swish.nu/1/p/sw/?sw=${SWISH_NUMBER_RAW}&amt=${SWISH_AMOUNT}&cur=SEK&msg=${encodeURIComponent(SWISH_MESSAGE)}`;
 
-// PayPal.me-länk för utländska bidrag (Swish funkar bara i Sverige).
-// Donatorn kan välja valuta och belopp på PayPal:s sida.
 const PAYPAL_HANDLE = "niklaser3d";
 const PAYPAL_LINK = `https://paypal.me/${PAYPAL_HANDLE}`;
 
-const title = "Stötta projektet — Tipspromenaden";
+const title = "Support the project — Tipspromenaden";
 const description =
-  "Tipspromenaden drivs som hobbyprojekt. Vill du bidra till att täcka driftkostnader och möjliggöra en iPhone-version? Stötta via Swish (Sverige) eller PayPal (internationellt).";
+  "Tipspromenaden is a hobby project. Want to help cover hosting costs and enable an iPhone version? Donate via Swish (Sweden) or PayPal (international).";
 ---
 
-<Layout title={title} description={description} lang="sv" alternateUrl="/en/support">
+<Layout title={title} description={description} lang="en" alternateUrl="/stod">
   <main class="min-h-screen">
-    {/* Tillbaka-länk samma mönster som LegalLayout (sa-funkar-det,
-        villkor, integritet) — högst upp, vänsterställd. */}
     <div class="max-w-3xl mx-auto px-6 pt-12">
       <a
-        href="/"
+        href="/en/"
         class="text-sm text-text-warm hover:text-green-dark inline-block"
       >
         ← Tipspromenaden.app
@@ -37,15 +29,15 @@ const description =
     {/* ─── HERO ──────────────────────────────────────────── */}
     <section class="max-w-3xl mx-auto px-6 pt-8 pb-10 text-center">
       <p class="text-sm tracking-[0.25em] text-sage uppercase mb-4">
-        Stötta projektet
+        Support the project
       </p>
       <hr class="w-12 border-t border-green mx-auto mb-12" />
 
       <h1 class="font-serif font-bold text-4xl sm:text-5xl md:text-6xl text-green-dark leading-tight mb-6">
-        Tack om du vill bidra
+        Thanks if you'd like to help
       </h1>
       <p class="font-serif italic text-lg sm:text-xl md:text-2xl text-green">
-        Tipspromenaden är gratis att använda — och kommer förbli det.
+        Tipspromenaden is free to use — and will stay that way.
       </p>
     </section>
 
@@ -53,22 +45,22 @@ const description =
     <section class="max-w-2xl mx-auto px-6 pb-12">
       <div class="space-y-5 text-lg leading-relaxed">
         <p>
-          Projektet började när Hofors kommun gick igenom en tuff
-          ekonomisk period och jag ville göra något för skol- och
-          fritidsbarnen — en app som lärare kunde bygga upplevelser
-          i och återanvända i undervisningen, ute i naturen istället
-          för i klassrummet.
+          The project started when Hofors municipality went through a
+          rough financial period and I wanted to do something for the
+          schools and after-school clubs — an app teachers could build
+          experiences in and reuse in their teaching, outdoors instead
+          of in the classroom.
         </p>
         <p>
-          Det blev större och roligare än jag tänkte mig, och idag
-          driver jag det vidare som hobbyprojekt. Det är gratis att
-          använda och kommer förbli det.
+          It grew bigger and more fun than I expected, and today I keep
+          it going as a hobby project. It's free to use and will stay
+          that way.
         </p>
         <p>
-          Just nu har jag förfrågningar från flera iPhone-användare
-          som vill testa appen. För att kunna lansera den även på iOS
-          krävs Apples utvecklarprogram — en löpande årsavgift jag
-          gärna täcker via bidrag istället för egen ficka.
+          Right now I have requests from several iPhone users who want
+          to test the app. To launch on iOS as well I need Apple's
+          developer program — a recurring annual fee I'd rather cover
+          via donations than out of pocket.
         </p>
       </div>
     </section>
@@ -76,32 +68,32 @@ const description =
     {/* Hairline */}
     <hr class="w-24 border-t border-rule mx-auto mb-16" />
 
-    {/* ─── KOSTNADSBREAKDOWN ─────────────────────────────── */}
+    {/* ─── COST BREAKDOWN ─────────────────────────────── */}
     <section class="max-w-2xl mx-auto px-6 pb-16">
       <h2 class="font-serif text-2xl sm:text-3xl text-center mb-8">
-        Vad pengarna går till
+        Where the money goes
       </h2>
       <div class="bg-white border border-rule rounded-2xl overflow-hidden">
         <div class="flex justify-between px-6 py-4 border-b border-rule">
-          <span>Domän + hosting (Cloudflare)</span>
-          <span class="font-semibold text-text-warm">~120 kr/år</span>
+          <span>Domain + hosting (Cloudflare)</span>
+          <span class="font-semibold text-text-warm">~120 SEK/year</span>
         </div>
         <div class="flex justify-between px-6 py-4 border-b border-rule">
-          <span>Firebase (data, auth, lagring)</span>
-          <span class="font-semibold text-text-warm">0 kr (gratis-tier)</span>
+          <span>Firebase (data, auth, storage)</span>
+          <span class="font-semibold text-text-warm">0 SEK (free tier)</span>
         </div>
         <div class="flex justify-between px-6 py-4 border-b border-rule">
-          <span>Apple Developer Program <span class="text-sm text-sage">(om iOS)</span></span>
-          <span class="font-semibold text-text-warm">~1 100 kr/år</span>
+          <span>Apple Developer Program <span class="text-sm text-sage">(if iOS)</span></span>
+          <span class="font-semibold text-text-warm">~1 100 SEK/year</span>
         </div>
         <div class="flex justify-between px-6 py-4 bg-cream font-semibold text-green-dark">
-          <span>Total med iOS</span>
-          <span>~1 220 kr/år</span>
+          <span>Total with iOS</span>
+          <span>~1 220 SEK/year</span>
         </div>
       </div>
       <p class="text-sm text-sage mt-4 text-center italic">
-        Transparent: alla bidrag går till driften av projektet, ingen
-        utvecklingstid faktureras.
+        Transparent: every donation goes to running costs — no
+        development time is invoiced.
       </p>
     </section>
 
@@ -109,39 +101,25 @@ const description =
     <section class="max-w-3xl mx-auto px-6 pb-20">
       <div class="bg-green-dark text-cream rounded-3xl p-8 sm:p-12 text-center">
         <p class="text-sm tracking-[0.25em] uppercase text-cta-body mb-3">
-          Swish
+          Swish (Sweden)
         </p>
         <h2 class="font-serif text-cream text-3xl sm:text-4xl mb-2">
-          Stötta via Swish
+          Donate via Swish
         </h2>
         <p class="text-cta-body text-base mb-8">
-          Förslag: <strong class="text-cream">50 kr</strong> — eller
-          valfritt belopp i Swish-appen.
+          Suggested: <strong class="text-cream">50 SEK</strong> — or any
+          amount you choose in the Swish app.
         </p>
 
-        {/* QR-kod med app-ikon i mitten — också klickbar för universal
-            link (öppnar Swish på telefon, swish.nu landningssida på
-            desktop). På mobilen där man redan tittar på sidan är det
-            enklare att trycka än att försöka skanna sin egen skärm.
-
-            QR är genererad med felkorrigeringsnivå H (30%), vilket
-            innebär att en ikon i mitten som täcker ~20% av ytan kan
-            maskeras utan att skanningen påverkas. Cream-färgad ring
-            runt ikonen blender mot QR-bakgrunden.
-
-            Använder explicit flex-column för att tvinga QR och knapp
-            att stacka vertikalt — text-center på parent räcker inte
-            eftersom inline-block-element kan hamna sida vid sida om
-            viewporten råkar vara bredare än de tillsammans. */}
         <div class="flex flex-col items-center gap-4 mb-6">
           <a
             href={SWISH_LINK}
             class="bg-cream rounded-2xl p-4 hover:shadow-lg transition relative"
-            aria-label="Öppna betalning i Swish-appen"
+            aria-label="Open payment in the Swish app"
           >
             <img
               src="/swish-qr.svg"
-              alt={`Swish QR-kod till ${SWISH_NUMBER}`}
+              alt={`Swish QR code for ${SWISH_NUMBER}`}
               width="220"
               height="220"
               class="w-48 h-48 sm:w-56 sm:h-56 block"
@@ -156,63 +134,56 @@ const description =
             />
           </a>
 
-          {/* Tydlig tap-knapp för mobil — desktop ser den också men
-              träffar då bara swish.nu landningssida vilket är harmlöst. */}
           <a
             href={SWISH_LINK}
             class="inline-block bg-cream text-green-dark font-semibold text-base sm:text-lg px-6 py-3 rounded-xl hover:bg-white transition"
           >
-            📱 Öppna i Swish-appen
+            📱 Open in the Swish app
           </a>
         </div>
 
         <p class="text-cta-body text-sm mb-2">
-          Eller skanna QR-koden ovan — eller skriv numret manuellt:
+          Or scan the QR code above — or type the number manually:
         </p>
         <p class="font-mono text-cream text-2xl sm:text-3xl font-semibold tracking-wider mb-2">
           {SWISH_NUMBER}
         </p>
         <p class="text-cta-body text-xs mb-8 opacity-80">
-          Meddelande: <em>Tipspromenaden — Bidrag</em>
+          Message: <em>Tipspromenaden — Bidrag</em>
         </p>
 
         <div class="w-14 h-1 bg-yellow mx-auto mb-6"></div>
 
         <p class="text-cta-body text-sm leading-relaxed max-w-md mx-auto">
-          Tack ❤️ — varje bidrag, oavsett storlek, gör skillnad och
-          räcker långt på en hobby-budget.
+          Thank you ❤️ — every donation, however small, makes a
+          difference and goes a long way on a hobby budget.
         </p>
       </div>
     </section>
 
-    {/* ─── PAYPAL-CTA (internationellt) ──────────────────
-        Mindre framträdande än Swish-blocket eftersom svensk publik är
-        primär målgrupp. Vit bakgrund med grön border istället för
-        green-dark — visuellt sekundärt utan att gömma sig.
-        Samma flex-column-mönster som Swish-blocket så QR + knapp
-        stackar konsistent. */}
+    {/* ─── PAYPAL-CTA (international) ─────────────────── */}
     <section class="max-w-3xl mx-auto px-6 pb-12">
       <div class="bg-white border-2 border-green-dark rounded-3xl p-8 sm:p-12 text-center">
         <p class="text-sm tracking-[0.25em] uppercase text-sage mb-3">
-          🌍 Internationellt
+          🌍 International
         </p>
         <h2 class="font-serif text-green-dark text-2xl sm:text-3xl mb-2">
-          Stötta från utlandet via PayPal
+          Donate from abroad via PayPal
         </h2>
         <p class="text-text-warm text-base mb-8">
-          Swish funkar bara i Sverige — utländska supportrar kan
-          använda PayPal istället. Du väljer valuta och belopp.
+          Swish only works in Sweden — international supporters can use
+          PayPal instead. You choose currency and amount.
         </p>
 
         <div class="flex flex-col items-center gap-4 mb-6">
           <a
             href={PAYPAL_LINK}
             class="bg-cream rounded-2xl p-4 hover:shadow-lg transition relative"
-            aria-label="Öppna PayPal-länken"
+            aria-label="Open the PayPal link"
           >
             <img
               src="/paypal-qr.svg"
-              alt={`PayPal QR-kod till ${PAYPAL_HANDLE}`}
+              alt={`PayPal QR code for ${PAYPAL_HANDLE}`}
               width="220"
               height="220"
               class="w-48 h-48 sm:w-56 sm:h-56 block"
@@ -233,35 +204,34 @@ const description =
             rel="noopener noreferrer"
             class="inline-block bg-green-dark text-cream font-semibold text-base sm:text-lg px-6 py-3 rounded-xl hover:bg-green transition"
           >
-            🌍 Öppna PayPal-länken
+            🌍 Open the PayPal link
           </a>
         </div>
 
         <p class="text-text-warm text-sm mb-2">
-          Eller skriv adressen direkt:
+          Or type the address directly:
         </p>
         <p class="font-mono text-green-dark text-lg sm:text-xl font-semibold mb-2 break-all">
           paypal.me/{PAYPAL_HANDLE}
         </p>
         <p class="text-sage text-xs opacity-80">
-          PayPal-konto behövs inte — gäst-betalning med kort fungerar.
+          No PayPal account needed — guest checkout with a card works.
         </p>
       </div>
     </section>
 
-    {/* ─── ALTERNATIV (sista utvägen) ───────────────────── */}
+    {/* ─── FALLBACK ───────────────────────────────────── */}
     <section class="max-w-2xl mx-auto px-6 pb-20 text-center">
       <p class="text-sm text-sage italic">
-        Annan väg du föredrar? Hör av dig på{" "}
+        Prefer another method? Drop a line at{" "}
         <a
           href="mailto:tipspromenaden.app@gmail.com"
           class="text-green font-semibold hover:underline"
         >
           tipspromenaden.app@gmail.com
         </a>
-        {" "}så löser vi det.
+        {" "}and we'll figure something out.
       </p>
     </section>
-
   </main>
 </Layout>
