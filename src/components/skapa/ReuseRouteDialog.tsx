@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import type { User } from "firebase/auth";
 import { getMyWalks } from "../../lib/walks";
 import type { Walk, Coordinate } from "../../lib/types";
+import { useT } from "./i18n";
 
 interface Props {
   user: User;
@@ -34,6 +35,7 @@ export function ReuseRouteDialog({
   onClose,
   onPickRoute,
 }: Props) {
+  const t = useT();
   const [walks, setWalks] = useState<Walk[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,7 +53,10 @@ export function ReuseRouteDialog({
           )
         );
       })
-      .catch((e: any) => setError(e?.message || "Kunde inte hämta walks"));
+      .catch((e: any) =>
+        setError(e?.message || t("Kunde inte hämta walks", "Couldn't fetch walks"))
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.uid, currentWalkId]);
 
   function handlePick(walk: Walk) {
@@ -75,19 +80,23 @@ export function ReuseRouteDialog({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-baseline justify-between mb-4">
-          <h2 className="font-serif text-2xl text-green-dark">Återanvänd rutt</h2>
+          <h2 className="font-serif text-2xl text-green-dark">
+            {t("Återanvänd rutt", "Reuse route")}
+          </h2>
           <button
             onClick={onClose}
             className="text-text-warm hover:text-green-dark text-2xl leading-none"
-            aria-label="Stäng"
+            aria-label={t("Stäng", "Close")}
           >
             ×
           </button>
         </div>
 
         <p className="text-sm text-text-warm mb-4 leading-relaxed">
-          Välj en tidigare promenad för att kopiera dess koordinater till de
-          frågor som inte är placerade i den här promenaden ännu.
+          {t(
+            "Välj en tidigare promenad för att kopiera dess koordinater till de frågor som inte är placerade i den här promenaden ännu.",
+            "Pick a previous walk to copy its coordinates onto the questions that aren't placed yet in this walk."
+          )}
         </p>
 
         {error && (
@@ -97,12 +106,15 @@ export function ReuseRouteDialog({
         )}
 
         {walks === null && !error && (
-          <p className="text-center text-text-warm py-8">Laddar…</p>
+          <p className="text-center text-text-warm py-8">{t("Laddar…", "Loading…")}</p>
         )}
 
         {walks !== null && walks.length === 0 && (
           <p className="text-center text-text-warm py-8">
-            Inga andra promenader att kopiera ifrån.
+            {t(
+              "Inga andra promenader att kopiera ifrån.",
+              "No other walks to copy from."
+            )}
           </p>
         )}
 
@@ -123,7 +135,7 @@ export function ReuseRouteDialog({
                         {w.title}
                       </span>
                       <span className="text-xs text-text-warm whitespace-nowrap">
-                        {placed} placerade
+                        {placed} {t("placerade", "placed")}
                       </span>
                     </div>
                   </button>

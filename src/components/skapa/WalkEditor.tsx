@@ -20,6 +20,7 @@ import {
   generateId,
   WALK_CATEGORIES,
   CATEGORY_LABELS_SV,
+  CATEGORY_LABELS_EN,
   type Walk,
   type Question,
   type Coordinate,
@@ -31,6 +32,7 @@ import { QuestionForm } from "./QuestionForm";
 import { ShareDialog } from "./ShareDialog";
 import { ReuseRouteDialog } from "./ReuseRouteDialog";
 import { Flag } from "../Flag";
+import { useT, useLocale } from "./i18n";
 
 /**
  * Språkalternativ för walks. Måste matcha appens
@@ -56,6 +58,9 @@ interface Props {
 }
 
 export function WalkEditor({ walkId, user, onClose }: Props) {
+  const t = useT();
+  const lang = useLocale();
+  const categoryLabels = lang === "en" ? CATEGORY_LABELS_EN : CATEGORY_LABELS_SV;
   const [walk, setWalk] = useState<Walk | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -73,19 +78,21 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
       .then((w) => {
         if (cancelled) return;
         if (!w) {
-          setError("Promenaden hittades inte.");
+          setError(t("Promenaden hittades inte.", "Walk not found."));
         } else if (w.createdBy !== user.uid) {
-          setError("Du äger inte denna promenad.");
+          setError(t("Du äger inte denna promenad.", "You don't own this walk."));
         } else {
           setWalk(w);
         }
       })
       .catch((e: any) => {
-        if (!cancelled) setError(e?.message || "Kunde inte hämta promenaden");
+        if (!cancelled)
+          setError(e?.message || t("Kunde inte hämta promenaden", "Couldn't fetch the walk"));
       });
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walkId, user.uid]);
 
   function update(patch: Partial<Walk>) {
@@ -168,7 +175,10 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
     update(patch);
 
     setImportMessage(
-      `✅ Importerade ${newQuestions.length} frågor från "${battery.name}". Placera dem på kartan eller använd "Återanvänd rutt".`
+      t(
+        `✅ Importerade ${newQuestions.length} frågor från "${battery.name}". Placera dem på kartan eller använd "Återanvänd rutt".`,
+        `✅ Imported ${newQuestions.length} questions from "${battery.name}". Place them on the map or use "Reuse route".`
+      )
     );
     setTimeout(() => setImportMessage(null), 8000);
   }
@@ -192,8 +202,14 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
     const remaining = coords.length - coordIndex;
     setImportMessage(
       remaining > 0
-        ? `✅ Kopierade ${filled} koordinater. ${remaining} koordinater i källan oanvända (slut på tomma frågor).`
-        : `✅ Kopierade ${filled} koordinater till oplacerade frågor.`
+        ? t(
+            `✅ Kopierade ${filled} koordinater. ${remaining} koordinater i källan oanvända (slut på tomma frågor).`,
+            `✅ Copied ${filled} coordinates. ${remaining} coordinates from the source were unused (no more empty questions).`
+          )
+        : t(
+            `✅ Kopierade ${filled} koordinater till oplacerade frågor.`,
+            `✅ Copied ${filled} coordinates to unplaced questions.`
+          )
     );
     setTimeout(() => setImportMessage(null), 6000);
   }
@@ -210,7 +226,7 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
       await saveWalk(toSave);
       setSavedAt(Date.now());
     } catch (e: any) {
-      setError(e?.message || "Kunde inte spara");
+      setError(e?.message || t("Kunde inte spara", "Couldn't save"));
     } finally {
       setSaving(false);
     }
@@ -218,12 +234,16 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
 
   async function handleDelete() {
     if (!walk) return;
-    if (!confirm(`Radera "${walk.title}"? Detta går inte att ångra.`)) return;
+    const msg = t(
+      `Radera "${walk.title}"? Detta går inte att ångra.`,
+      `Delete "${walk.title}"? This can't be undone.`
+    );
+    if (!confirm(msg)) return;
     try {
       await deleteWalk(walk.id);
       onClose();
     } catch (e: any) {
-      setError(e?.message || "Kunde inte radera");
+      setError(e?.message || t("Kunde inte radera", "Couldn't delete"));
     }
   }
 
@@ -232,7 +252,7 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
       <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
         <p className="text-red-700 mb-6">{error}</p>
         <button onClick={onClose} className="text-green font-semibold hover:underline">
-          ← Tillbaka till listan
+          {t("← Tillbaka till listan", "← Back to the list")}
         </button>
       </div>
     );
@@ -241,7 +261,7 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
   if (!walk) {
     return (
       <div className="min-h-screen flex items-center justify-center text-text-warm">
-        Laddar…
+        {t("Laddar…", "Loading…")}
       </div>
     );
   }
@@ -257,44 +277,45 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
       <header className="flex items-center justify-between gap-4 px-6 py-3 border-b border-gray-200 bg-white">
         <div className="flex items-center gap-3 min-w-0">
           <a
-            href="/"
+            href={lang === "en" ? "/en/" : "/"}
             className="text-text-warm hover:text-green-dark whitespace-nowrap text-sm"
-            title="Till hemsidan"
+            title={t("Till hemsidan", "To the home page")}
           >
-            ← Hem
+            {t("← Hem", "← Home")}
           </a>
           <button
             onClick={onClose}
             className="text-text-warm hover:text-green-dark whitespace-nowrap"
           >
-            ← Mina
+            {t("← Mina", "← Mine")}
           </button>
           <input
             value={walk.title}
             onChange={(e) => update({ title: e.target.value })}
             className="font-serif text-xl text-green-dark bg-transparent border-b border-transparent focus:border-green-dark focus:outline-none flex-1 min-w-0 px-1"
-            placeholder="Titel"
+            placeholder={t("Titel", "Title")}
           />
         </div>
         <div className="flex items-center gap-3">
           {savedAt && !saving && (
             <span className="text-xs text-text-warm">
-              Sparad {new Date(savedAt).toLocaleTimeString("sv-SE")}
+              {t("Sparad", "Saved")}{" "}
+              {new Date(savedAt).toLocaleTimeString(lang === "en" ? "en-GB" : "sv-SE")}
             </span>
           )}
           <button
             onClick={() => setShowShare(true)}
             className="border border-green-dark text-green-dark px-4 py-2 rounded-full font-semibold text-sm hover:bg-green-dark/5 transition"
-            title="Dela promenaden"
+            title={t("Dela promenaden", "Share the walk")}
           >
-            Dela
+            {t("Dela", "Share")}
           </button>
           <button
             onClick={handleSave}
             disabled={saving}
             className="bg-green-dark text-cream px-5 py-2 rounded-full font-semibold text-sm shadow hover:shadow-md transition disabled:opacity-50"
           >
-            {saving ? "Sparar…" : "Spara"}
+            {saving ? t("Sparar…", "Saving…") : t("Spara", "Save")}
           </button>
         </div>
       </header>
@@ -318,12 +339,15 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
           />
           {placingMode && (
             <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-yellow-100 border border-yellow-300 rounded-full px-4 py-2 text-sm shadow z-[1000]">
-              Klicka på kartan för att placera frågan
+              {t(
+                "Klicka på kartan för att placera frågan",
+                "Click on the map to place the question"
+              )}
               <button
                 onClick={() => setPlacingMode(false)}
                 className="ml-3 text-yellow-900 hover:underline"
               >
-                Avbryt
+                {t("Avbryt", "Cancel")}
               </button>
             </div>
           )}
@@ -333,18 +357,21 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
         <aside className="w-full md:w-[420px] border-t md:border-t-0 md:border-l border-gray-200 bg-white overflow-y-auto">
           <div className="p-5 border-b border-gray-100">
             <label className="block text-xs uppercase tracking-wide text-text-warm mb-2">
-              Beskrivning
+              {t("Beskrivning", "Description")}
             </label>
             <textarea
               value={walk.description ?? ""}
               onChange={(e) => update({ description: e.target.value })}
               rows={2}
               className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-green-dark focus:outline-none"
-              placeholder="Kort om promenaden — vad väntar deltagaren?"
+              placeholder={t(
+                "Kort om promenaden — vad väntar deltagaren?",
+                "Short description — what awaits the participant?"
+              )}
             />
 
             <label className="block text-xs uppercase tracking-wide text-text-warm mt-4 mb-2">
-              Språk
+              {t("Språk", "Language")}
             </label>
             {/* Custom flagg-grid istället för <select>: native HTML
                 option-element kan inte rendera bilder, och Windows
@@ -382,11 +409,13 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
                 className="mt-1 accent-green-dark"
               />
               <span className="text-sm">
-                <strong>Publicera till bibliotek</strong>
+                <strong>{t("Publicera till bibliotek", "Publish to library")}</strong>
                 <br />
                 <span className="text-text-warm text-xs">
-                  Andra användare kan hitta och spela din promenad i appens
-                  bibliotek-flik.
+                  {t(
+                    "Andra användare kan hitta och spela din promenad i appens bibliotek-flik.",
+                    "Other users can discover and play your walk in the app's library tab."
+                  )}
                 </span>
               </span>
             </label>
@@ -395,12 +424,12 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
               <div className="mt-3 space-y-3 bg-cream/50 border border-rule rounded-lg p-3">
                 <div>
                   <label className="block text-xs uppercase tracking-wide text-text-warm mb-1">
-                    Stad
+                    {t("Stad", "City")}
                   </label>
                   <input
                     value={walk.city ?? ""}
                     onChange={(e) => update({ city: e.target.value })}
-                    placeholder="T.ex. Visby"
+                    placeholder={t("T.ex. Visby", "E.g. Visby")}
                     maxLength={100}
                     className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-green-dark focus:outline-none"
                   />
@@ -408,7 +437,7 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
 
                 <div>
                   <label className="block text-xs uppercase tracking-wide text-text-warm mb-2">
-                    Kategori
+                    {t("Kategori", "Category")}
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {WALK_CATEGORIES.map((cat) => {
@@ -425,7 +454,7 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
                               : "bg-white text-text-warm border-rule hover:border-green-dark"
                           }`}
                         >
-                          {CATEGORY_LABELS_SV[cat]}
+                          {categoryLabels[cat]}
                         </button>
                       );
                     })}
@@ -438,10 +467,10 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
           <div className="p-5">
             <div className="flex items-baseline justify-between mb-3">
               <h2 className="font-serif text-lg text-green-dark">
-                Frågor ({walk.questions.length})
+                {t("Frågor", "Questions")} ({walk.questions.length})
               </h2>
               <span className="text-xs text-text-warm">
-                {placedQuestions.length} placerade
+                {placedQuestions.length} {t("placerade", "placed")}
               </span>
             </div>
 
@@ -465,11 +494,11 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
                     >
                       <span className="font-semibold mr-2">{q.order}.</span>
                       <span className="text-text-warm">
-                        {q.text || "(utan text)"}
+                        {q.text || t("(utan text)", "(no text)")}
                       </span>
                       {!isPlaced && (
                         <span className="ml-2 text-orange-700 text-xs">
-                          ⚠ inte placerad
+                          {t("⚠ inte placerad", "⚠ not placed")}
                         </span>
                       )}
                     </button>
@@ -482,23 +511,29 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
               onClick={addQuestion}
               className="w-full bg-green-dark text-cream px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition"
             >
-              + Lägg till fråga
+              {t("+ Lägg till fråga", "+ Add question")}
             </button>
 
             <div className="grid grid-cols-2 gap-2 mt-2">
               <button
                 onClick={() => fileInputRef.current?.click()}
                 className="bg-white border border-green-dark text-green-dark px-3 py-2 rounded-lg text-xs font-semibold hover:bg-green-dark/5 transition"
-                title="Importera frågor från .tipspack-fil"
+                title={t(
+                  "Importera frågor från .tipspack-fil",
+                  "Import questions from a .tipspack file"
+                )}
               >
-                📥 Importera fil
+                {t("📥 Importera fil", "📥 Import file")}
               </button>
               <button
                 onClick={() => setShowReuse(true)}
                 className="bg-white border border-green-dark text-green-dark px-3 py-2 rounded-lg text-xs font-semibold hover:bg-green-dark/5 transition"
-                title="Kopiera koordinater från en annan walk"
+                title={t(
+                  "Kopiera koordinater från en annan walk",
+                  "Copy coordinates from another walk"
+                )}
               >
-                🗺 Återanvänd rutt
+                {t("🗺 Återanvänd rutt", "🗺 Reuse route")}
               </button>
             </div>
 
@@ -533,7 +568,7 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
               onClick={handleDelete}
               className="text-sm text-red-700 hover:underline"
             >
-              Radera promenaden
+              {t("Radera promenaden", "Delete the walk")}
             </button>
           </div>
         </aside>

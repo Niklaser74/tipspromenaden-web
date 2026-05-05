@@ -41,12 +41,9 @@ signal outside.
 
 ### The roomy way (on the web)
 
-Prefer a laptop and a real keyboard? Go to [**/skapa**](/skapa) and
-build the walk there. Same result — your walk lands in your collection
-in the app as soon as you sign in.
-
-> The web creator interface is currently Swedish-only. The walk you
-> build there works just like any other walk in the app.
+Prefer a laptop and a real keyboard? Go to
+[**/en/skapa**](/en/skapa) and build the walk there. Same result —
+your walk lands in your collection in the app as soon as you sign in.
 
 ### What you can configure
 

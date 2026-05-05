@@ -103,6 +103,18 @@ export const CATEGORY_LABELS_SV: Record<string, string> = {
   annat: "Annat",
 };
 
+/** En-label för kategori-koderna. */
+export const CATEGORY_LABELS_EN: Record<string, string> = {
+  natur: "Nature",
+  stad: "City",
+  historia: "History",
+  barn: "Kids",
+  cykel: "Cycling",
+  mat: "Food",
+  kultur: "Culture",
+  annat: "Other",
+};
+
 /**
  * Genererar ett kort, någorlunda unikt id för Walks/Questions.
  * Format: tidsstämpel (base36) + slumpsuffix. Cirka 12 tecken.

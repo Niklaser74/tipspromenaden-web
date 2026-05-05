@@ -1,0 +1,20 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import App from "../../components/skapa/App.tsx";
+
+// English version of /skapa. Same React island, just with `lang="en"`
+// passed to the LangProvider so all UI text comes out in English.
+// Path stays /skapa — keeping the same slug avoids confusion with
+// returning users and shared links.
+---
+
+<Layout
+  title="Create walk — Tipspromenaden"
+  description="Build a quiz walk in your browser — place checkpoints on the map, write questions, share with a QR code. The web alternative to the mobile app's creator with a bigger screen and faster text entry."
+  lang="en"
+  alternateUrl="/skapa"
+>
+  <main class="min-h-screen bg-cream">
+    <App client:only="react" lang="en" />
+  </main>
+</Layout>

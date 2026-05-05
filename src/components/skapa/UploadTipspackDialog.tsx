@@ -25,6 +25,7 @@ import {
   type TipspackMeta,
 } from "../../lib/tipspackLibrary";
 import { Flag } from "../Flag";
+import { useT, useLocale } from "./i18n";
 
 interface Props {
   user: User;
@@ -47,6 +48,8 @@ interface Preview {
 }
 
 export function UploadTipspackDialog({ user, onClose, onUploaded }: Props) {
+  const t = useT();
+  const lang = useLocale();
   const [preview, setPreview] = useState<Preview | null>(null);
   const [isPublic, setIsPublic] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +67,12 @@ export function UploadTipspackDialog({ user, onClose, onUploaded }: Props) {
 
     const initialSlug = slugFromFilename(file.name);
     if (!initialSlug) {
-      setError("Kunde inte generera ett slug från filnamnet. Döp om filen.");
+      setError(
+        t(
+          "Kunde inte generera ett slug från filnamnet. Döp om filen.",
+          "Couldn't generate a slug from the filename. Rename the file."
+        )
+      );
       return;
     }
 
@@ -109,7 +117,7 @@ export function UploadTipspackDialog({ user, onClose, onUploaded }: Props) {
       onUploaded(meta);
       onClose();
     } catch (e: any) {
-      setError(e?.message || "Upload misslyckades");
+      setError(e?.message || t("Upload misslyckades", "Upload failed"));
     } finally {
       setUploading(false);
     }
@@ -126,12 +134,12 @@ export function UploadTipspackDialog({ user, onClose, onUploaded }: Props) {
       >
         <div className="flex items-baseline justify-between mb-4">
           <h2 className="font-serif text-2xl text-green-dark">
-            Ladda upp tipspack
+            {t("Ladda upp tipspack", "Upload tipspack")}
           </h2>
           <button
             onClick={onClose}
             className="text-text-warm hover:text-green-dark text-2xl leading-none"
-            aria-label="Stäng"
+            aria-label={t("Stäng", "Close")}
           >
             ×
           </button>
@@ -146,9 +154,10 @@ export function UploadTipspackDialog({ user, onClose, onUploaded }: Props) {
         {!preview ? (
           <>
             <p className="text-sm text-text-warm leading-relaxed mb-4">
-              Välj en <code className="bg-white px-1 rounded">.tipspack</code>-fil
-              från disk eller drag-och-släpp den nedan. Filen valideras innan
-              uppladdning.
+              {t(
+                "Välj en .tipspack-fil från disk eller drag-och-släpp den nedan. Filen valideras innan uppladdning.",
+                "Pick a .tipspack file from disk or drag-and-drop it below. The file is validated before upload."
+              )}
             </p>
             <div
               onClick={() => fileInputRef.current?.click()}
@@ -166,9 +175,12 @@ export function UploadTipspackDialog({ user, onClose, onUploaded }: Props) {
             >
               <p className="text-3xl mb-2">📁</p>
               <p className="text-text-warm">
-                Klicka för att välja eller släpp filen här
+                {t(
+                  "Klicka för att välja eller släpp filen här",
+                  "Click to pick a file, or drop one here"
+                )}
               </p>
-              <p className="text-xs text-sage mt-1">Max 5 MB</p>
+              <p className="text-xs text-sage mt-1">{t("Max 5 MB", "Max 5 MB")}</p>
             </div>
             <input
               ref={fileInputRef}
@@ -182,7 +194,7 @@ export function UploadTipspackDialog({ user, onClose, onUploaded }: Props) {
           <>
             <div className="bg-white border border-rule rounded-xl p-4 mb-4">
               <p className="text-xs uppercase tracking-wide text-text-warm mb-2">
-                Förhandsgranskning
+                {t("Förhandsgranskning", "Preview")}
               </p>
               <h3 className="font-serif text-xl text-green-dark mb-1 flex items-center gap-2">
                 <Flag code={preview.parsed.language} height={18} />
@@ -194,23 +206,24 @@ export function UploadTipspackDialog({ user, onClose, onUploaded }: Props) {
                 </p>
               )}
               <p className="text-xs text-sage">
-                {preview.parsed.questions.length} frågor
+                {preview.parsed.questions.length} {t("frågor", "questions")}
                 {preview.parsed.author && ` · ${preview.parsed.author}`}
                 {" · slug: "}
                 <code className="text-text-warm">{preview.slug}</code>
               </p>
               {preview.slugWasTaken && (
                 <p className="mt-2 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded px-2 py-1.5">
-                  ⚠️ Slug:en <code>{preview.slug}</code> finns redan. Om du
-                  inte är ägaren kommer uppladdningen avvisas. Döp om filen
-                  och ladda upp på nytt om så är fallet.
+                  {t(
+                    `⚠️ Slug:en ${preview.slug} finns redan. Om du inte är ägaren kommer uppladdningen avvisas. Döp om filen och ladda upp på nytt om så är fallet.`,
+                    `⚠️ The slug ${preview.slug} already exists. If you're not the owner the upload will be rejected. Rename the file and try again in that case.`
+                  )}
                 </p>
               )}
             </div>
 
             <fieldset className="mb-4">
               <legend className="text-xs uppercase tracking-wide text-text-warm mb-2">
-                Synlighet
+                {t("Synlighet", "Visibility")}
               </legend>
               <label className="flex items-start gap-3 mb-2 cursor-pointer">
                 <input
@@ -221,11 +234,13 @@ export function UploadTipspackDialog({ user, onClose, onUploaded }: Props) {
                   className="mt-1 accent-green-dark"
                 />
                 <span className="text-sm">
-                  <strong>🌐 Publik</strong>
+                  <strong>{t("🌐 Publik", "🌐 Public")}</strong>
                   <br />
                   <span className="text-text-warm">
-                    Visas i biblioteket på <code>/tipspack</code>. Vem som
-                    helst kan upptäcka och använda paketet.
+                    {t(
+                      `Visas i biblioteket på ${lang === "en" ? "/en/tipspack" : "/tipspack"}. Vem som helst kan upptäcka och använda paketet.`,
+                      `Listed in the library at ${lang === "en" ? "/en/tipspack" : "/tipspack"}. Anyone can discover and use the pack.`
+                    )}
                   </span>
                 </span>
               </label>
@@ -238,11 +253,13 @@ export function UploadTipspackDialog({ user, onClose, onUploaded }: Props) {
                   className="mt-1 accent-green-dark"
                 />
                 <span className="text-sm">
-                  <strong>🔗 Hemlig länk</strong>
+                  <strong>{t("🔗 Hemlig länk", "🔗 Secret link")}</strong>
                   <br />
                   <span className="text-text-warm">
-                    Inte synlig i listan, men URL:en fungerar för alla med
-                    länken. Bra för familj/vän-grupper.
+                    {t(
+                      "Inte synlig i listan, men URL:en fungerar för alla med länken. Bra för familj/vän-grupper.",
+                      "Not listed, but the URL works for anyone with the link. Good for family/friend groups."
+                    )}
                   </span>
                 </span>
               </label>
@@ -254,14 +271,16 @@ export function UploadTipspackDialog({ user, onClose, onUploaded }: Props) {
                 className="text-text-warm px-4 py-2 hover:underline"
                 disabled={uploading}
               >
-                Välj annan fil
+                {t("Välj annan fil", "Pick another file")}
               </button>
               <button
                 onClick={handleUpload}
                 disabled={uploading}
                 className="bg-green-dark text-cream px-6 py-2 rounded-full font-semibold shadow hover:shadow-md transition disabled:opacity-50"
               >
-                {uploading ? "Laddar upp…" : "Ladda upp"}
+                {uploading
+                  ? t("Laddar upp…", "Uploading…")
+                  : t("Ladda upp", "Upload")}
               </button>
             </div>
           </>

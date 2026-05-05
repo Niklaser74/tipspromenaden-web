@@ -13,6 +13,7 @@
 
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
+import { useT } from "./i18n";
 
 interface Props {
   walkId: string;
@@ -27,6 +28,7 @@ function buildWalkLink(walkId: string): string {
 }
 
 export function ShareDialog({ walkId, walkTitle, onClose }: Props) {
+  const t = useT();
   const link = buildWalkLink(walkId);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -58,7 +60,10 @@ export function ShareDialog({ walkId, walkTitle, onClose }: Props) {
     try {
       await navigator.share({
         title: walkTitle,
-        text: `Kolla in min tipspromenad: ${walkTitle} 🌳`,
+        text: t(
+          `Kolla in min tipspromenad: ${walkTitle} 🌳`,
+          `Check out my quiz walk: ${walkTitle} 🌳`
+        ),
         url: link,
       });
     } catch {
@@ -76,11 +81,13 @@ export function ShareDialog({ walkId, walkTitle, onClose }: Props) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-baseline justify-between mb-4">
-          <h2 className="font-serif text-2xl text-green-dark">Dela promenaden</h2>
+          <h2 className="font-serif text-2xl text-green-dark">
+            {t("Dela promenaden", "Share the walk")}
+          </h2>
           <button
             onClick={onClose}
             className="text-text-warm hover:text-green-dark text-2xl leading-none"
-            aria-label="Stäng"
+            aria-label={t("Stäng", "Close")}
           >
             ×
           </button>
@@ -89,19 +96,19 @@ export function ShareDialog({ walkId, walkTitle, onClose }: Props) {
         {qrDataUrl ? (
           <img
             src={qrDataUrl}
-            alt="QR-kod till promenaden"
+            alt={t("QR-kod till promenaden", "QR code for the walk")}
             className="w-full max-w-[320px] mx-auto rounded-xl mb-5"
           />
         ) : (
           <div className="aspect-square max-w-[320px] mx-auto rounded-xl bg-white/40 mb-5 flex items-center justify-center text-text-warm">
-            Genererar QR…
+            {t("Genererar QR…", "Generating QR…")}
           </div>
         )}
 
         <div className="space-y-3">
           <div>
             <label className="block text-xs uppercase tracking-wide text-text-warm mb-1">
-              Länk
+              {t("Länk", "Link")}
             </label>
             <div className="flex gap-2">
               <input
@@ -114,7 +121,7 @@ export function ShareDialog({ walkId, walkTitle, onClose }: Props) {
                 onClick={handleCopy}
                 className="bg-green-dark text-cream px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 whitespace-nowrap"
               >
-                {copied ? "Kopierad!" : "Kopiera"}
+                {copied ? t("Kopierad!", "Copied!") : t("Kopiera", "Copy")}
               </button>
             </div>
           </div>
@@ -124,14 +131,15 @@ export function ShareDialog({ walkId, walkTitle, onClose }: Props) {
               onClick={handleNativeShare}
               className="w-full bg-green text-cream px-4 py-3 rounded-lg font-semibold hover:opacity-90"
             >
-              📤 Dela via systemmeny
+              {t("📤 Dela via systemmeny", "📤 Share via system menu")}
             </button>
           )}
 
           <p className="text-xs text-text-warm leading-relaxed">
-            Skicka länken via Messenger, SMS eller mejl. Mottagare med appen
-            installerad öppnar promenaden direkt — andra hamnar på en sida som
-            föreslår att ladda ner appen från Play Store.
+            {t(
+              "Skicka länken via Messenger, SMS eller mejl. Mottagare med appen installerad öppnar promenaden direkt — andra hamnar på en sida som föreslår att ladda ner appen från Play Store.",
+              "Send the link via Messenger, SMS or email. Recipients with the app installed open the walk directly — others land on a page suggesting they download the app from Play Store."
+            )}
           </p>
         </div>
       </div>

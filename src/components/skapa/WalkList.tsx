@@ -18,6 +18,7 @@ import { Flag } from "../Flag";
 import { ShareDialog } from "./ShareDialog";
 import { UploadTipspackDialog } from "./UploadTipspackDialog";
 import { MyTipspacks } from "./MyTipspacks";
+import { useT, useLocale } from "./i18n";
 
 interface Props {
   user: User;
@@ -25,6 +26,8 @@ interface Props {
 }
 
 export function WalkList({ user, onOpenWalk }: Props) {
+  const t = useT();
+  const lang = useLocale();
   const [walks, setWalks] = useState<Walk[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
@@ -39,11 +42,13 @@ export function WalkList({ user, onOpenWalk }: Props) {
         if (!cancelled) setWalks(list);
       })
       .catch((e: any) => {
-        if (!cancelled) setError(e?.message || "Kunde inte hämta promenader");
+        if (!cancelled)
+          setError(e?.message || t("Kunde inte hämta promenader", "Couldn't fetch walks"));
       });
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.uid]);
 
   async function handleCreate() {
@@ -53,27 +58,25 @@ export function WalkList({ user, onOpenWalk }: Props) {
       const id = generateId();
       const walk: Walk = {
         id,
-        title: "Ny promenad",
+        title: t("Ny promenad", "New walk"),
         questions: [],
         createdBy: user.uid,
         createdAt: Date.now(),
-        language: "sv",
+        language: lang,
       };
       await saveWalk(walk);
       onOpenWalk(id);
     } catch (e: any) {
-      setError(e?.message || "Kunde inte skapa promenad");
+      setError(e?.message || t("Kunde inte skapa promenad", "Couldn't create walk"));
       setCreating(false);
     }
   }
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-12">
-      {/* Tillbaka till hemsidan — samma mönster som /villkor, /integritet
-          och Login-vyn använder. Stannar inte kvar i React-routern utan
-          går till Astro-renderade /. */}
+      {/* Tillbaka till hemsidan — Astro-renderad. */}
       <a
-        href="/"
+        href={lang === "en" ? "/en/" : "/"}
         className="text-sm text-text-warm hover:text-green-dark mb-6 inline-block"
       >
         ← Tipspromenaden.app
@@ -81,17 +84,17 @@ export function WalkList({ user, onOpenWalk }: Props) {
       <header className="flex items-center justify-between mb-10">
         <div>
           <h1 className="font-serif text-3xl md:text-4xl text-green-dark">
-            Mina promenader
+            {t("Mina promenader", "My walks")}
           </h1>
           <p className="text-sm text-text-warm mt-1">
-            Inloggad som {user.displayName || user.email}
+            {t("Inloggad som", "Signed in as")} {user.displayName || user.email}
           </p>
         </div>
         <button
           onClick={() => signOut(auth)}
           className="text-sm text-text-warm hover:underline"
         >
-          Logga ut
+          {t("Logga ut", "Sign out")}
         </button>
       </header>
 
@@ -100,7 +103,9 @@ export function WalkList({ user, onOpenWalk }: Props) {
         disabled={creating}
         className="w-full mb-8 bg-green-dark text-cream px-6 py-4 rounded-2xl font-semibold text-lg shadow-md hover:shadow-lg transition disabled:opacity-50"
       >
-        {creating ? "Skapar…" : "+ Ny promenad"}
+        {creating
+          ? t("Skapar…", "Creating…")
+          : t("+ Ny promenad", "+ New walk")}
       </button>
 
       {error && (
@@ -110,13 +115,15 @@ export function WalkList({ user, onOpenWalk }: Props) {
       )}
 
       {walks === null && !error && (
-        <p className="text-center text-text-warm py-12">Laddar…</p>
+        <p className="text-center text-text-warm py-12">{t("Laddar…", "Loading…")}</p>
       )}
 
       {walks !== null && walks.length === 0 && (
         <p className="text-center text-text-warm py-12">
-          Inga promenader än. Klicka på "+ Ny promenad" ovan för att skapa
-          din första.
+          {t(
+            'Inga promenader än. Klicka på "+ Ny promenad" ovan för att skapa din första.',
+            'No walks yet. Click "+ New walk" above to create your first one.'
+          )}
         </p>
       )}
 
@@ -138,7 +145,9 @@ export function WalkList({ user, onOpenWalk }: Props) {
                   </h2>
                   <span className="text-xs text-text-warm whitespace-nowrap">
                     {w.questions.length}{" "}
-                    {w.questions.length === 1 ? "fråga" : "frågor"}
+                    {w.questions.length === 1
+                      ? t("fråga", "question")
+                      : t("frågor", "questions")}
                   </span>
                 </div>
                 {w.description && (
@@ -150,8 +159,8 @@ export function WalkList({ user, onOpenWalk }: Props) {
               <button
                 onClick={() => setShareWalk(w)}
                 className="px-4 border-l border-gray-200 text-text-warm hover:text-green-dark hover:bg-green-dark/5 transition rounded-r-xl"
-                title="Dela promenaden"
-                aria-label={`Dela ${w.title}`}
+                title={t("Dela promenaden", "Share the walk")}
+                aria-label={`${t("Dela", "Share")} ${w.title}`}
               >
                 📤
               </button>
@@ -172,24 +181,27 @@ export function WalkList({ user, onOpenWalk }: Props) {
       <section className="mt-12">
         <div className="flex items-baseline justify-between mb-4">
           <h2 className="font-serif text-2xl text-green-dark">
-            Mina tipspacks
+            {t("Mina tipspacks", "My tipspacks")}
           </h2>
           <button
             onClick={() => setShowUpload(true)}
             className="text-sm bg-green-dark text-cream px-4 py-2 rounded-full font-semibold hover:opacity-90"
           >
-            + Ladda upp
+            {t("+ Ladda upp", "+ Upload")}
           </button>
         </div>
         <p className="text-sm text-text-warm mb-4 leading-relaxed">
-          Frågebatterier du laddat upp till webben. Publika dyker upp i{" "}
+          {t(
+            "Frågebatterier du laddat upp till webben. Publika dyker upp i ",
+            "Question packs you've uploaded. Public ones appear in "
+          )}
           <a
-            href="/tipspack"
+            href={lang === "en" ? "/en/tipspack" : "/tipspack"}
             target="_blank"
             rel="noopener noreferrer"
             className="text-green font-semibold hover:underline"
           >
-            biblioteket på /tipspack
+            {t("biblioteket på /tipspack", "the library at /tipspack")}
           </a>
           .
         </p>

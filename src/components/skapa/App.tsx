@@ -19,8 +19,23 @@ import { auth } from "../../lib/firebase";
 import { Login } from "./Login";
 import { WalkList } from "./WalkList";
 import { WalkEditor } from "./WalkEditor";
+import { LangProvider, useT, type Locale } from "./i18n";
 
-export default function App() {
+interface AppProps {
+  /** Språk för UI:t. Default sv. Sätts från Astro-page baserat på path. */
+  lang?: Locale;
+}
+
+export default function App({ lang = "sv" }: AppProps) {
+  return (
+    <LangProvider lang={lang}>
+      <AppInner />
+    </LangProvider>
+  );
+}
+
+function AppInner() {
+  const t = useT();
   const [user, setUser] = useState<User | null | undefined>(undefined);
   const [activeWalkId, setActiveWalkId] = useState<string | null>(null);
 
@@ -54,7 +69,7 @@ export default function App() {
   if (user === undefined) {
     return (
       <div className="min-h-screen flex items-center justify-center text-text-warm">
-        <p>Laddar…</p>
+        <p>{t("Laddar…", "Loading…")}</p>
       </div>
     );
   }

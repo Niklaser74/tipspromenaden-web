@@ -11,6 +11,18 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Engelska översättningar (Fas 2): /skapa-creatorn
+
+- Walk-creatorn på `/skapa` är nu också på engelska — finns på
+  `/en/skapa`. Allt UI översatt: login, walks-lista, walk-editor,
+  fråge-formulär, dela-dialog, ladda upp-dialog, mina tipspacks-
+  panel, karttyp-toggle.
+- Kategori-chips visar nu engelska labels (Nature, City, History,
+  Kids, Cycling, Food, Culture, Other) på engelska sidan.
+- Datum/tid följer locale (en-GB på engelska, sv-SE på svenska).
+- Ny walk får `language: "en"` om den skapas på engelska sidan
+  (default-flaggan blir engelska istället för svenska).
+
 ## 2026-05-05 — Engelska översättningar (Fas 1)
 
 - Hela marknadssidan översatt till engelska. Engelska versioner

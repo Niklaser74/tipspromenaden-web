@@ -21,6 +21,7 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Coordinate, Question } from "../../lib/types";
+import { useT, useLocale } from "./i18n";
 
 // leaflet.gridlayer.googlemutant är en gammal IIFE-plugin som förlitar
 // sig på ett globalt `L` när den evaluerar. Med Vite/Rollup-bundling
@@ -111,10 +112,15 @@ function loadGoogleMaps(): Promise<void> {
 type MapType = "standard" | "hybrid" | "terrain";
 const MAP_TYPE_STORAGE_KEY = "tp.mapType";
 const CYCLE_ORDER: MapType[] = ["standard", "hybrid", "terrain"];
-const LABEL: Record<MapType, string> = {
+const LABEL_SV: Record<MapType, string> = {
   standard: "🗺 Karta",
   hybrid: "🛰 Hybrid",
   terrain: "⛰ Terräng",
+};
+const LABEL_EN: Record<MapType, string> = {
+  standard: "🗺 Map",
+  hybrid: "🛰 Hybrid",
+  terrain: "⛰ Terrain",
 };
 
 interface Props {
@@ -135,6 +141,9 @@ export function MapEditor({
   onMarkerClick,
   onMarkerDragEnd,
 }: Props) {
+  const t = useT();
+  const lang = useLocale();
+  const labelMap = lang === "en" ? LABEL_EN : LABEL_SV;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<L.Map | null>(null);
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
@@ -364,9 +373,9 @@ export function MapEditor({
         type="button"
         onClick={cycleMapType}
         className="absolute top-3 right-3 z-[1000] bg-white/95 hover:bg-white border border-rule rounded-full px-3 py-1.5 text-sm font-semibold text-green-dark shadow-md cursor-pointer"
-        title="Byt karttyp"
+        title={t("Byt karttyp", "Change map type")}
       >
-        {LABEL[mapType]}
+        {labelMap[mapType]}
       </button>
     </>
   );

@@ -5,6 +5,7 @@
  */
 
 import type { Question } from "../../lib/types";
+import { useT } from "./i18n";
 
 interface Props {
   question: Question;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export function QuestionForm({ question, onChange, onPlaceOnMap, onDelete }: Props) {
+  const t = useT();
   const isPlaced =
     question.coordinate.latitude !== 0 || question.coordinate.longitude !== 0;
 
@@ -41,19 +43,19 @@ export function QuestionForm({ question, onChange, onPlaceOnMap, onDelete }: Pro
     <div className="space-y-4">
       <div className="flex items-baseline justify-between">
         <h3 className="font-serif text-lg text-green-dark">
-          Fråga {question.order}
+          {t("Fråga", "Question")} {question.order}
         </h3>
         <button
           onClick={onDelete}
           className="text-xs text-red-700 hover:underline"
         >
-          Ta bort
+          {t("Ta bort", "Remove")}
         </button>
       </div>
 
       <div>
         <label className="block text-xs uppercase tracking-wide text-text-warm mb-1">
-          Frågetext
+          {t("Frågetext", "Question text")}
         </label>
         <textarea
           value={question.text}
@@ -61,13 +63,16 @@ export function QuestionForm({ question, onChange, onPlaceOnMap, onDelete }: Pro
           rows={2}
           maxLength={1000}
           className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-green-dark focus:outline-none"
-          placeholder="T.ex. Vilket år grundades Stockholm?"
+          placeholder={t(
+            "T.ex. Vilket år grundades Stockholm?",
+            "E.g. What year was Stockholm founded?"
+          )}
         />
       </div>
 
       <div>
         <label className="block text-xs uppercase tracking-wide text-text-warm mb-1">
-          Svarsalternativ — markera det rätta
+          {t("Svarsalternativ — markera det rätta", "Answer options — mark the correct one")}
         </label>
         <ul className="space-y-2">
           {question.options.map((opt, i) => (
@@ -84,14 +89,14 @@ export function QuestionForm({ question, onChange, onPlaceOnMap, onDelete }: Pro
                 onChange={(e) => setOption(i, e.target.value)}
                 maxLength={1000}
                 className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-green-dark focus:outline-none"
-                placeholder={`Alternativ ${i + 1}`}
+                placeholder={`${t("Alternativ", "Option")} ${i + 1}`}
               />
               {question.options.length > 2 && (
                 <button
                   onClick={() => removeOption(i)}
                   className="text-text-warm hover:text-red-700 px-2"
-                  title="Ta bort"
-                  aria-label={`Ta bort alternativ ${i + 1}`}
+                  title={t("Ta bort", "Remove")}
+                  aria-label={`${t("Ta bort alternativ", "Remove option")} ${i + 1}`}
                 >
                   ×
                 </button>
@@ -104,14 +109,14 @@ export function QuestionForm({ question, onChange, onPlaceOnMap, onDelete }: Pro
             onClick={addOption}
             className="mt-2 text-sm text-green font-semibold hover:underline"
           >
-            + Lägg till alternativ
+            {t("+ Lägg till alternativ", "+ Add option")}
           </button>
         )}
       </div>
 
       <div>
         <label className="block text-xs uppercase tracking-wide text-text-warm mb-1">
-          Plats
+          {t("Plats", "Location")}
         </label>
         {isPlaced ? (
           <div>
@@ -124,11 +129,14 @@ export function QuestionForm({ question, onChange, onPlaceOnMap, onDelete }: Pro
                 onClick={onPlaceOnMap}
                 className="text-sm text-green font-semibold hover:underline"
               >
-                Klicka om
+                {t("Klicka om", "Click again")}
               </button>
             </div>
             <p className="text-xs text-text-warm mt-1 leading-snug">
-              Tips: dra markören på kartan för att finjustera positionen.
+              {t(
+                "Tips: dra markören på kartan för att finjustera positionen.",
+                "Tip: drag the marker on the map to fine-tune the position."
+              )}
             </p>
           </div>
         ) : (
@@ -136,7 +144,7 @@ export function QuestionForm({ question, onChange, onPlaceOnMap, onDelete }: Pro
             onClick={onPlaceOnMap}
             className="w-full bg-orange-100 text-orange-900 border border-orange-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-orange-200 transition"
           >
-            📍 Placera på kartan
+            {t("📍 Placera på kartan", "📍 Place on the map")}
           </button>
         )}
       </div>
