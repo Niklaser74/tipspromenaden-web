@@ -35,7 +35,7 @@ import { db } from "./firebase";
  * om du inte redan är admin. Samma lista finns i `firestore.rules`.
  */
 export const ADMIN_UIDS: string[] = [
-  // "DIN_UID_HÄR" — fyll i från /admin-sidan
+  "xZCq96Z0BdZKWPFvKXAAwZQXb402",
 ];
 
 export function isAdmin(user: User | null | undefined): boolean {
