@@ -47,6 +47,7 @@ import {
 import { getCuratedTipspacks } from "../../lib/curatedTipspacks";
 import type { Walk } from "../../lib/types";
 import { Flag } from "../Flag";
+import WalkMiniMap from "./WalkMiniMap";
 
 type Tab = "overview" | "walks" | "tipspacks" | "sessions";
 
@@ -504,7 +505,10 @@ function WalksList({
                 </div>
               </div>
               {isExpanded && (
-                <div className="mt-3 bg-cream/50 border border-rule rounded-lg p-3">
+                <div className="mt-3 bg-cream/50 border border-rule rounded-lg p-3 space-y-3">
+                  <WalkMiniMap
+                    points={w.questions.map((q) => q.coordinate)}
+                  />
                   <ol className="space-y-3 text-sm">
                     {w.questions.map((q, i) => (
                       <li key={q.id} className="border-b border-rule/60 last:border-0 pb-2 last:pb-0">

@@ -11,6 +11,13 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Admin: liten karta vid inspektera-walk
+
+- Inspektera en walk på `/admin` visar nu en kompakt Leaflet-karta
+  ovanför frågelistan med markörer för varje kontrollpunkt. Cap:ad
+  zoom (max 13) så även en walk där alla kontroller ligger nära varandra
+  visar minst ~5 km — snabb geografisk overview.
+
 ## 2026-05-05 — Återinför App Check (monitor mode)
 
 - Nu när CSP släpper igenom `apis.google.com` fungerar Firebase Auth
