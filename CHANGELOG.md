@@ -11,6 +11,16 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Centraliserad .tipspack-validering
+
+- Internt: validering + typer för `.tipspack`-formatet ligger nu i en
+  delad fil (`src/lib/tipspackValidator.ts`) som är byte-för-byte
+  identisk med motsvarande fil i mobil-appen
+  (`tipspromenaden-app/src/services/tipspackValidator.ts`). Vid
+  formatändring uppdateras båda i samma PR.
+- Ingen synlig effekt för besökare på sajten — uppladdning + listning
+  fungerar precis som förut.
+
 ## 2026-05-04 — /stod: fixa layout så QR och knapp stackar
 
 - Layout-fix: QR-kortet och "Öppna i Swish-appen"-knappen hamnade
