@@ -44,15 +44,19 @@ interface Props {
   onSaved: () => void;
 }
 
+/* Inga flagg-emojis i select-options — Windows saknar fontstöd för
+   regional indicator-paret och visar dem som "SE Svenska" istället för
+   "🇸🇪 Svenska". Flag-komponenten med flagcdn-bilder funkar utanför
+   <select> men kan inte renderas inuti option:s. */
 const LANG_OPTIONS = [
-  { code: "sv", label: "🇸🇪 Svenska" },
-  { code: "en", label: "🇬🇧 English" },
-  { code: "de", label: "🇩🇪 Deutsch" },
-  { code: "no", label: "🇳🇴 Norsk" },
-  { code: "da", label: "🇩🇰 Dansk" },
-  { code: "fi", label: "🇫🇮 Suomi" },
-  { code: "fr", label: "🇫🇷 Français" },
-  { code: "es", label: "🇪🇸 Español" },
+  { code: "sv", label: "Svenska" },
+  { code: "en", label: "English" },
+  { code: "de", label: "Deutsch" },
+  { code: "no", label: "Norsk" },
+  { code: "da", label: "Dansk" },
+  { code: "fi", label: "Suomi" },
+  { code: "fr", label: "Français" },
+  { code: "es", label: "Español" },
 ];
 
 function emptyQuestion(): BatteryQuestion {
