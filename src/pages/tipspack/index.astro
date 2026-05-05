@@ -105,6 +105,21 @@ const packs = getCuratedTipspacks().map((p) => ({
                   </button>
                 </div>
               </div>
+              <div class="mt-3">
+                <button
+                  data-preview-url={p.url}
+                  data-preview-slug={p.slug}
+                  class="preview-btn text-xs text-green-dark hover:underline"
+                >
+                  Förhandsgranska frågor
+                </button>
+                <div
+                  class="preview-target hidden mt-2 bg-cream/50 border border-rule rounded-lg p-3"
+                  data-preview-for={p.slug}
+                >
+                  <p class="text-sm text-text-warm">Hämtar frågor…</p>
+                </div>
+              </div>
             </li>
           ))}
         </ul>
@@ -150,5 +165,65 @@ const packs = getCuratedTipspacks().map((p) => ({
         }
       });
     });
+
+    // Förhandsgranskning av curated-paketens frågor (utan svar). Lazy-fetch
+    // när knappen klickas första gången, sedan toggle av synlighet.
+    const loaded = new Set<string>();
+    document
+      .querySelectorAll<HTMLButtonElement>(".preview-btn")
+      .forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const url = btn.dataset.previewUrl;
+          const slug = btn.dataset.previewSlug;
+          if (!url || !slug) return;
+          const target = document.querySelector<HTMLDivElement>(
+            `[data-preview-for="${slug}"]`
+          );
+          if (!target) return;
+
+          const isHidden = target.classList.contains("hidden");
+          if (!isHidden) {
+            target.classList.add("hidden");
+            btn.textContent = "Förhandsgranska frågor";
+            return;
+          }
+          target.classList.remove("hidden");
+          btn.textContent = "Dölj frågor";
+
+          if (loaded.has(slug)) return;
+          try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+            const questions: { text: string }[] = data.questions ?? [];
+            const list = questions
+              .map(
+                (q, i) =>
+                  `<li>${i + 1}. ${escapeHtml(q.text)}</li>`
+              )
+              .join("");
+            target.innerHTML = `
+              <p class="text-xs text-text-warm mb-2 italic">
+                Frågor visas utan svar för att inte spoila spelet.
+              </p>
+              <ol class="space-y-1 text-sm text-green-dark">${list}</ol>
+            `;
+            loaded.add(slug);
+          } catch {
+            target.innerHTML =
+              '<p class="text-sm text-red-700">Kunde inte ladda frågorna.</p>';
+          }
+        });
+      });
+
+    // Minimal HTML-escape så frågetext inte injicerar markup.
+    function escapeHtml(s: string): string {
+      return s
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
   </script>
 </Layout>

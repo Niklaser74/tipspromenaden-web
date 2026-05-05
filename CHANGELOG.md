@@ -11,6 +11,15 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-05 — Förhandsgranska frågor i tipspack-listor
+
+- Ny "Förhandsgranska frågor"-knapp på alla sidor med tipspack-listor:
+  curated på `/tipspack`, inskickade publika från användare, samt egna
+  paket inne i `/skapa`. Klick laddar paketet lazy och visar bara
+  frågetexter (inte svaren) så listan inte spoilar för spelare.
+- Vanilla-JS i den statiska `/tipspack`-sidan (ingen ny island), React-
+  state i de redan interaktiva "Mina tipspacks"- och "Inskickade"-vyerna.
+
 ## 2026-05-05 — Centraliserad .tipspack-validering
 
 - Internt: validering + typer för `.tipspack`-formatet ligger nu i en

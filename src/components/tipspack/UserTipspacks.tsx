@@ -18,10 +18,33 @@ import {
 } from "../../lib/tipspackLibrary";
 import { Flag } from "../Flag";
 
+type PreviewState = "loading" | "error" | { questions: { text: string }[] };
+
 export default function UserTipspacks() {
   const [packs, setPacks] = useState<TipspackMeta[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const [previews, setPreviews] = useState<Record<string, PreviewState>>({});
+
+  async function togglePreview(slug: string) {
+    if (expanded === slug) {
+      setExpanded(null);
+      return;
+    }
+    setExpanded(slug);
+    if (previews[slug]) return;
+    setPreviews((p) => ({ ...p, [slug]: "loading" }));
+    try {
+      const url = await getDownloadUrl(slug);
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      setPreviews((p) => ({ ...p, [slug]: { questions: data.questions ?? [] } }));
+    } catch {
+      setPreviews((p) => ({ ...p, [slug]: "error" }));
+    }
+  }
 
   useEffect(() => {
     getPublicTipspacks()
@@ -130,6 +153,38 @@ export default function UserTipspacks() {
                   {copied ? "Kopierad!" : "Kopiera länk"}
                 </button>
               </div>
+            </div>
+            <div className="mt-3">
+              <button
+                onClick={() => togglePreview(p.slug)}
+                className="text-xs text-green-dark hover:underline"
+              >
+                {expanded === p.slug ? "Dölj frågor" : "Förhandsgranska frågor"}
+              </button>
+              {expanded === p.slug && (
+                <div className="mt-2 bg-cream/50 border border-rule rounded-lg p-3">
+                  {previews[p.slug] === "loading" && (
+                    <p className="text-sm text-text-warm">Hämtar frågor…</p>
+                  )}
+                  {previews[p.slug] === "error" && (
+                    <p className="text-sm text-red-700">Kunde inte ladda frågorna.</p>
+                  )}
+                  {typeof previews[p.slug] === "object" && (
+                    <>
+                      <p className="text-xs text-text-warm mb-2 italic">
+                        Frågor visas utan svar för att inte spoila spelet.
+                      </p>
+                      <ol className="space-y-1 text-sm text-green-dark list-decimal list-inside">
+                        {(previews[p.slug] as { questions: { text: string }[] }).questions.map(
+                          (q, i) => (
+                            <li key={i}>{q.text}</li>
+                          )
+                        )}
+                      </ol>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </li>
         );
