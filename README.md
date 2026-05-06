@@ -31,18 +31,85 @@ npm run preview  # serverar dist/ lokalt
 src/
 ├── layouts/Layout.astro       # gemensam HTML-skelett (head, fonts, meta)
 ├── pages/
-│   ├── index.astro            # landningssida
-│   └── 404.astro              # fångar /walk/<id> + okända paths,
-│                              # försöker öppna appen via custom scheme
+│   ├── index.astro            # landningssida (svensk)
+│   ├── 404.astro              # fångar okända paths, deep-link-fallback
+│   ├── walk-redirect.astro    # /walk/<id> via Cloudflare _redirects rewrite
+│   ├── skapa.astro            # walk-creator (React-island, login-gated)
+│   ├── tipspack/index.astro   # publik katalog av .tipspack-filer
+│   ├── tipspack/index.json.ts # statisk JSON-API som appen läser
+│   ├── stod.astro             # Swish + PayPal för supportbidrag
+│   ├── sa-funkar-det.md       # bilingual guide
+│   ├── villkor.md             # användarvillkor
+│   ├── integritet.md          # integritetspolicy
+│   ├── get-app.astro          # OS-detection: Android → testpilot-grupp,
+│   │                          # iOS → /stod, desktop → val. En QR funkar
+│   │                          # för båda OS:n.
+│   ├── admin.astro            # moderation + statistik (login-gated mot
+│   │                          # ADMIN_UIDS i src/lib/admin.ts)
+│   └── en/                    # engelska speglar:
+│       ├── index.astro        # /en/
+│       ├── support.astro      # /en/support
+│       ├── how-it-works.md    # /en/how-it-works
+│       ├── tipspack.astro     # /en/tipspack
+│       └── skapa.astro        # /en/skapa (samma React-island med en-locale)
+├── components/
+│   ├── Flag.tsx               # flagg-bild via flagcdn.com
+│   ├── LangSwitcher.tsx       # top-right språkväxlare på publika sidor
+│   ├── tipspack/
+│   │   └── UserTipspacks.tsx  # publika user-uploaded packs (React-island)
+│   ├── skapa/                 # walk-creator-flödet (React-islands)
+│   │   ├── App.tsx, Login.tsx, WalkList.tsx, WalkEditor.tsx,
+│   │   ├── MapEditor.tsx, QuestionForm.tsx, ShareDialog.tsx,
+│   │   ├── ReuseRouteDialog.tsx, UploadTipspackDialog.tsx,
+│   │   ├── MyTipspacks.tsx, i18n.ts (sv/en t-helper)
+│   └── admin/                 # admin-dashboard-byggblock
+│       ├── AdminDashboard.tsx # tabs + state-orchestration
+│       ├── WalkMiniMap.tsx    # Leaflet-overview med 🔍 Granska-toggle
+│       ├── BatchUploadDropZone.tsx  # drop N .tipspack-filer
+│       ├── TipspackEditor.tsx # skapa/redigera tipspack-modal
+│       └── FlyerDialog.tsx    # A5-printbart flygblad per walk
+├── lib/
+│   ├── firebase.ts            # Firebase init + App Check (monitor mode)
+│   ├── admin.ts               # ADMIN_UIDS + moderation-flagga-helpers
+│   ├── tipspackValidator.ts   # delad med app, byte-för-byte identisk
+│   ├── tipspack.ts            # parseTipspackFile + slugFromFilename
+│   ├── tipspackLibrary.ts     # Firestore CRUD för uploaded packs
+│   ├── curatedTipspacks.ts    # build-tid-läsning från public/tipspack/
+│   ├── walks.ts, types.ts     # walk-CRUD + Walk-typ (speglar app)
+│   └── i18n.ts                # språk-detection från URL-prefix
 └── styles/global.css          # Tailwind + designtokens (Friluft Folio)
 
 public/
+├── _headers                   # Cloudflare CSP + säkerhetsheaders
+├── _redirects                 # /walk/<id> rewrite till walk-redirect.astro
 ├── .well-known/
-│   └── assetlinks.json        # Android App Links — verifierar att
-│                              # `https://tipspromenaden.app/walk/*` får
-│                              # öppnas av com.tipspromenaden.app
+│   ├── assetlinks.json        # Android App Links
+│   └── apple-app-site-association  # förberett för iOS
+├── tipspack/*.tipspack        # curated frågebatterier (committade i git)
 └── icon.png                   # app-ikon
 ```
+
+## Admin-dashboard
+
+`/admin` är gated mot Firebase Auth + en hardcoded `ADMIN_UIDS`-lista
+i `src/lib/admin.ts`. **Samma lista måste finnas i
+`tipspromenaden-app/firestore.rules` (`isAdmin()`-funktionen)** annars
+kan rules-skiktet stoppa moderationsskrivningar.
+
+Flikar:
+
+- **Översikt** — counts + topp-10 walks efter sessioner
+- **Walks** — alla walks med expanderbar fråga+facit-vy, mini-karta
+  (Leaflet med 🔍 Granska-toggle), datum (skapad / senast utförd),
+  🚩 Göm-knapp, 📄 Flygblad-knapp
+- **Tipspacks** — curated + uppladdade i en lista, expanderbar med
+  facit, ➕ Skapa nytt + 📝 Redigera-modal, batch-upload-zon (drop
+  N filer med per-fil-status), 🚩 Göm-knapp
+- **Sessioner** — 50 senaste, status, walk-titel, tidsstämpel
+
+Moderation-flaggor lever i `moderation/hidden`-doc:et i Firestore.
+App + webb läser det doc:et i `getPublicWalks` resp. `getPublicTipspacks`
+/ `getLibraryTipspacks` och filtrerar bort flaggade items klient-side.
 
 ## Designsystem
 
@@ -76,19 +143,14 @@ Färger definieras som design-tokens i `src/styles/global.css` under
    och redirectar till Play Store efter 1.5s om appen inte fångar.
    Fångar iOS-användare och desktop-besökare.
 
-## Sidor som finns nu
-
-- `/` — marknadssida
-- `/walk/<id>` — deep-link-redirect till mobilappen, OG-metadata för
-  Messenger/iMessage-förhandsvisning. Implementerad via Cloudflare
-  `_redirects` rewrite till `/walk-redirect/`.
-- `/skapa` — webb-baserad walk-creator (React-island med Firebase + Leaflet)
-
 ## Roadmap
+
+Aktiv lista finns i `tipspromenaden-app/ROADMAP.md` (master-roadmap för
+hela projektet). Webb-specifika öppna idéer:
 
 - `/result/<sessionId>` — publik delningsbar leaderboard efter avslutat event
 - `/upptack` — publik katalog över opt-in-publicerade promenader (SEO)
-- `/villkor` + `/integritet` — Terms och Privacy Policy (Play Store kräver det)
+- Astro 5→6 major bump (uppskjuten — se ROADMAP)
 
 ## Changelog & release-rutiner
 
