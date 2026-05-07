@@ -11,6 +11,19 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-07 — Kommande event på landningssidan
+
+- Ny "Kommande tipspromenader"-sektion på `/` och `/en/` (höjd: under
+  iPhone-bannern, ovanför intro-blocket). Hämtar publika walks med
+  event-datum inom 30 dagar och visar de 3 närmaste som kompakta
+  rader. Hela sektionen försvinner om inga matchande event finns —
+  ingen tom state.
+- Hydreras `client:idle` så landningssidan renderas instant och
+  sektionen tonas in efter Firestore-fetchen (~200-500 ms vanligtvis).
+- Tanken: besökare som funderar på att ladda ner appen ser direkt
+  att det händer saker, vilket är starkare social proof än statisk
+  marknadstext.
+
 ## 2026-05-05 — Admin: A5-flygblad-generator + smart get-app-redirect
 
 - Ny "📄 Flygblad"-knapp på varje walk i `/admin`. Öppnar modal med

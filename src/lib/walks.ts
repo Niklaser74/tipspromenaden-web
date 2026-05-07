@@ -70,6 +70,23 @@ export async function getMyWalks(uid: string): Promise<Walk[]> {
   return walks;
 }
 
+/**
+ * Hämtar publika walks (`public === true`) för marknadsföring/discovery
+ * på publika sidor. Filtrerar bort admin-flaggade items via
+ * `moderation/hidden`-doc:et. Cap:ad till 200 docs.
+ */
+export async function getPublicWalks(): Promise<Walk[]> {
+  const [snap, flags] = await Promise.all([
+    getDocs(query(collection(db, WALKS), where("public", "==", true))),
+    import("./admin").then((m) => m.getModerationFlags()),
+  ]);
+  const walks = snap.docs
+    .map((d) => d.data() as Walk)
+    .filter((w) => !flags.walks.has(w.id));
+  walks.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
+  return walks.slice(0, 200);
+}
+
 /** Hämta en enskild walk via id. */
 export async function getWalk(id: string): Promise<Walk | null> {
   const ref = doc(db, WALKS, id);

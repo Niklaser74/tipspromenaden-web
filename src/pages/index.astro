@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
+import UpcomingEventsTeaser from "../components/UpcomingEventsTeaser.tsx";
 import skarmHem from "../assets/screenshots/skarm-hem.jpg";
 import skarmGaMed from "../assets/screenshots/skarm-ga-med.jpg";
 import skarmAktiv from "../assets/screenshots/skarm-aktiv.jpg";
@@ -84,6 +85,12 @@ const screenshots = [
         </p>
       </a>
     </section>
+
+    {/* ─── KOMMANDE EVENT ────────────────────────────────────
+        Realtid-fetch från Firestore via React-island. Visas bara om
+        det finns publika walks med event-datum inom 30 dagar. Hela
+        sektionen försvinner annars — vi vill aldrig ha tom yta. */}
+    <UpcomingEventsTeaser client:idle lang="sv" />
 
     {/* ─── INTRO ─────────────────────────────────────────── */}
     <section class="max-w-2xl mx-auto px-6 pb-16 text-center">
