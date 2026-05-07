@@ -61,6 +61,12 @@ const screenshots = [
       </p>
     </section>
 
+    {/* ─── UPCOMING EVENTS ───────────────────────────────────
+        Realtime fetch from Firestore via React island. Renders only
+        when public walks with event dates within 30 days exist;
+        otherwise the whole section disappears. */}
+    <UpcomingEventsTeaser client:idle lang="en" />
+
     {/* ─── iPhone-banner ─────────────────────────────────
         Visible right under the hero so iPhone users see it without
         scrolling. Yellow accent to stand out without competing with
@@ -87,12 +93,6 @@ const screenshots = [
         </p>
       </a>
     </section>
-
-    {/* ─── UPCOMING EVENTS ───────────────────────────────────
-        Realtime fetch from Firestore via React island. Renders only
-        when public walks with event dates within 30 days exist;
-        otherwise the whole section disappears. */}
-    <UpcomingEventsTeaser client:idle lang="en" />
 
     {/* ─── INTRO ─────────────────────────────────────────── */}
     <section class="max-w-2xl mx-auto px-6 pb-16 text-center">

@@ -59,6 +59,12 @@ const screenshots = [
       </p>
     </section>
 
+    {/* ─── KOMMANDE EVENT ────────────────────────────────────
+        Realtid-fetch från Firestore via React-island. Visas bara om
+        det finns publika walks med event-datum inom 30 dagar. Hela
+        sektionen försvinner annars — vi vill aldrig ha tom yta. */}
+    <UpcomingEventsTeaser client:idle lang="sv" />
+
     {/* ─── iPhone-banner ─────────────────────────────────
         Synlig direkt under hero så iPhone-användare ser den utan att
         scrolla. Yellow-accent för att sticka ut utan att konkurrera
@@ -85,12 +91,6 @@ const screenshots = [
         </p>
       </a>
     </section>
-
-    {/* ─── KOMMANDE EVENT ────────────────────────────────────
-        Realtid-fetch från Firestore via React-island. Visas bara om
-        det finns publika walks med event-datum inom 30 dagar. Hela
-        sektionen försvinner annars — vi vill aldrig ha tom yta. */}
-    <UpcomingEventsTeaser client:idle lang="sv" />
 
     {/* ─── INTRO ─────────────────────────────────────────── */}
     <section class="max-w-2xl mx-auto px-6 pb-16 text-center">

@@ -122,12 +122,12 @@ export default function UpcomingEventsTeaser({
   }
 
   return (
-    <section className="max-w-5xl mx-auto px-6 pb-16">
+    <section className="max-w-2xl mx-auto px-6 pb-12">
       <div className="bg-white border border-rule rounded-2xl p-6 sm:p-8">
-        <p className="text-xs tracking-[0.2em] uppercase text-sage mb-2">
+        <p className="text-xs tracking-[0.2em] uppercase text-sage mb-2 text-center">
           {s.eyebrow}
         </p>
-        <h2 className="font-serif font-bold text-2xl sm:text-3xl text-green-dark mb-6">
+        <h2 className="font-serif font-bold text-2xl sm:text-3xl text-green-dark mb-6 text-center">
           {s.headline}
         </h2>
         <ul className="space-y-3">
