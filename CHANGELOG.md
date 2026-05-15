@@ -17,6 +17,7 @@ användar-orienterad text.
   sida på ett A4-ark i liggande format — klipp isär för två exemplar.
 - Sparar papper och gör det enklare att dela ut flera flygblad från
   samma utskrift.
+- Tunn streckad klipplinje i mitten som hjälp vid utskärning.
 
 ## 2026-05-15 — Flygblad-utskrift skriver inte längre ut hela admin-sidan
 

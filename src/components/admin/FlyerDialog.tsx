@@ -156,6 +156,17 @@ export function FlyerDialog({ walk, onClose }: Props) {
             box-shadow: none !important;
             border-radius: 0 !important;
           }
+          /* Tunn streckad klipplinje i sömmen mellan de två flygbladen. */
+          .flyer-print-root::after {
+            content: "" !important;
+            position: absolute !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            left: 148mm !important;
+            width: 0 !important;
+            border-left: 0.3mm dashed #B7AE9C !important;
+            pointer-events: none !important;
+          }
         }
       `}</style>
 
