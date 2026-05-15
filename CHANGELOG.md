@@ -11,6 +11,12 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-15 — Egna kontakt-mejladresser
+
+- Kontakt-mejlen bytt från Gmail till tipspromenaden.app-domänen:
+  `support@` för support och allmänna frågor, `privacy@` i
+  integritetspolicyn (GDPR-kontakt), `legal@` i användarvillkoren.
+
 ## 2026-05-15 — Flygblad skrivs alltid ut 2-up (två per A4)
 
 - Flygbladsutskriften ger nu alltid två identiska A5-flygblad sida vid
