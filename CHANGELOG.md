@@ -11,6 +11,15 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-15 — Flygblad-utskrift skriver inte längre ut hela admin-sidan
+
+- Fixat: "Skriv ut / Spara som PDF" i admin-flygbladsverktyget tog
+  tidigare med hela webbsidan (header, dashboard, sidfot) i utskriften.
+  Nu kommer bara det rena A5-flygbladet ut.
+- Orsak: print-CSS:en gömde sidan via en `#root`-selektor som inte
+  existerar i Astro-bygget. Flygbladet renderas nu i en egen portal
+  utanför sidstrukturen, så utskriften blir strukturoberoende.
+
 ## 2026-05-07 — Kommande event på landningssidan
 
 - Ny "Kommande tipspromenader"-sektion på `/` och `/en/` (höjd: under

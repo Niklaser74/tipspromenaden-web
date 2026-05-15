@@ -11,13 +11,17 @@
  * H så marginalerna runt blir snygga.
  *
  * Print-flödet: admin klickar "Skriv ut / Spara som PDF" → window.print() →
- * browserns print-dialog. CSS @page sätter A5 portrait, @media print
- * gömmer modal-chrome så bara flygbladet kommer ut. Resultatet är
- * pixel-perfekt — browserns PDF-engine ger bättre kvalitet än vad en
- * JS-genererad PDF skulle ge.
+ * browserns print-dialog. CSS @page sätter A5 portrait. En print-kopia av
+ * flygbladet renderas via en React-portal direkt till document.body
+ * (utanför astro-island och modal-overlayn) så att @media print kan dölja
+ * allt UTOM den. Tidigare versioner förlitade sig på en `#root`-selektor
+ * som inte finns i ett Astro/client:only-bygge — då följde hela sidan med
+ * i utskriften. Resultatet är pixel-perfekt — browserns PDF-engine ger
+ * bättre kvalitet än vad en JS-genererad PDF skulle ge.
  */
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import QRCode from "qrcode";
 import type { Walk } from "../../lib/types";
 
@@ -120,20 +124,21 @@ export function FlyerDialog({ walk, onClose }: Props) {
 
   return (
     <>
-      {/* Print-CSS: A5 portrait, dölj modal-chrome, behåll bara flygbladet.
-          Använder @media print + @page för exakt format. Tailwind:s
-          print:-modifiers räcker inte för @page-delen. */}
+      {/* Print-CSS: A5 portrait. Dölj ALLT direkt under <body> utom
+          print-portalen (.flyer-print-root) — strukturoberoende, funkar
+          oavsett om sidan hydreras i astro-island, #root e.d. @page kan
+          inte uttryckas via Tailwind:s print:-modifiers. */}
       <style>{`
         @page {
           size: A5 portrait;
           margin: 0;
         }
+        .flyer-print-root { display: none; }
         @media print {
           body { background: #F5F0E8 !important; }
-          body > #root > * { visibility: hidden !important; }
-          body > #root .flyer-print,
-          body > #root .flyer-print * { visibility: visible !important; }
-          .flyer-print {
+          body > *:not(.flyer-print-root) { display: none !important; }
+          .flyer-print-root { display: block !important; }
+          .flyer-print-root .flyer-print {
             position: absolute !important;
             top: 0 !important;
             left: 0 !important;
@@ -143,7 +148,6 @@ export function FlyerDialog({ walk, onClose }: Props) {
             box-shadow: none !important;
             border-radius: 0 !important;
           }
-          .no-print { display: none !important; }
         }
       `}</style>
 
@@ -227,6 +231,16 @@ export function FlyerDialog({ walk, onClose }: Props) {
           </div>
         </div>
       </div>
+
+      {/* Print-kopia: renderas direkt till document.body via portal så den
+          hamnar utanför astro-island + modal-overlayn. Dold på skärm
+          (.flyer-print-root { display:none }), syns bara i @media print. */}
+      {createPortal(
+        <div className="flyer-print-root">
+          <Flyer walk={walk} t={t} walkQr={walkQr} testersQr={testersQr} />
+        </div>,
+        document.body,
+      )}
     </>
   );
 }
