@@ -11,10 +11,12 @@
  * H så marginalerna runt blir snygga.
  *
  * Print-flödet: admin klickar "Skriv ut / Spara som PDF" → window.print() →
- * browserns print-dialog. CSS @page sätter A5 portrait. En print-kopia av
- * flygbladet renderas via en React-portal direkt till document.body
+ * browserns print-dialog. Utskriften är ALLTID 2-up: CSS @page sätter A4
+ * landscape och TVÅ identiska A5-flygblad renderas sida vid sida
+ * (148mm + 148mm ≈ 297mm) så ett A4-ark ger två flygblad att klippa isär.
+ * Print-kopiorna renderas via en React-portal direkt till document.body
  * (utanför astro-island och modal-overlayn) så att @media print kan dölja
- * allt UTOM den. Tidigare versioner förlitade sig på en `#root`-selektor
+ * allt UTOM dem. Tidigare versioner förlitade sig på en `#root`-selektor
  * som inte finns i ett Astro/client:only-bygge — då följde hela sidan med
  * i utskriften. Resultatet är pixel-perfekt — browserns PDF-engine ger
  * bättre kvalitet än vad en JS-genererad PDF skulle ge.
@@ -124,24 +126,30 @@ export function FlyerDialog({ walk, onClose }: Props) {
 
   return (
     <>
-      {/* Print-CSS: A5 portrait. Dölj ALLT direkt under <body> utom
-          print-portalen (.flyer-print-root) — strukturoberoende, funkar
-          oavsett om sidan hydreras i astro-island, #root e.d. @page kan
-          inte uttryckas via Tailwind:s print:-modifiers. */}
+      {/* Print-CSS: ALLTID 2-up — A4 landscape, två A5-flygblad sida vid
+          sida. Dölj ALLT direkt under <body> utom print-portalen
+          (.flyer-print-root) — strukturoberoende, funkar oavsett om sidan
+          hydreras i astro-island, #root e.d. @page kan inte uttryckas via
+          Tailwind:s print:-modifiers. */}
       <style>{`
         @page {
-          size: A5 portrait;
+          size: A4 landscape;
           margin: 0;
         }
         .flyer-print-root { display: none; }
         @media print {
           body { background: #F5F0E8 !important; }
           body > *:not(.flyer-print-root) { display: none !important; }
-          .flyer-print-root { display: block !important; }
-          .flyer-print-root .flyer-print {
+          .flyer-print-root {
+            display: flex !important;
             position: absolute !important;
             top: 0 !important;
             left: 0 !important;
+            width: 297mm !important;
+            height: 210mm !important;
+          }
+          .flyer-print-root .flyer-print {
+            flex: 0 0 148mm !important;
             width: 148mm !important;
             height: 210mm !important;
             margin: 0 !important;
@@ -215,15 +223,21 @@ export function FlyerDialog({ walk, onClose }: Props) {
             <p>
               {t === STRINGS.sv ? (
                 <>
-                  Tips: i print-dialogen, välj <strong>Spara som PDF</strong>{" "}
-                  som mål för att ladda ner som PDF, eller skicka direkt till
-                  skrivare. Marginaler ska vara <strong>None</strong> och
-                  scaling <strong>100%</strong>.
+                  Tips: utskriften blir alltid <strong>2-up</strong> — två
+                  identiska flygblad sida vid sida på ett{" "}
+                  <strong>A4 liggande</strong> ark att klippa isär. I
+                  print-dialogen, välj <strong>Spara som PDF</strong> som mål
+                  för att ladda ner, eller skicka direkt till skrivare.
+                  Marginaler ska vara <strong>None</strong> och scaling{" "}
+                  <strong>100%</strong>.
                 </>
               ) : (
                 <>
-                  Tip: in the print dialog, choose <strong>Save as PDF</strong>{" "}
-                  to download, or send directly to a printer. Margins should be{" "}
+                  Tip: the print is always <strong>2-up</strong> — two
+                  identical flyers side by side on one{" "}
+                  <strong>A4 landscape</strong> sheet to cut apart. In the
+                  print dialog, choose <strong>Save as PDF</strong> to
+                  download, or send directly to a printer. Margins should be{" "}
                   <strong>None</strong> and scaling <strong>100%</strong>.
                 </>
               )}
@@ -232,11 +246,13 @@ export function FlyerDialog({ walk, onClose }: Props) {
         </div>
       </div>
 
-      {/* Print-kopia: renderas direkt till document.body via portal så den
-          hamnar utanför astro-island + modal-overlayn. Dold på skärm
-          (.flyer-print-root { display:none }), syns bara i @media print. */}
+      {/* Print-kopior: TVÅ identiska flygblad (2-up) renderas direkt till
+          document.body via portal så de hamnar utanför astro-island +
+          modal-overlayn. Dolda på skärm (.flyer-print-root { display:none }),
+          syns bara i @media print sida vid sida på ett A4-ark. */}
       {createPortal(
         <div className="flyer-print-root">
+          <Flyer walk={walk} t={t} walkQr={walkQr} testersQr={testersQr} />
           <Flyer walk={walk} t={t} walkQr={walkQr} testersQr={testersQr} />
         </div>,
         document.body,

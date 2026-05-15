@@ -11,6 +11,13 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-15 — Flygblad skrivs alltid ut 2-up (två per A4)
+
+- Flygbladsutskriften ger nu alltid två identiska A5-flygblad sida vid
+  sida på ett A4-ark i liggande format — klipp isär för två exemplar.
+- Sparar papper och gör det enklare att dela ut flera flygblad från
+  samma utskrift.
+
 ## 2026-05-15 — Flygblad-utskrift skriver inte längre ut hela admin-sidan
 
 - Fixat: "Skriv ut / Spara som PDF" i admin-flygbladsverktyget tog
