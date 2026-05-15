@@ -8,13 +8,13 @@ lang: sv
 > **In English:** This page is the official Privacy Policy and is
 > only available in Swedish. The Swedish version is the legally
 > authoritative one. If you need help understanding it, email
-> [tipspromenaden.app@gmail.com](mailto:tipspromenaden.app@gmail.com).
+> [privacy@tipspromenaden.app](mailto:privacy@tipspromenaden.app).
 
 ## 1. Personuppgiftsansvarig
 
 Tipspromenaden drivs av **Niklas Eriksson** som privatperson, hemmahörande i
 Sverige. Kontakt:
-**[tipspromenaden.app@gmail.com](mailto:tipspromenaden.app@gmail.com)**.
+**[privacy@tipspromenaden.app](mailto:privacy@tipspromenaden.app)**.
 
 Vi är inte skyldiga att utse dataskyddsombud (DPO) — vi behandlar inte
 personuppgifter i den omfattning eller känslighet som GDPR Art. 37 kräver.
@@ -94,7 +94,7 @@ Som användare i EU/EES har du rätt att:
 
 2. **Det som INTE raderas automatiskt:** deltagardata du lämnat i *andra*
    personers sessioner (t.ex. när du gått en promenad någon annan skapat).
-   Skicka e-post till tipspromenaden.app@gmail.com med ditt UID om du vill
+   Skicka e-post till privacy@tipspromenaden.app med ditt UID om du vill
    ha även dem borttagna — vi raderar manuellt inom 30 dagar.
 
 3. **Anonym användare:** Du kan radera din egen anonyma identitet via samma
@@ -104,7 +104,7 @@ Som användare i EU/EES har du rätt att:
 ### 5.2 Utöva andra rättigheter
 
 Skicka e-post till
-[tipspromenaden.app@gmail.com](mailto:tipspromenaden.app@gmail.com).
+[privacy@tipspromenaden.app](mailto:privacy@tipspromenaden.app).
 Vi svarar inom 30 dagar enligt GDPR Art. 12.3.
 
 ## 6. Barn under 13 år
@@ -151,5 +151,5 @@ GPS during a walk, optionally email if you sign in with Google). We use
 Google Firebase as data processor (data stored in EU + USA under the
 EU-US Data Privacy Framework). You can delete your account and data at any
 time via Settings → Delete account, or by emailing
-**tipspromenaden.app@gmail.com**. Full GDPR rights apply. Complaints to
+**privacy@tipspromenaden.app**. Full GDPR rights apply. Complaints to
 [IMY (Swedish DPA)](https://www.imy.se/en/).

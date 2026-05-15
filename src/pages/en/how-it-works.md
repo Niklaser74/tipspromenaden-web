@@ -79,5 +79,5 @@ let the app follow your system language. Questions you create can be
 tagged with a language so the right people find them.
 
 **Something is broken — who do I contact?**
-Email **[tipspromenaden.app@gmail.com](mailto:tipspromenaden.app@gmail.com)**
+Email **[support@tipspromenaden.app](mailto:support@tipspromenaden.app)**
 and I will look into it.

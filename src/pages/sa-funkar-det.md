@@ -77,7 +77,7 @@ ditt systemspråk. Frågor du själv skapar kan taggas med ett språk så
 att rätt personer hittar dem.
 
 **Något krånglar — vart vänder jag mig?**
-Mejla **[tipspromenaden.app@gmail.com](mailto:tipspromenaden.app@gmail.com)**
+Mejla **[support@tipspromenaden.app](mailto:support@tipspromenaden.app)**
 så kollar jag på det.
 
 ---
