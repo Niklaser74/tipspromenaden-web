@@ -11,6 +11,12 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-16 — security.txt
+
+- Lade till `/.well-known/security.txt` (RFC 9116) med
+  säkerhetskontakt `security@tipspromenaden.app`. Adresserar
+  Cloudflare Security Insights-flaggan "Security.txt not configured".
+
 ## 2026-05-15 — Egna kontakt-mejladresser
 
 - Kontakt-mejlen bytt från Gmail till tipspromenaden.app-domänen:
