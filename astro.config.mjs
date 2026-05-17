@@ -2,6 +2,7 @@
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
 
 // Astro-konfig — `site` används för att generera korrekta absoluta länkar
 // i sitemap och Open Graph-metadata. Tailwind 4 dras in via Vite-pluginen
@@ -14,7 +15,14 @@ import react from "@astrojs/react";
 // klienter som faktiskt besöker /skapa, så marknadssidan förblir lätt.
 export default defineConfig({
   site: "https://tipspromenaden.app",
-  integrations: [react()],
+  // Sitemap auto-genereras (/sitemap-index.xml) vid build. Admin-sidor
+  // exkluderas — de är login-gated och ska inte indexeras.
+  integrations: [
+    react(),
+    sitemap({
+      filter: (page) => !page.includes("/admin"),
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

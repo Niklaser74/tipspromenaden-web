@@ -11,6 +11,18 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-17 — SEO-pass
+
+- Sitemap genereras nu automatiskt (`/sitemap-index.xml`, admin
+  exkluderad) + `robots.txt` som pekar på den.
+- `hreflang` sv/en/x-default mellan språkspeglade sidor så Google
+  visar rätt språkvariant i sök.
+- Strukturerad data (JSON-LD `MobileApplication`) — kan ge rikare
+  sökresultat med app-info.
+- Meta-beskrivningar uppdaterade: "i sluten test" → "finns på
+  Google Play" (appen är i produktion nu). `og:locale` följer sidans
+  språk.
+
 ## 2026-05-16 — security.txt
 
 - Lade till `/.well-known/security.txt` (RFC 9116) med

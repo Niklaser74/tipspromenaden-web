@@ -20,7 +20,7 @@ interface Props {
 
 const {
   title = "Tipspromenaden — quizpromenad i fickan",
-  description = "En app för att skapa och delta i tipspromenader utomhus. Kontrollpunkter på karta, frågor som låses upp via GPS, QR-kod för delning. Just nu i sluten test på Android.",
+  description = "Gratis app för att skapa och delta i tipspromenader utomhus. Kontrollpunkter på karta, frågor som låses upp via GPS, topplista och QR-kod för delning. Finns på Google Play.",
   ogImage = "/og-image.png",
   lang,
   alternateUrl,
@@ -32,6 +32,31 @@ const effectiveLang = lang ?? getLocaleFromPath(Astro.url.pathname);
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageURL = new URL(ogImage, Astro.site).toString();
+
+// hreflang: bara när vi vet motsvarande sida på andra språket
+// (alternateUrl). sv är primärspråk → x-default pekar på sv-varianten.
+const otherLang = effectiveLang === "sv" ? "en" : "sv";
+const svURL = effectiveLang === "sv" ? canonicalURL : alternateUrl;
+const enURL = effectiveLang === "en" ? canonicalURL : alternateUrl;
+
+// JSON-LD: minimal MobileApplication-schema. Inga påhittade betyg —
+// håll fälten sanna så Google inte bestraffar missvisande markup.
+const appJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  name: "Tipspromenaden",
+  operatingSystem: "Android",
+  applicationCategory: "GameApplication",
+  url: "https://tipspromenaden.app",
+  installUrl:
+    "https://play.google.com/store/apps/details?id=com.tipspromenaden.app",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "SEK",
+  },
+  inLanguage: ["sv", "en", "de", "no", "da", "fi", "fr", "es"],
+};
 
 // Visa inte språkväljaren på admin-sidor (admin är svensk-only).
 const isAdmin = Astro.url.pathname.startsWith("/admin");
@@ -45,9 +70,25 @@ const isAdmin = Astro.url.pathname.startsWith("/admin");
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+    {
+      alternateUrl && (
+        <>
+          <link rel="alternate" hreflang="sv" href={svURL} />
+          <link rel="alternate" hreflang="en" href={enURL} />
+          <link rel="alternate" hreflang="x-default" href={svURL} />
+        </>
+      )
+    }
     <link rel="icon" type="image/png" href="/icon.png" />
 
     <title>{title}</title>
+
+    {/* Strukturerad data — hjälper Google visa app-info i sökresultat */}
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(appJsonLd)}
+    />
+
 
     {/* Open Graph */}
     <meta property="og:title" content={title} />
@@ -55,7 +96,10 @@ const isAdmin = Astro.url.pathname.startsWith("/admin");
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={ogImageURL} />
-    <meta property="og:locale" content="sv_SE" />
+    <meta
+      property="og:locale"
+      content={effectiveLang === "en" ? "en_US" : "sv_SE"}
+    />
 
     {/* Twitter */}
     <meta name="twitter:card" content="summary_large_image" />
