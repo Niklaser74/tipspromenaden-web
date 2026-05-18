@@ -27,7 +27,7 @@ import { createPortal } from "react-dom";
 import QRCode from "qrcode";
 import type { Walk } from "../../lib/types";
 
-// Smart-redirect-sida: Android → testpilot-grupp, iPhone → /stod.
+// Smart-redirect-sida: Android → Google Play, iPhone → /stod.
 // Encodes som EN QR-kod oavsett OS — sidan client-side detekterar och
 // skickar vidare. Se /src/pages/get-app.astro för logiken.
 const GET_APP_URL = "https://tipspromenaden.app/get-app";
@@ -67,13 +67,13 @@ const STRINGS: Record<Lang, Strings> = {
     step1Label: "STEG 1",
     step1Title: "Få appen",
     step1Caption:
-      "Android: hamnar i testpilot-gruppen. iPhone: hamnar på stödsidan så vi kan finansiera iOS-versionen.",
+      "Android: öppnar Google Play. iPhone: öppnar stödsidan — iOS-versionen är på gång.",
     step2Label: "STEG 2",
     step2Title: "Starta promenaden",
     step2Caption:
       "Skanna när du har fått appen installerad — promenaden öppnas direkt.",
     bottomNote:
-      "Appen är i sluten testning. Android-användare blir testare; iPhone-användare kan stötta så vi kan släppa iOS-versionen.",
+      "Gratis på Google Play. iPhone-versionen är på gång — stötta gärna så vi kan släppa den.",
     printButton: "🖨 Skriv ut / Spara som PDF",
     closeButton: "Stäng",
     langLabel: "Språk",
@@ -88,13 +88,13 @@ const STRINGS: Record<Lang, Strings> = {
     step1Label: "STEP 1",
     step1Title: "Get the app",
     step1Caption:
-      "Android: takes you to the tester group. iPhone: takes you to the support page so we can fund the iOS version.",
+      "Android: opens Google Play. iPhone: opens the support page — iOS version on the way.",
     step2Label: "STEP 2",
     step2Title: "Start the walk",
     step2Caption:
       "Scan once you have the app installed — the walk opens directly.",
     bottomNote:
-      "The app is in closed testing. Android users become testers; iPhone users can support us so we can release the iOS version.",
+      "Free on Google Play. The iPhone version is on the way — support us to help release it.",
     printButton: "🖨 Print / Save as PDF",
     closeButton: "Close",
     langLabel: "Language",

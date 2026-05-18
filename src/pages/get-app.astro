@@ -3,11 +3,11 @@ import Layout from "../layouts/Layout.astro";
 
 // /get-app — smart redirect baserat på OS.
 //
-// Används av flygblads-QR-koden ("Bli testare"-QR) så ETT QR-id räcker
-// för båda operativsystem:
-//   - Android → testpilot-Google-Group (där appen distribueras)
+// Används av flygblads-QR-koden så ETT QR-id räcker för båda
+// operativsystem:
+//   - Android → Google Play (appen är publikt släppt)
 //   - iOS    → /stod (eller /en/support) eftersom det inte finns någon
-//             iOS-app att testa ännu — be om bidrag istället
+//             iOS-app ännu — be om bidrag istället
 //   - Desktop → visa båda alternativen + brand-länk till sidan
 //
 // Astro renderar statiskt, så all detektering sker client-side med
@@ -45,10 +45,10 @@ const description =
     <div id="manual-choices" class="hidden flex flex-col sm:flex-row gap-3 max-w-md w-full">
       <a
         id="link-android"
-        href="https://groups.google.com/g/tipspromenaden-testers"
+        href="https://play.google.com/store/apps/details?id=com.tipspromenaden.app"
         class="flex-1 bg-green-dark text-cream px-5 py-3 rounded-xl font-semibold hover:opacity-90"
       >
-        🤖 Android — bli testare
+        🤖 Android — hämta på Google Play
       </a>
       <a
         id="link-ios"
@@ -68,7 +68,8 @@ const description =
   </main>
 
   <script>
-    const TESTERS = "https://groups.google.com/g/tipspromenaden-testers";
+    const PLAY_STORE =
+      "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
     const SUPPORT_SV = "/stod";
     const SUPPORT_EN = "/en/support";
 
@@ -93,15 +94,9 @@ const description =
     }
 
     if (isAndroid) {
-      setText(
-        status,
-        "Öppnar testpilot-gruppen där appen distribueras…"
-      );
-      setText(
-        statusEn,
-        "Opening the tester group where the app is distributed…"
-      );
-      window.location.href = TESTERS;
+      setText(status, "Öppnar Google Play…");
+      setText(statusEn, "Opening Google Play…");
+      window.location.href = PLAY_STORE;
     } else if (isIos) {
       setText(
         status,

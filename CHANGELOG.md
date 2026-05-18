@@ -17,6 +17,10 @@ användar-orienterad text.
   "Vi söker testpiloter / sluten test" till "Ladda ner gratis på
   Google Play" (sv + en), länkar nu direkt till store-listningen.
 - iOS-vinkeln flyttad till en mjuk rad mot Stöd oss / Support us.
+- `/get-app` smart-redirect: Android går nu till Google Play (inte
+  testpilot-Google-gruppen) — flygblads-QR-koderna fungerar korrekt
+  igen. Flygblads-generatorns text (sv + en) bytt från "sluten
+  testning / bli testare" till "Gratis på Google Play".
 
 ## 2026-05-17 — SEO-pass
 
