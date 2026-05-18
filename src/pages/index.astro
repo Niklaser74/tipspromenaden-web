@@ -6,14 +6,10 @@ import skarmHem from "../assets/screenshots/skarm-hem.jpg";
 import skarmGaMed from "../assets/screenshots/skarm-ga-med.jpg";
 import skarmAktiv from "../assets/screenshots/skarm-aktiv.jpg";
 
-// Två-stegs-flöde för att bli testpilot:
-//   1. Gå med i Google Group `tipspromenaden-testers` (CTA-knappen nedan)
-//   2. Niklas godkänner i Google Groups → välkomstmeddelandet skickas
-//      automatiskt och innehåller opt-in-URL:en för Play Store Closed
-//      Testing. Klick på den ger åtkomst till appen i Play.
-// Vi länkar därför INTE direkt till Play-listningen — appen är inte publikt
-// synlig än, så icke-testare skulle få "Objektet kunde inte hittas".
-const TESTERS_GROUP_URL = "https://groups.google.com/g/tipspromenaden-testers";
+// Appen är live på Google Play (produktion). CTA länkar direkt till
+// den publika store-listningen.
+const PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
 
 const screenshots = [
   {
@@ -68,7 +64,7 @@ const screenshots = [
     {/* ─── iPhone-banner ─────────────────────────────────
         Synlig direkt under hero så iPhone-användare ser den utan att
         scrolla. Yellow-accent för att sticka ut utan att konkurrera
-        med den primära testpilot-CTA:n längre ner. */}
+        med den primära nedladdnings-CTA:n längre ner. */}
     <section class="max-w-2xl mx-auto px-6 pb-12">
       <a
         href="/stod"
@@ -167,24 +163,24 @@ const screenshots = [
     <section class="max-w-3xl mx-auto px-6 pb-20">
       <div class="bg-green-dark text-cream rounded-3xl p-10 md:p-14 text-center">
         <p class="text-sm tracking-[0.25em] uppercase text-cta-body mb-3">
-          Just nu i sluten test
+          Gratis på Google Play
         </p>
         <h2 class="font-serif text-cream text-3xl sm:text-4xl md:text-5xl mb-6">
-          Vi söker fler testpiloter
+          Ladda ner och kom igång
         </h2>
         <p class="text-cta-body text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-          Hjälp oss kvalitets­säkra appen innan publik release. Du får tidig
-          tillgång och din feedback formar slut­produkten.
+          Tipspromenaden är ute på Google Play — helt gratis. Skapa en egen
+          tipspromenad eller scanna en QR-kod och börja gå direkt.
         </p>
         <a
-          href={TESTERS_GROUP_URL}
+          href={PLAY_STORE_URL}
           class="inline-block bg-cream text-green-dark font-semibold text-lg px-8 py-4 rounded-xl hover:bg-white transition-colors"
         >
-          Be om att bli testpilot
+          Hämta på Google Play
         </a>
         <p class="text-cta-body text-sm mt-6 max-w-md mx-auto leading-relaxed opacity-80">
-          Du går med i en Google-grupp. När jag godkänt får du en länk
-          till Play Store där appen kan installeras — oftast inom några minuter.
+          iOS-version är på gång. Vill du stötta utvecklingen hittar du
+          stöd­alternativ under <a href="/stod" class="underline">Stöd oss</a>.
         </p>
         {/* Gul accent under knappen — den ena varmgula glimt som palettens
             restraint tillåter, samma plats som CTA-blocket på social-postern */}

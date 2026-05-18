@@ -11,6 +11,13 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-17 — Appen live: CTA → Google Play
+
+- Appen är publikt släppt på Google Play. Startsidans CTA bytt från
+  "Vi söker testpiloter / sluten test" till "Ladda ner gratis på
+  Google Play" (sv + en), länkar nu direkt till store-listningen.
+- iOS-vinkeln flyttad till en mjuk rad mot Stöd oss / Support us.
+
 ## 2026-05-17 — SEO-pass
 
 - Sitemap genereras nu automatiskt (`/sitemap-index.xml`, admin

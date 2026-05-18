@@ -6,11 +6,10 @@ import skarmHem from "../../assets/screenshots/skarm-hem.jpg";
 import skarmGaMed from "../../assets/screenshots/skarm-ga-med.jpg";
 import skarmAktiv from "../../assets/screenshots/skarm-aktiv.jpg";
 
-// Two-step flow to become a tester:
-//   1. Join the Google Group `tipspromenaden-testers` (CTA button below)
-//   2. Niklas approves the request → welcome email is sent automatically
-//      with the Play Store Closed Testing opt-in URL.
-const TESTERS_GROUP_URL = "https://groups.google.com/g/tipspromenaden-testers";
+// App is live on Google Play (production). CTA links straight to the
+// public store listing.
+const PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
 
 const screenshots = [
   {
@@ -70,7 +69,7 @@ const screenshots = [
     {/* ─── iPhone-banner ─────────────────────────────────
         Visible right under the hero so iPhone users see it without
         scrolling. Yellow accent to stand out without competing with
-        the primary tester CTA further down. */}
+        the primary download CTA further down. */}
     <section class="max-w-2xl mx-auto px-6 pb-12">
       <a
         href="/en/support"
@@ -166,24 +165,24 @@ const screenshots = [
     <section class="max-w-3xl mx-auto px-6 pb-20">
       <div class="bg-green-dark text-cream rounded-3xl p-10 md:p-14 text-center">
         <p class="text-sm tracking-[0.25em] uppercase text-cta-body mb-3">
-          Currently in closed testing
+          Free on Google Play
         </p>
         <h2 class="font-serif text-cream text-3xl sm:text-4xl md:text-5xl mb-6">
-          We're looking for more testers
+          Download and get started
         </h2>
         <p class="text-cta-body text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-          Help us polish the app before the public release. You get
-          early access and your feedback shapes the final product.
+          Tipspromenaden is out on Google Play — completely free. Create
+          your own quiz walk or scan a QR code and start walking right away.
         </p>
         <a
-          href={TESTERS_GROUP_URL}
+          href={PLAY_STORE_URL}
           class="inline-block bg-cream text-green-dark font-semibold text-lg px-8 py-4 rounded-xl hover:bg-white transition-colors"
         >
-          Ask to become a tester
+          Get it on Google Play
         </a>
         <p class="text-cta-body text-sm mt-6 max-w-md mx-auto leading-relaxed opacity-80">
-          You join a Google Group. Once I approve, you get a Play Store
-          link where the app can be installed — usually within minutes.
+          An iOS version is on the way. If you'd like to support
+          development, see <a href="/en/support" class="underline">Support us</a>.
         </p>
         <div class="w-14 h-1 bg-yellow mx-auto mt-8"></div>
       </div>
