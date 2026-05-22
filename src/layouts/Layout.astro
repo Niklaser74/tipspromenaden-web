@@ -65,10 +65,14 @@ const appJsonLd = {
 //     dessutom en egen språkväljare per walk längre ner i sidopanelen.
 //     Site-switchen är redundant där och kolliderar visuellt med
 //     Spara-knappen.
+// Normalisera bort trailing slash innan jämförelse — Astro kan
+// servera både `/skapa` och `/skapa/` beroende på trailingSlash-
+// config, och vill matcha bägge.
+const path = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const hideLanguageSwitcher =
-  Astro.url.pathname.startsWith("/admin") ||
-  Astro.url.pathname === "/skapa" ||
-  Astro.url.pathname === "/en/skapa";
+  path.startsWith("/admin") ||
+  path === "/skapa" ||
+  path === "/en/skapa";
 ---
 
 <!doctype html>
