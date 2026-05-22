@@ -26,11 +26,12 @@ import {
   type Coordinate,
 } from "../../lib/types";
 import { walkCentroid } from "../../lib/walkGeo";
-import { parseTipspackFile } from "../../lib/tipspack";
+import { parseTipspackFile, type QuestionBattery } from "../../lib/tipspack";
 import { MapEditor } from "./MapEditor";
 import { QuestionForm } from "./QuestionForm";
 import { ShareDialog } from "./ShareDialog";
 import { ReuseRouteDialog } from "./ReuseRouteDialog";
+import { LibraryPickerDialog } from "./LibraryPickerDialog";
 import { Flag } from "../Flag";
 import { useT, useLocale } from "./i18n";
 
@@ -69,6 +70,7 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
   const [placingMode, setPlacingMode] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const [showReuse, setShowReuse] = useState(false);
+  const [showLibrary, setShowLibrary] = useState(false);
   const [importMessage, setImportMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -137,25 +139,15 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
   }
 
   /**
-   * Importera frågor från en .tipspack-fil. De importerade frågorna får
-   * koordinat (0, 0) — användaren placerar dem en och en sen, eller
-   * använder "Återanvänd rutt" för att massimporta koordinater från en
-   * tidigare walk.
+   * Gemensam import-funktion — tar ett redan-parsat batteri och lägger
+   * till frågorna i walken. Delas av fil-import (`handleImportFile`)
+   * och bibliotek-picker (`LibraryPickerDialog`). De importerade
+   * frågorna får koordinat (0, 0) — användaren placerar dem en och
+   * en sen, eller använder "Återanvänd rutt" för att massimporta
+   * koordinater från en tidigare walk.
    */
-  async function handleImportFile(e: React.ChangeEvent<HTMLInputElement>) {
+  function importBattery(battery: QuestionBattery) {
     if (!walk) return;
-    const file = e.target.files?.[0];
-    e.target.value = ""; // tillåt re-import av samma fil senare
-    if (!file) return;
-
-    const result = await parseTipspackFile(file);
-    if (!result.success) {
-      setImportMessage(`❌ ${result.error}`);
-      setTimeout(() => setImportMessage(null), 6000);
-      return;
-    }
-
-    const battery = result.battery;
     const newQuestions: Question[] = battery.questions.map((bq, i) => ({
       id: generateId(),
       text: bq.text,
@@ -181,6 +173,21 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
       )
     );
     setTimeout(() => setImportMessage(null), 8000);
+  }
+
+  async function handleImportFile(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!walk) return;
+    const file = e.target.files?.[0];
+    e.target.value = ""; // tillåt re-import av samma fil senare
+    if (!file) return;
+
+    const result = await parseTipspackFile(file);
+    if (!result.success) {
+      setImportMessage(`❌ ${result.error}`);
+      setTimeout(() => setImportMessage(null), 6000);
+      return;
+    }
+    importBattery(result.battery);
   }
 
   /**
@@ -514,7 +521,17 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
               {t("+ Lägg till fråga", "+ Add question")}
             </button>
 
-            <div className="grid grid-cols-2 gap-2 mt-2">
+            <div className="grid grid-cols-3 gap-2 mt-2">
+              <button
+                onClick={() => setShowLibrary(true)}
+                className="bg-white border border-green-dark text-green-dark px-3 py-2 rounded-lg text-xs font-semibold hover:bg-green-dark/5 transition"
+                title={t(
+                  "Välj ett färdigt frågebatteri från biblioteket",
+                  "Pick a ready-made question battery from the library"
+                )}
+              >
+                {t("📚 Bibliotek", "📚 Library")}
+              </button>
               <button
                 onClick={() => fileInputRef.current?.click()}
                 className="bg-white border border-green-dark text-green-dark px-3 py-2 rounded-lg text-xs font-semibold hover:bg-green-dark/5 transition"
@@ -588,6 +605,16 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
           currentWalkId={walk.id}
           onClose={() => setShowReuse(false)}
           onPickRoute={handleReuseRoute}
+        />
+      )}
+
+      {showLibrary && (
+        <LibraryPickerDialog
+          onClose={() => setShowLibrary(false)}
+          onPick={(battery) => {
+            setShowLibrary(false);
+            importBattery(battery);
+          }}
         />
       )}
     </div>

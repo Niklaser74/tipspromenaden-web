@@ -58,6 +58,23 @@ export async function parseTipspackFile(file: File): Promise<BatteryParseResult>
   }
   try {
     const content = await file.text();
+    return parseTipspackText(content);
+  } catch (e: any) {
+    return {
+      success: false,
+      error: e?.message || "Kunde inte läsa filen.",
+    };
+  }
+}
+
+/**
+ * Parsar redan-läst .tipspack-innehåll (JSON-sträng). Används av
+ * bibliotek-pickern som hämtar packet via HTTP/Firebase Storage och
+ * redan har innehållet som text — slipper bygga File-objekt bara
+ * för att kalla parseTipspackFile.
+ */
+export function parseTipspackText(content: string): BatteryParseResult {
+  try {
     const data = JSON.parse(content);
     validateBattery(data);
     return { success: true, battery: data };
