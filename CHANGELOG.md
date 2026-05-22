@@ -11,6 +11,18 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-21 — Fix: språkväljare överlappade Spara-knappen i Skapa
+
+- Site-wide språkväljaren (SV/EN-pillen uppe till höger) göms nu på
+  `/skapa` och `/en/skapa`. Den krockade visuellt med "Spara"-knappen
+  i Walk-editorns header. Editorn har dessutom en egen språkväljare
+  per walk längre ner i sidopanelen, så den globala switchen var
+  redundant där.
+- Samma `hideLanguageSwitcher`-mekanism som redan användes för admin-
+  sidor — utbyggd till en lista av paths.
+
+---
+
 ## 2026-05-21 — Välj frågebatteri direkt från biblioteket i Skapa-vyn
 
 - När du skapar en promenad på `tipspromenaden.app/skapa` kan du nu

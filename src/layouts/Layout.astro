@@ -58,8 +58,17 @@ const appJsonLd = {
   inLanguage: ["sv", "en", "de", "no", "da", "fi", "fr", "es"],
 };
 
-// Visa inte språkväljaren på admin-sidor (admin är svensk-only).
-const isAdmin = Astro.url.pathname.startsWith("/admin");
+// Visa inte den globala språkväljaren på:
+//   - admin-sidor (admin är svensk-only)
+//   - /skapa-sidan: WalkEditor har sin egen action-bar uppe till höger
+//     (Dela/Spara) som ligger där site-switchen vill bo, och den har
+//     dessutom en egen språkväljare per walk längre ner i sidopanelen.
+//     Site-switchen är redundant där och kolliderar visuellt med
+//     Spara-knappen.
+const hideLanguageSwitcher =
+  Astro.url.pathname.startsWith("/admin") ||
+  Astro.url.pathname === "/skapa" ||
+  Astro.url.pathname === "/en/skapa";
 ---
 
 <!doctype html>
@@ -116,7 +125,7 @@ const isAdmin = Astro.url.pathname.startsWith("/admin");
     />
   </head>
   <body class="bg-cream text-text-warm overflow-x-hidden">
-    {!isAdmin && <LanguageSwitcher alternateUrl={alternateUrl} />}
+    {!hideLanguageSwitcher && <LanguageSwitcher alternateUrl={alternateUrl} />}
     <slot />
   </body>
 </html>
