@@ -190,7 +190,11 @@ export function LibraryPickerDialog({ onPick, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      // z-[2000] för konsistens med ShareDialog + ReuseRouteDialog i
+      // samma flik. z-50 (initial gissning) räckte inte över Leaflet-
+      // kartans pane-lager (z-index 200-700) → backdroppen stacka:de
+      // över sidan men dialog-innehållet hamnade under kartan.
+      className="fixed inset-0 bg-black/50 z-[2000] flex items-center justify-center p-4"
       onClick={onClose}
     >
       <div
