@@ -11,6 +11,19 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-21 — Välj frågebatteri direkt från biblioteket i Skapa-vyn
+
+- När du skapar en promenad på `tipspromenaden.app/skapa` kan du nu
+  trycka "📚 Bibliotek" och plocka ett färdigt frågebatteri direkt
+  från listan — både kurerade pack och publika pack uppladdade av
+  andra användare visas blandat. Tidigare behövde man ladda ner
+  .tipspack-filen först och importera via "Importera fil".
+- Importerade frågor får (0, 0) som startkoordinat — placera dem på
+  kartan eller använd "Återanvänd rutt" som vanligt.
+- Sökfältet i dialogen söker på pack-namn, författare och beskrivning.
+
+---
+
 ## 2026-05-17 — Appen live: CTA → Google Play
 
 - Appen är publikt släppt på Google Play. Startsidans CTA bytt från
