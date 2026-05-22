@@ -133,9 +133,29 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
   }
 
   function handleMapClick(coord: Coordinate) {
-    if (!placingMode || !selectedQuestionId) return;
+    if (!placingMode || !selectedQuestionId || !walk) return;
     updateQuestion(selectedQuestionId, { coordinate: coord });
-    setPlacingMode(false);
+
+    // Auto-advance: efter att vi placerat en fråga, leta upp nästa
+    // obesvarade (icke-placerade) fråga i ordning och hoppa till den
+    // automatiskt. Stannar i placing-mode → användaren kan snabb-
+    // placera flera kontroller i följd utan att gå tillbaka till
+    // listan mellan varje. Om alla är placerade exitar vi placing-
+    // mode istället. Använder walk.questions UTAN den nyss-placerade
+    // (lokal kopia eftersom updateQuestion är async-state).
+    const placed = new Set<string>([selectedQuestionId]);
+    const nextUnplaced = walk.questions
+      .filter((q) => !placed.has(q.id))
+      .find(
+        (q) => q.coordinate.latitude === 0 && q.coordinate.longitude === 0
+      );
+
+    if (nextUnplaced) {
+      setSelectedQuestionId(nextUnplaced.id);
+      // placingMode förblir true → klick-på-karta funkar direkt igen
+    } else {
+      setPlacingMode(false);
+    }
   }
 
   /**
@@ -166,13 +186,21 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
     }
     update(patch);
 
+    // UX-boost: auto-välj första importerade frågan + slå på placing-
+    // mode. Användaren kan klicka direkt på kartan utan att först leta
+    // i listan och hitta "Placera på kartan"-knappen i QuestionForm.
+    // Kombineras med auto-advance i handleMapClick nedan → snabb-flöde
+    // där användaren bara klickar genom alla 10 kontroller på kartan.
+    setSelectedQuestionId(newQuestions[0].id);
+    setPlacingMode(true);
+
     setImportMessage(
       t(
-        `✅ Importerade ${newQuestions.length} frågor från "${battery.name}". Placera dem på kartan eller använd "Återanvänd rutt".`,
-        `✅ Imported ${newQuestions.length} questions from "${battery.name}". Place them on the map or use "Reuse route".`
+        `✅ Importerade ${newQuestions.length} frågor från "${battery.name}". Klicka på kartan för att placera fråga 1, sen fortsätter du till nästa automatiskt.`,
+        `✅ Imported ${newQuestions.length} questions from "${battery.name}". Click the map to place question 1, then the next one is auto-selected.`
       )
     );
-    setTimeout(() => setImportMessage(null), 8000);
+    setTimeout(() => setImportMessage(null), 12000);
   }
 
   async function handleImportFile(e: React.ChangeEvent<HTMLInputElement>) {

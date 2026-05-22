@@ -18,8 +18,11 @@ användar-orienterad text.
   från listan — både kurerade pack och publika pack uppladdade av
   andra användare visas blandat. Tidigare behövde man ladda ner
   .tipspack-filen först och importera via "Importera fil".
-- Importerade frågor får (0, 0) som startkoordinat — placera dem på
-  kartan eller använd "Återanvänd rutt" som vanligt.
+- Efter import är **första frågan automatiskt vald och placerings-
+  läget aktiverat** — klicka på kartan så placeras fråga 1, och
+  appen hoppar automatiskt till nästa obesvarade fråga. Snabbt
+  flöde för att placera 10+ kontroller utan att gå tillbaka till
+  listan mellan varje.
 - Sökfältet i dialogen söker på pack-namn, författare och beskrivning.
 
 ---
