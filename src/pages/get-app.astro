@@ -3,11 +3,10 @@ import Layout from "../layouts/Layout.astro";
 
 // /get-app — smart redirect baserat på OS.
 //
-// Används av flygblads-QR-koden så ETT QR-id räcker för båda
-// operativsystem:
-//   - Android → Google Play (appen är publikt släppt)
-//   - iOS    → /stod (eller /en/support) eftersom det inte finns någon
-//             iOS-app ännu — be om bidrag istället
+// Används av flygblads/social-media-QR-koden så ETT QR-id räcker för
+// båda operativsystem:
+//   - Android → Google Play (appen är publikt släppt sedan 2026-05-17)
+//   - iOS    → App Store (appen är publikt släppt sedan 2026-05-21)
 //   - Desktop → visa båda alternativen + brand-länk till sidan
 //
 // Astro renderar statiskt, så all detektering sker client-side med
@@ -52,10 +51,10 @@ const description =
       </a>
       <a
         id="link-ios"
-        href="/stod"
+        href="https://apps.apple.com/se/app/id6770503457"
         class="flex-1 bg-white border-2 border-green-dark text-green-dark px-5 py-3 rounded-xl font-semibold hover:bg-green-dark/5"
       >
-        📱 iPhone — stötta projektet
+        🍏 iPhone — hämta på App Store
       </a>
     </div>
 
@@ -70,8 +69,7 @@ const description =
   <script>
     const PLAY_STORE =
       "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
-    const SUPPORT_SV = "/stod";
-    const SUPPORT_EN = "/en/support";
+    const APP_STORE = "https://apps.apple.com/se/app/id6770503457";
 
     const ua = navigator.userAgent.toLowerCase();
     const isAndroid = /android/.test(ua);
@@ -83,14 +81,9 @@ const description =
     const status = document.getElementById("status");
     const statusEn = document.getElementById("status-en");
     const manualChoices = document.getElementById("manual-choices");
-    const linkIos = document.getElementById("link-ios") as HTMLAnchorElement | null;
 
     function setText(el: HTMLElement | null, txt: string) {
       if (el) el.textContent = txt;
-    }
-
-    if (linkIos) {
-      linkIos.href = wantsEnglish ? SUPPORT_EN : SUPPORT_SV;
     }
 
     if (isAndroid) {
@@ -98,15 +91,9 @@ const description =
       setText(statusEn, "Opening Google Play…");
       window.location.href = PLAY_STORE;
     } else if (isIos) {
-      setText(
-        status,
-        "iOS-versionen finns inte än. Vill du hjälpa till att finansiera den?"
-      );
-      setText(
-        statusEn,
-        "The iOS version isn't out yet. Would you like to help fund it?"
-      );
-      window.location.href = wantsEnglish ? SUPPORT_EN : SUPPORT_SV;
+      setText(status, "Öppnar App Store…");
+      setText(statusEn, "Opening App Store…");
+      window.location.href = APP_STORE;
     } else {
       // Desktop / okänd — visa manuella val
       if (heading) heading.textContent = wantsEnglish
