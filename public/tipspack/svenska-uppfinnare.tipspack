@@ -1,0 +1,60 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Svenska uppfinnare och uppfinningar",
+  "description": "10 frågor om svenska uppfinningar och företag som blivit globala storheter. Från dynamit till Minecraft.",
+  "author": "Niklas Eriksson",
+  "language": "sv",
+  "questions": [
+    {
+      "text": "Vem uppfann dynamiten?",
+      "options": ["Alfred Nobel", "Jonas Wenström", "Carl Wilhelm Scheele", "John Ericsson"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad uppfann Gustaf Dalén, Nobelpristagaren i fysik 1912?",
+      "options": ["AGA-fyren", "Telefonen", "Glödlampan", "Skiftnyckeln"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vem uppfann skiftnyckeln (rörtången)?",
+      "options": ["Johan Petter Johansson", "Alfred Nobel", "C.E. Johansson", "Ingvar Kamprad"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket företag grundade Ingvar Kamprad 1943?",
+      "options": ["IKEA", "H&M", "Volvo", "Electrolux"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket företag grundade Niklas Zennström och Janus Friis 2003?",
+      "options": ["Skype", "Spotify", "Klarna", "Mojang"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken svensk grundade Spotify tillsammans med Martin Lorentzon?",
+      "options": ["Daniel Ek", "Niklas Zennström", "Markus Persson", "Stefan Persson"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken svensk industriman utvecklade kullagret i industriskala och grundade SKF?",
+      "options": ["Sven Wingquist", "Gustaf Dalén", "Alfred Nobel", "Lars Magnus Ericsson"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken svensk grundade Tetra Pak och utvecklade tetraederförpackningen?",
+      "options": ["Ruben Rausing", "Ingvar Kamprad", "Sven Wingquist", "Erik Wallenberg"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket världskända spel utvecklade svensken Markus \"Notch\" Persson?",
+      "options": ["Minecraft", "Roblox", "Fortnite", "Among Us"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad står LM i \"LM Ericsson\" för?",
+      "options": ["Lars Magnus", "Lars Mikael", "Lennart Magnus", "Linus Mattias"],
+      "correctOptionIndex": 0
+    }
+  ]
+}

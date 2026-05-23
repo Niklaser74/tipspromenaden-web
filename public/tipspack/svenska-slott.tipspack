@@ -1,0 +1,60 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Svenska slott och kungahistoria",
+  "description": "10 frågor om kungaslott och svensk kungahistoria. För historieintresserade som vill ha innehåll under en promenad i en gammal stadskärna eller slottspark.",
+  "author": "Niklas Eriksson",
+  "language": "sv",
+  "questions": [
+    {
+      "text": "Vilket slott är den svenska kungafamiljens nuvarande huvudresidens?",
+      "options": ["Drottningholms slott", "Stockholms slott", "Sofiero", "Gripsholms slott"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "På vilken ö i Mälaren ligger Drottningholms slott?",
+      "options": ["Lovön", "Björkö", "Värmdö", "Adelsö"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket slott i Skåne är känt för sina rhododendronträdgårdar?",
+      "options": ["Sofiero", "Vadstena slott", "Gripsholm", "Tjolöholms slott"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken svensk kung dog under slaget vid Lützen 1632?",
+      "options": ["Gustav II Adolf", "Karl XII", "Gustav Vasa", "Karl IX"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad heter Sveriges nuvarande regerande kung?",
+      "options": ["Carl XVI Gustaf", "Karl XIV Johan", "Gustav VI Adolf", "Oscar II"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken kung grundade Bernadotteätten i Sverige?",
+      "options": ["Karl XIV Johan", "Karl XIII", "Oscar I", "Gustav IV Adolf"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket slott ligger på en ö i Mälaren och hyser idag det statliga porträttmuseet?",
+      "options": ["Gripsholms slott", "Skoklosters slott", "Tullgarn", "Strömsholm"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "I vilken stad ligger Kalmar slott?",
+      "options": ["Kalmar", "Karlstad", "Karlskrona", "Karlshamn"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad hette den drottning som abdikerade och konverterade till katolicismen 1654?",
+      "options": ["Drottning Kristina", "Drottning Margareta", "Drottning Lovisa Ulrika", "Drottning Hedvig Eleonora"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad användes Kalmar slott huvudsakligen till på 1500-talet?",
+      "options": ["Gränsfästning mot Danmark", "Sommarslott", "Kloster", "Universitet"],
+      "correctOptionIndex": 0
+    }
+  ]
+}

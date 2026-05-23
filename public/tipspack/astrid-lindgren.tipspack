@@ -1,0 +1,60 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Astrid Lindgrens värld",
+  "description": "10 frågor om Astrid Lindgrens karaktärer, böcker och kulturarv. För familjer med barn 4-10 år.",
+  "author": "Niklas Eriksson",
+  "language": "sv",
+  "questions": [
+    {
+      "text": "Vilken karaktär bor på Villa Villekulla?",
+      "options": ["Pippi Långstrump", "Madicken", "Lotta på Bråkmakargatan", "Emil i Lönneberga"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad heter Emils lillasyster i böckerna om Emil i Lönneberga?",
+      "options": ["Ida", "Lina", "Maja", "Anna"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad heter Pippi Långstrumps häst?",
+      "options": ["Lilla gubben", "Stora gubben", "Pelle", "Tjorven"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad är Pippi Långstrumps pappas namn?",
+      "options": ["Efraim Långstrump", "Karl Långstrump", "Bertil Långstrump", "Lasse Långstrump"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "I vilken småländsk stad ligger temaparken Astrid Lindgrens Värld?",
+      "options": ["Vimmerby", "Kalmar", "Växjö", "Eksjö"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad är smeknamnet på den yngre brodern i Bröderna Lejonhjärta?",
+      "options": ["Skorpan", "Snickaren", "Krösa", "Vesslan"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vem är Karlsson på takets bästa vän?",
+      "options": ["Lillebror", "Bullerby-Lasse", "Emil", "Bosse"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad heter Madickens lillasyster?",
+      "options": ["Lisabet", "Britta", "Anna", "Ida"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket år gick Astrid Lindgren bort?",
+      "options": ["2002", "1998", "2005", "1995"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad är förkortningen på det internationella barnlitteraturpriset som instiftades till Astrid Lindgrens minne?",
+      "options": ["ALMA", "LISA", "ELLA", "ANNA"],
+      "correctOptionIndex": 0
+    }
+  ]
+}

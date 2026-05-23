@@ -1,0 +1,60 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Svenskt 80-tal",
+  "description": "10 frågor om musik, TV och kultur från det svenska 80-talet. Nostalgi för 40+ och en bra utmaning för yngre generationer.",
+  "author": "Niklas Eriksson",
+  "language": "sv",
+  "questions": [
+    {
+      "text": "Vilken grupp vann Eurovision Song Contest för Sverige 1984?",
+      "options": ["Herreys", "Carola", "Tomas Ledin", "Roxette"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket svenskt rockband hade världshiten \"The Final Countdown\" 1986?",
+      "options": ["Europe", "Roxette", "Ace of Base", "The Cardigans"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken svensk duo bildades 1982 av Per Gessle och Marie Fredriksson?",
+      "options": ["Roxette", "Gyllene Tider", "Ace of Base", "The Cardigans"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket nytt fenomen kom till svenska hem under tidigt 80-tal och ändrade tv-tittandet i grunden?",
+      "options": ["Videobandspelaren", "Kabel-TV", "Färg-TV", "DVD"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket sällskapsspel blev en succé i svenska hem under 80-talet?",
+      "options": ["Trivial Pursuit", "Monopol", "Risk", "Backgammon"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vem vann Melodifestivalen 1983 med låten \"Främling\"?",
+      "options": ["Carola", "Tommy Körberg", "Kikki Danielsson", "Lena Philipsson"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket parti grundades i Sverige 1981?",
+      "options": ["Miljöpartiet", "Kristdemokraterna", "Vänsterpartiet", "Centerpartiet"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken händelse skakade Sverige natten mellan 28 februari och 1 mars 1986?",
+      "options": ["Mordet på Olof Palme", "Estoniakatastrofen", "Tjernobylolyckan", "Diskoteksbranden i Göteborg"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket modeplagg blev ikoniskt för kvinnors mode på 80-talet?",
+      "options": ["Axelvaddar", "Crocs", "Cargobyxor", "Träningsoverall"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken amerikansk TV-serie skapade tittarrekord 1980 med frågan \"Vem sköt JR?\"",
+      "options": ["Dallas", "Dynasty", "Falcon Crest", "Magnum"],
+      "correctOptionIndex": 0
+    }
+  ]
+}

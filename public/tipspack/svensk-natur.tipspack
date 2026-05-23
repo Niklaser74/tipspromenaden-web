@@ -1,0 +1,60 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Svensk natur",
+  "description": "10 frågor om svensk flora, fauna och nationalparker. Perfekt för en skogspromenad eller en runda i parken.",
+  "author": "Niklas Eriksson",
+  "language": "sv",
+  "questions": [
+    {
+      "text": "Vilket är Sveriges nationaldjur?",
+      "options": ["Älg", "Björn", "Lo", "Räv"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket träd är vanligast i svenska skogar räknat i volym?",
+      "options": ["Gran", "Tall", "Björk", "Ek"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken är Sveriges nationalblomma?",
+      "options": ["Linnea", "Smörblomma", "Vallmo", "Maskros"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket är Sveriges största landlevande däggdjur?",
+      "options": ["Älg", "Björn", "Vildsvin", "Ren"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken fågel är Sveriges nationalfågel?",
+      "options": ["Koltrast", "Bofink", "Domherre", "Sångsvan"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken fisk räknas som Sveriges nationalfisk?",
+      "options": ["Abborre", "Gädda", "Lax", "Sik"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken är Sveriges största nationalpark till ytan?",
+      "options": ["Padjelanta", "Sarek", "Abisko", "Tyresta"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket bär har högst halt av C-vitamin per gram?",
+      "options": ["Nypon", "Blåbär", "Hjortron", "Lingon"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket rovdjur är vanligast i Sverige?",
+      "options": ["Räv", "Lo", "Björn", "Varg"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilket landskap är känt som \"Sveriges trädgård\" på grund av sin bördighet?",
+      "options": ["Skåne", "Halland", "Östergötland", "Småland"],
+      "correctOptionIndex": 0
+    }
+  ]
+}

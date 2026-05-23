@@ -1,0 +1,60 @@
+{
+  "format": "tipspack",
+  "version": "1.0",
+  "name": "Svensk musikexport — ABBA till Avicii",
+  "description": "10 frågor om svenska artister, producenter och låtar som blivit världshits. Från Waterloo till Wake Me Up.",
+  "author": "Niklas Eriksson",
+  "language": "sv",
+  "questions": [
+    {
+      "text": "Med vilken låt vann ABBA Eurovision Song Contest 1974?",
+      "options": ["Waterloo", "Mamma Mia", "Dancing Queen", "The Winner Takes It All"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad var Aviciis riktiga namn?",
+      "options": ["Tim Bergling", "Tim Norén", "Erik Hassle", "Albin Myers"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken svensk grupp hade världshiten \"All That She Wants\" 1992?",
+      "options": ["Ace of Base", "Roxette", "The Cardigans", "A-Teens"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken svensk hitlåts­producent ligger bakom låtar för bland andra Britney Spears, Backstreet Boys och Katy Perry?",
+      "options": ["Max Martin", "Avicii", "Pelle Almqvist", "Andreas Carlsson"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken DJ-trio producerade hiten \"Don't You Worry Child\" 2012?",
+      "options": ["Swedish House Mafia", "Galantis", "Cazzette", "Dada Life"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken svensk artist hade världshiten \"Habits (Stay High)\" 2014?",
+      "options": ["Tove Lo", "Robyn", "Zara Larsson", "Lykke Li"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken svensk grupp hade världshiten \"Lovefool\" 1996?",
+      "options": ["The Cardigans", "Roxette", "Ace of Base", "The Hives"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken svensk artist hade hiten \"Dancing on My Own\" 2010?",
+      "options": ["Robyn", "Tove Lo", "Lykke Li", "Veronica Maggio"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vad heter Aviciis genombrottslåt från 2011?",
+      "options": ["Levels", "Wake Me Up", "Hey Brother", "Waiting For Love"],
+      "correctOptionIndex": 0
+    },
+    {
+      "text": "Vilken svensk artist vann Eurovision Song Contest 2015 med \"Heroes\"?",
+      "options": ["Måns Zelmerlöw", "Loreen", "Eric Saade", "Sanna Nielsen"],
+      "correctOptionIndex": 0
+    }
+  ]
+}
