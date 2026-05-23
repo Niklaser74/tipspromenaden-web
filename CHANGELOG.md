@@ -11,6 +11,25 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-21 — 6 nya curated tipspacks inför iOS-launch
+
+Sex nya frågebatterier (10 frågor var) är publicerade på
+`tipspromenaden.app/tipspack` och syns automatiskt i mobilappens
+bibliotek samt i nya bibliotek-väljaren på Skapa-sidan:
+
+- 🌳 Astrid Lindgrens värld (familj 4-10 år)
+- 🌿 Svensk natur (flora, fauna, nationalparker)
+- 🏰 Svenska slott och kungahistoria
+- 📻 Svenskt 80-tal (musik, TV, kultur)
+- 🎵 Svensk musikexport (ABBA till Avicii)
+- 💡 Svenska uppfinnare och uppfinningar
+
+Skapa en promenad i appen eller på webben → 📚 Bibliotek → välj
+paket → placera kontrollerna lokalt. Snabbväg från noll till färdig
+tipspromenad på 5-10 min.
+
+---
+
 ## 2026-05-21 — Fix: språkväljare överlappade Spara-knappen i Skapa
 
 - Site-wide språkväljaren (SV/EN-pillen uppe till höger) göms nu på
