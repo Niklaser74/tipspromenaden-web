@@ -45,6 +45,13 @@ import {
   type TipspackMeta,
 } from "../../lib/tipspackLibrary";
 import { getCuratedTipspacks } from "../../lib/curatedTipspacks";
+import {
+  getAllFeedback,
+  aggregateByWalk,
+  overallStats,
+  type FeedbackAggregate,
+  type FeedbackOverall,
+} from "../../lib/feedback";
 import type { Walk } from "../../lib/types";
 import { Flag } from "../Flag";
 import WalkMiniMap from "./WalkMiniMap";
@@ -160,6 +167,19 @@ function AdminContent({ user }: { user: User }) {
   const [packs, setPacks] = useState<TipspackMeta[] | null>(null);
   const [curated, setCurated] = useState<CuratedPack[] | null>(null);
   const [sessions, setSessions] = useState<SessionDoc[] | null>(null);
+  // Feedback-aggregat per walk + global summary. Hämtas via samma
+  // initial-fetch som walks/sessions/packs. Map för O(1) lookup vid
+  // rendering av per-walk-badge.
+  const [feedbackByWalk, setFeedbackByWalk] = useState<
+    Map<string, FeedbackAggregate>
+  >(new Map());
+  const [feedbackOverall, setFeedbackOverall] = useState<FeedbackOverall>({
+    total: 0,
+    up: 0,
+    down: 0,
+    walksWithFeedback: 0,
+    positiveRate: 0,
+  });
   const [flags, setFlags] = useState<ModerationFlags>({
     walks: new Set(),
     tipspacks: new Set(),
@@ -180,7 +200,7 @@ function AdminContent({ user }: { user: User }) {
     let cancelled = false;
     (async () => {
       try {
-        const [allWalksSnap, packsList, sessionsSnap, flagsLoaded] =
+        const [allWalksSnap, packsList, sessionsSnap, flagsLoaded, feedback] =
           await Promise.all([
             // Hämta ALLA walks (inte bara public). Admin-rättigheter behövs
             // inte för read i Firestore-rules, så denna går igenom.
@@ -188,6 +208,7 @@ function AdminContent({ user }: { user: User }) {
             getAllTipspacks(),
             getDocs(collection(db, "sessions")),
             getModerationFlags(),
+            getAllFeedback(),
           ]);
         if (cancelled) return;
         setWalks(allWalksSnap.docs.map((d) => d.data() as Walk));
@@ -196,6 +217,8 @@ function AdminContent({ user }: { user: User }) {
           sessionsSnap.docs.map((d) => d.data() as SessionDoc)
         );
         setFlags(flagsLoaded);
+        setFeedbackByWalk(aggregateByWalk(feedback));
+        setFeedbackOverall(overallStats(feedback));
         // Curated kan inte fetchas runtime (build-tid only). Men /tipspack/index.json
         // serverar listan så vi använder den.
         try {
@@ -309,6 +332,9 @@ function AdminContent({ user }: { user: User }) {
           curatedCount={curated?.length ?? 0}
           uploadedCount={packs.length}
           mostUsed={walksByMostUsed.slice(0, 10)}
+          feedback={feedbackOverall}
+          feedbackByWalk={feedbackByWalk}
+          walks={walks}
         />
       )}
 
@@ -317,6 +343,7 @@ function AdminContent({ user }: { user: User }) {
           walks={walks}
           sessionsByWalk={sessionsByWalk}
           lastSessionByWalk={lastSessionByWalk}
+          feedbackByWalk={feedbackByWalk}
           flags={flags}
           onToggleHidden={toggleWalkHidden}
         />
@@ -391,7 +418,24 @@ function Overview(props: {
   curatedCount: number;
   uploadedCount: number;
   mostUsed: { walk: Walk; count: number }[];
+  feedback: FeedbackOverall;
+  feedbackByWalk: Map<string, FeedbackAggregate>;
+  walks: Walk[];
 }) {
+  // Topp 5 walks med mest tumme-ner: sortera per (down / total) desc,
+  // bara walks med ≥3 ratings (mindre statistiskt brus). Hjälper
+  // admin pinpointa problem-walks som behöver kärlek.
+  const walksByDownRate = props.walks
+    .map((w) => {
+      const agg = props.feedbackByWalk.get(w.id);
+      if (!agg || agg.total < 3) return null;
+      return { walk: w, agg, downRate: agg.down / agg.total };
+    })
+    .filter((x): x is { walk: Walk; agg: FeedbackAggregate; downRate: number } => x !== null)
+    .filter((x) => x.downRate > 0)
+    .sort((a, b) => b.downRate - a.downRate)
+    .slice(0, 5);
+
   return (
     <div className="space-y-6">
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -412,6 +456,77 @@ function Overview(props: {
           hint="completed / total"
         />
       </section>
+
+      {/* Feedback-sektion: total volym + positivitets-andel + topp 5
+          problem-walks. Bara synlig om vi har minst en feedback-rad
+          så tomma admin-vyer inte visar tom statistik. */}
+      {props.feedback.total > 0 && (
+        <section className="bg-white border border-rule rounded-xl p-5 space-y-4">
+          <h2 className="font-serif text-xl text-green-dark">
+            Användarfeedback
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <Stat
+              label="Total feedback"
+              value={props.feedback.total}
+              hint={`${props.feedback.walksWithFeedback} walks fått omdömen`}
+            />
+            <Stat
+              label="👍 Tumme upp"
+              value={props.feedback.up}
+              hint={
+                props.feedback.total > 0
+                  ? Math.round(props.feedback.positiveRate * 100) + "% positivt"
+                  : ""
+              }
+            />
+            <Stat
+              label="👎 Tumme ner"
+              value={props.feedback.down}
+              hint=""
+            />
+            <Stat
+              label="Positivitetsindex"
+              value={
+                props.feedback.total > 0
+                  ? Math.round(props.feedback.positiveRate * 100) + "%"
+                  : "—"
+              }
+              hint="up / (up + down)"
+            />
+          </div>
+
+          {walksByDownRate.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-text-warm uppercase tracking-wide mb-2">
+                Behöver kärlek
+              </h3>
+              <ol className="space-y-2 text-sm">
+                {walksByDownRate.map(({ walk, agg, downRate }) => (
+                  <li
+                    key={walk.id}
+                    className="flex items-center justify-between border-b border-rule/60 last:border-0 pb-2 last:pb-0"
+                  >
+                    <span className="text-text-warm truncate flex-1 pr-3">
+                      {walk.title || "(utan titel)"}
+                    </span>
+                    <span className="text-xs text-text-warm font-mono whitespace-nowrap">
+                      👍 {agg.up} · 👎 {agg.down} ·{" "}
+                      <strong className="text-red-700">
+                        {Math.round(downRate * 100)}% ner
+                      </strong>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+              <p className="text-xs text-text-warm mt-3 italic">
+                Sorterat på % tumme-ner. Bara walks med ≥3 omdömen
+                visas för att undvika statistiskt brus.
+              </p>
+            </div>
+          )}
+        </section>
+      )}
 
       <section className="bg-white border border-rule rounded-xl p-5">
         <h2 className="font-serif text-xl text-green-dark mb-3">
@@ -469,12 +584,14 @@ function WalksList({
   walks,
   sessionsByWalk,
   lastSessionByWalk,
+  feedbackByWalk,
   flags,
   onToggleHidden,
 }: {
   walks: Walk[];
   sessionsByWalk: Map<string, number>;
   lastSessionByWalk: Map<string, number>;
+  feedbackByWalk: Map<string, FeedbackAggregate>;
   flags: ModerationFlags;
   onToggleHidden: (walkId: string) => void;
 }) {
@@ -505,6 +622,7 @@ function WalksList({
           const isHidden = flags.walks.has(w.id);
           const count = sessionsByWalk.get(w.id) ?? 0;
           const lastSession = lastSessionByWalk.get(w.id);
+          const fb = feedbackByWalk.get(w.id);
           return (
             <li
               key={w.id}
@@ -536,6 +654,14 @@ function WalksList({
                   <p className="text-xs text-sage mt-1">
                     {w.questions.length} kontroller · {count} sessioner ·{" "}
                     {(w as any).city || "okänd stad"}
+                    {fb && fb.total > 0 && (
+                      <>
+                        {" · "}
+                        <span className="font-semibold text-text-warm">
+                          👍 {fb.up} 👎 {fb.down}
+                        </span>
+                      </>
+                    )}
                   </p>
                   <p className="text-xs text-sage mt-0.5">
                     Skapad {fmtDate(w.createdAt)}
@@ -575,6 +701,57 @@ function WalksList({
                   <WalkMiniMap
                     points={w.questions.map((q) => q.coordinate)}
                   />
+
+                  {/* Feedback-breakdown — visas bara om walken har
+                      omdömen. Tre kategori-staplar visar vad som
+                      faktiskt fick tumme ner (vid övergripande 👎). */}
+                  {fb && fb.total > 0 && (
+                    <div className="bg-white border border-rule rounded-lg p-3">
+                      <p className="text-sm font-semibold text-green-dark mb-2">
+                        Feedback ({fb.total}{" "}
+                        {fb.total === 1 ? "omdöme" : "omdömen"})
+                      </p>
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                          <span className="text-text-warm">Övergripande:</span>{" "}
+                          <span className="font-semibold">
+                            👍 {fb.up} 👎 {fb.down}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-text-warm">Positivitet:</span>{" "}
+                          <span className="font-semibold">
+                            {Math.round((fb.up / fb.total) * 100)}%
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-text-warm">Frågorna:</span>{" "}
+                          <span className="font-semibold">
+                            👍 {fb.details.questions.up} 👎{" "}
+                            {fb.details.questions.down}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-text-warm">Kontroller:</span>{" "}
+                          <span className="font-semibold">
+                            👍 {fb.details.points.up} 👎{" "}
+                            {fb.details.points.down}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-text-warm">Gränssnitt:</span>{" "}
+                          <span className="font-semibold">
+                            👍 {fb.details.ui.up} 👎 {fb.details.ui.down}
+                          </span>
+                        </div>
+                      </div>
+                      <p className="text-xs text-sage mt-2 italic">
+                        Kategori-omdömen sätts bara när deltagaren gav
+                        tumme ner övergripande och valde att specificera.
+                      </p>
+                    </div>
+                  )}
+
                   <ol className="space-y-3 text-sm">
                     {w.questions.map((q, i) => (
                       <li key={q.id} className="border-b border-rule/60 last:border-0 pb-2 last:pb-0">

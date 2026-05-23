@@ -11,6 +11,25 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-24 — Användarfeedback på /admin
+
+- Den nya tumme upp/ner-feedback som deltagare lämnar efter slutförd
+  promenad (OTA-feature från 2026-05-21) syns nu också på
+  `/admin`-sidan. Som admin ser du:
+  - **Översikt**-fliken: total feedback-volym, antal walks som
+    fått omdömen, övergripande positivitetsindex (% tumme upp).
+  - **"Behöver kärlek"-lista**: topp 5 walks med högst andel
+    tumme ner — bara walks med ≥3 omdömen för att undvika
+    statistiskt brus.
+  - **Walks**-fliken: 👍/👎-siffror på varje walk-rad. Expandera
+    en walk för full breakdown per kategori (Frågorna,
+    Kontrollernas placering, Gränssnittet).
+- Säkerhet: admin kan läsa ALL feedback (Firestore-rule utökad
+  till `isWalkOwner OR isAdmin`). Skrivvägar oförändrade — vem som
+  helst inloggad kan skicka feedback, alla andra läsanrop blockeras.
+
+---
+
 ## 2026-05-21 — 6 nya curated tipspacks inför iOS-launch
 
 Sex nya frågebatterier (10 frågor var) är publicerade på
