@@ -6,10 +6,11 @@ import skarmHem from "../assets/screenshots/skarm-hem.jpg";
 import skarmGaMed from "../assets/screenshots/skarm-ga-med.jpg";
 import skarmAktiv from "../assets/screenshots/skarm-aktiv.jpg";
 
-// Appen är live på Google Play (produktion). CTA länkar direkt till
-// den publika store-listningen.
+// Appen är live på BÅDA store-plattformar (Android sedan 2026-05-17,
+// iOS sedan 2026-05-24). CTA visar bägge knappar sida-vid-sida.
 const PLAY_STORE_URL =
   "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
+const APP_STORE_URL = "https://apps.apple.com/se/app/id6770503457";
 
 const screenshots = [
   {
@@ -163,24 +164,33 @@ const screenshots = [
     <section class="max-w-3xl mx-auto px-6 pb-20">
       <div class="bg-green-dark text-cream rounded-3xl p-10 md:p-14 text-center">
         <p class="text-sm tracking-[0.25em] uppercase text-cta-body mb-3">
-          Gratis på Google Play
+          Gratis på App Store och Google Play
         </p>
         <h2 class="font-serif text-cream text-3xl sm:text-4xl md:text-5xl mb-6">
           Ladda ner och kom igång
         </h2>
         <p class="text-cta-body text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-          Tipspromenaden är ute på Google Play — helt gratis. Skapa en egen
-          tipspromenad eller scanna en QR-kod och börja gå direkt.
+          Tipspromenaden finns för både iPhone och Android — helt gratis.
+          Skapa en egen tipspromenad eller scanna en QR-kod och börja gå
+          direkt.
         </p>
-        <a
-          href={PLAY_STORE_URL}
-          class="inline-block bg-cream text-green-dark font-semibold text-lg px-8 py-4 rounded-xl hover:bg-white transition-colors"
-        >
-          Hämta på Google Play
-        </a>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center items-center max-w-xl mx-auto">
+          <a
+            href={APP_STORE_URL}
+            class="inline-block bg-cream text-green-dark font-semibold text-lg px-8 py-4 rounded-xl hover:bg-white transition-colors w-full sm:w-auto"
+          >
+            🍏 Hämta på App Store
+          </a>
+          <a
+            href={PLAY_STORE_URL}
+            class="inline-block bg-cream text-green-dark font-semibold text-lg px-8 py-4 rounded-xl hover:bg-white transition-colors w-full sm:w-auto"
+          >
+            🤖 Hämta på Google Play
+          </a>
+        </div>
         <p class="text-cta-body text-sm mt-6 max-w-md mx-auto leading-relaxed opacity-80">
-          iOS-version är på gång. Vill du stötta utvecklingen hittar du
-          stöd­alternativ under <a href="/stod" class="underline">Stöd oss</a>.
+          Vill du stötta projektet hittar du bidragsalternativ under{" "}
+          <a href="/stod" class="underline">Stöd oss</a>.
         </p>
         {/* Gul accent under knappen — den ena varmgula glimt som palettens
             restraint tillåter, samma plats som CTA-blocket på social-postern */}

@@ -11,6 +11,26 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-24 — 🎉 iOS-launch: Tipspromenaden nu på App Store
+
+**Tipspromenaden är live på både Google Play och App Store.**
+Sedan idag finns iPhone-versionen publikt tillgänglig globalt.
+Sex månader efter första commiten, ett par dygn efter Apples
+godkännande, är båda plattformarna ute.
+
+- Startsidans CTA (sv + en) byter "Hämta på Google Play"-knappen
+  mot en knapp-grupp med båda alternativ: App Store + Google Play
+  sida-vid-sida. iPhone-användare har inte längre någon mjuk
+  "iOS-version på gång"-text.
+- Meta-description (en) säger nu "App Store and Google Play" så
+  link-previews och Google-snippets är aktuella.
+- Smart QR via /get-app routar redan iPhone → App Store och
+  Android → Play Store automatiskt (deployat 2026-05-21).
+
+App Store-länk: `apps.apple.com/se/app/id6770503457`
+
+---
+
 ## 2026-05-24 — Stödsidan uppdaterad nu när iOS-appen är live
 
 - `/stod` och `/en/support` är inte längre formulerade som "hjälp

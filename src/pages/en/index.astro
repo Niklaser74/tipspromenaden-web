@@ -6,10 +6,11 @@ import skarmHem from "../../assets/screenshots/skarm-hem.jpg";
 import skarmGaMed from "../../assets/screenshots/skarm-ga-med.jpg";
 import skarmAktiv from "../../assets/screenshots/skarm-aktiv.jpg";
 
-// App is live on Google Play (production). CTA links straight to the
-// public store listing.
+// App is live on BOTH stores (Android since 2026-05-17, iOS since
+// 2026-05-24). CTA shows both buttons side-by-side.
 const PLAY_STORE_URL =
   "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
+const APP_STORE_URL = "https://apps.apple.com/se/app/id6770503457";
 
 const screenshots = [
   {
@@ -32,7 +33,7 @@ const screenshots = [
 
 <Layout
   title="Tipspromenaden — quiz walks in your pocket"
-  description="A free app for creating and joining outdoor quiz walks. Checkpoints on a map, questions unlocked by GPS, leaderboard and QR-code sharing. Available on Google Play."
+  description="A free app for creating and joining outdoor quiz walks. Checkpoints on a map, questions unlocked by GPS, leaderboard and QR-code sharing. Available on App Store and Google Play."
   lang="en"
   alternateUrl="/"
 >
@@ -165,24 +166,33 @@ const screenshots = [
     <section class="max-w-3xl mx-auto px-6 pb-20">
       <div class="bg-green-dark text-cream rounded-3xl p-10 md:p-14 text-center">
         <p class="text-sm tracking-[0.25em] uppercase text-cta-body mb-3">
-          Free on Google Play
+          Free on App Store and Google Play
         </p>
         <h2 class="font-serif text-cream text-3xl sm:text-4xl md:text-5xl mb-6">
           Download and get started
         </h2>
         <p class="text-cta-body text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-          Tipspromenaden is out on Google Play — completely free. Create
-          your own quiz walk or scan a QR code and start walking right away.
+          Tipspromenaden is available for both iPhone and Android —
+          completely free. Create your own quiz walk or scan a QR code
+          and start walking right away.
         </p>
-        <a
-          href={PLAY_STORE_URL}
-          class="inline-block bg-cream text-green-dark font-semibold text-lg px-8 py-4 rounded-xl hover:bg-white transition-colors"
-        >
-          Get it on Google Play
-        </a>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center items-center max-w-xl mx-auto">
+          <a
+            href={APP_STORE_URL}
+            class="inline-block bg-cream text-green-dark font-semibold text-lg px-8 py-4 rounded-xl hover:bg-white transition-colors w-full sm:w-auto"
+          >
+            🍏 Get it on App Store
+          </a>
+          <a
+            href={PLAY_STORE_URL}
+            class="inline-block bg-cream text-green-dark font-semibold text-lg px-8 py-4 rounded-xl hover:bg-white transition-colors w-full sm:w-auto"
+          >
+            🤖 Get it on Google Play
+          </a>
+        </div>
         <p class="text-cta-body text-sm mt-6 max-w-md mx-auto leading-relaxed opacity-80">
-          An iOS version is on the way. If you'd like to support
-          development, see <a href="/en/support" class="underline">Support us</a>.
+          Want to support the project? See{" "}
+          <a href="/en/support" class="underline">Support us</a>.
         </p>
         <div class="w-14 h-1 bg-yellow mx-auto mt-8"></div>
       </div>
