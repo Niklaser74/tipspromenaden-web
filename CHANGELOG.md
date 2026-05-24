@@ -11,6 +11,19 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-24 — Stödsidan uppdaterad nu när iOS-appen är live
+
+- `/stod` och `/en/support` är inte längre formulerade som "hjälp
+  oss lansera iOS" eftersom iOS-versionen är live sedan 2026-05-21.
+  Story-sektionen nämner nu båda plattformar, och kostnads-
+  breakdownen visar Apple Developer Program som en löpande utgift
+  (inte villkorlig). Google Play-engångsavgift tillagd för
+  transparens.
+- Slut-noten ramar nu in eventuellt överskott — rullar vidare
+  till nästa år eller framtida features som kräver betaltjänster.
+
+---
+
 ## 2026-05-24 — Användarfeedback på /admin
 
 - Den nya tumme upp/ner-feedback som deltagare lämnar efter slutförd

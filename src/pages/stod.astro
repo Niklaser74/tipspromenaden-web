@@ -18,7 +18,7 @@ const PAYPAL_LINK = `https://paypal.me/${PAYPAL_HANDLE}`;
 
 const title = "Stötta projektet — Tipspromenaden";
 const description =
-  "Tipspromenaden drivs som hobbyprojekt. Vill du bidra till att täcka driftkostnader och möjliggöra en iPhone-version? Stötta via Swish (Sverige) eller PayPal (internationellt).";
+  "Tipspromenaden är gratis och drivs som hobbyprojekt. Vill du bidra till att täcka domän, hosting och Apples utvecklarprogram? Stötta via Swish (Sverige) eller PayPal (internationellt).";
 ---
 
 <Layout title={title} description={description} lang="sv" alternateUrl="/en/support">
@@ -60,15 +60,17 @@ const description =
           för i klassrummet.
         </p>
         <p>
-          Det blev större och roligare än jag tänkte mig, och idag
-          driver jag det vidare som hobbyprojekt. Det är gratis att
-          använda och kommer förbli det.
+          Det blev större och roligare än jag tänkte mig. Idag finns
+          appen på både Google Play och App Store och drivs vidare
+          som hobbyprojekt. Den är gratis att använda och kommer
+          förbli det.
         </p>
         <p>
-          Just nu har jag förfrågningar från flera iPhone-användare
-          som vill testa appen. För att kunna lansera den även på iOS
-          krävs Apples utvecklarprogram — en löpande årsavgift jag
-          gärna täcker via bidrag istället för egen ficka.
+          Driften kostar dock pengar — domän, hosting och Apples
+          utvecklarprogram drar in en årlig nota som jag gärna täcker
+          via bidrag istället för egen ficka. Då kan jag fokusera på
+          att förbättra appen istället för att fundera på om den är
+          värd kostnaden.
         </p>
       </div>
     </section>
@@ -87,21 +89,27 @@ const description =
           <span class="font-semibold text-text-warm">~120 kr/år</span>
         </div>
         <div class="flex justify-between px-6 py-4 border-b border-rule">
+          <span>Apple Developer Program</span>
+          <span class="font-semibold text-text-warm">~1 100 kr/år</span>
+        </div>
+        <div class="flex justify-between px-6 py-4 border-b border-rule">
+          <span>Google Play-konto <span class="text-sm text-sage">(engångsavgift)</span></span>
+          <span class="font-semibold text-text-warm">~270 kr</span>
+        </div>
+        <div class="flex justify-between px-6 py-4 border-b border-rule">
           <span>Firebase (data, auth, lagring)</span>
           <span class="font-semibold text-text-warm">0 kr (gratis-tier)</span>
         </div>
-        <div class="flex justify-between px-6 py-4 border-b border-rule">
-          <span>Apple Developer Program <span class="text-sm text-sage">(om iOS)</span></span>
-          <span class="font-semibold text-text-warm">~1 100 kr/år</span>
-        </div>
         <div class="flex justify-between px-6 py-4 bg-cream font-semibold text-green-dark">
-          <span>Total med iOS</span>
+          <span>Årlig drift</span>
           <span>~1 220 kr/år</span>
         </div>
       </div>
       <p class="text-sm text-sage mt-4 text-center italic">
         Transparent: alla bidrag går till driften av projektet, ingen
-        utvecklingstid faktureras.
+        utvecklingstid faktureras. Eventuellt överskott rullar vidare
+        till nästa år eller ev. framtida features som kräver betal-
+        tjänster (t.ex. Cloud Functions för fusk-skydd på topplistor).
       </p>
     </section>
 

@@ -12,7 +12,7 @@ const PAYPAL_LINK = `https://paypal.me/${PAYPAL_HANDLE}`;
 
 const title = "Support the project — Tipspromenaden";
 const description =
-  "Tipspromenaden is a hobby project. Want to help cover hosting costs and enable an iPhone version? Donate via Swish (Sweden) or PayPal (international).";
+  "Tipspromenaden is free and runs as a hobby project. Want to help cover hosting, domain and Apple's developer program? Donate via Swish (Sweden) or PayPal (international).";
 ---
 
 <Layout title={title} description={description} lang="en" alternateUrl="/stod">
@@ -52,15 +52,16 @@ const description =
           of in the classroom.
         </p>
         <p>
-          It grew bigger and more fun than I expected, and today I keep
-          it going as a hobby project. It's free to use and will stay
-          that way.
+          It grew bigger and more fun than I expected. Today the app
+          is on both Google Play and the App Store and keeps going as
+          a hobby project. It's free to use and will stay that way.
         </p>
         <p>
-          Right now I have requests from several iPhone users who want
-          to test the app. To launch on iOS as well I need Apple's
-          developer program — a recurring annual fee I'd rather cover
-          via donations than out of pocket.
+          Running it does cost money though — domain, hosting and
+          Apple's developer program add up to a yearly bill I'd rather
+          cover via donations than out of my own pocket. That way I
+          can focus on improving the app instead of wondering whether
+          it's worth keeping alive.
         </p>
       </div>
     </section>
@@ -79,21 +80,27 @@ const description =
           <span class="font-semibold text-text-warm">~120 SEK/year</span>
         </div>
         <div class="flex justify-between px-6 py-4 border-b border-rule">
+          <span>Apple Developer Program</span>
+          <span class="font-semibold text-text-warm">~1 100 SEK/year</span>
+        </div>
+        <div class="flex justify-between px-6 py-4 border-b border-rule">
+          <span>Google Play account <span class="text-sm text-sage">(one-time)</span></span>
+          <span class="font-semibold text-text-warm">~270 SEK</span>
+        </div>
+        <div class="flex justify-between px-6 py-4 border-b border-rule">
           <span>Firebase (data, auth, storage)</span>
           <span class="font-semibold text-text-warm">0 SEK (free tier)</span>
         </div>
-        <div class="flex justify-between px-6 py-4 border-b border-rule">
-          <span>Apple Developer Program <span class="text-sm text-sage">(if iOS)</span></span>
-          <span class="font-semibold text-text-warm">~1 100 SEK/year</span>
-        </div>
         <div class="flex justify-between px-6 py-4 bg-cream font-semibold text-green-dark">
-          <span>Total with iOS</span>
+          <span>Yearly running cost</span>
           <span>~1 220 SEK/year</span>
         </div>
       </div>
       <p class="text-sm text-sage mt-4 text-center italic">
         Transparent: every donation goes to running costs — no
-        development time is invoiced.
+        development time is invoiced. Any surplus rolls over into next
+        year or future paid features (e.g. Cloud Functions for cheat-
+        protection on leaderboards).
       </p>
     </section>
 
