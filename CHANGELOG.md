@@ -11,6 +11,12 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-25 — Event-editor får sekundärfärg
+
+- Tredje färgväljare i admin → Events: "Sekundärfärg (valfri)". Driver
+  "Skapa promenad"-kortet på appens hemskärm. Lämna tom för att låta
+  primärfärgen användas där också.
+
 ## 2026-05-25 — Admin: Events-flik för branded customization
 
 - Ny **Events**-flik i `/admin` (kräver admin-UID). Skapa event-doc:er
