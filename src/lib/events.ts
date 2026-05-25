@@ -24,7 +24,13 @@ import {
   getDocs,
   setDoc,
 } from "firebase/firestore";
-import { db } from "./firebase";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import { db, storage } from "./firebase";
 
 export interface EventBranding {
   id: string;
@@ -121,4 +127,72 @@ export async function deleteEvent(id: string): Promise<void> {
  */
 export function buildEventDeepLink(eventId: string): string {
   return `tipspromenaden://event/${encodeURIComponent(eventId)}`;
+}
+
+/** Max storlek (bytes) för uppladdad event-logo. Speglar storage.rules. */
+export const EVENT_LOGO_MAX_SIZE = 1 * 1024 * 1024;
+
+/**
+ * Laddar upp en logo-fil till Firebase Storage och returnerar publik
+ * download-URL. Path: `events/{eventId}/logo.<ext>` — vi sparar
+ * extension så Content-Type kan inferas korrekt vid nedladdning.
+ *
+ * Anroparen bör efteråt anropa `saveEvent({...event, logoUrl: url})`
+ * så fältet binds till event-doc:en.
+ *
+ * Kräver admin (storage.rules ADMIN_UIDS). Filen får max vara
+ * `EVENT_LOGO_MAX_SIZE` byte (1 MB) och måste vara en bild-MIME-typ.
+ */
+export async function uploadEventLogo(
+  eventId: string,
+  file: File
+): Promise<string> {
+  if (!isValidEventId(eventId)) {
+    throw new Error("Ogiltig event-kod.");
+  }
+  if (!file.type.startsWith("image/")) {
+    throw new Error("Filen måste vara en bild (PNG, JPG, SVG, WebP).");
+  }
+  if (file.size > EVENT_LOGO_MAX_SIZE) {
+    throw new Error(
+      `Filen är för stor (max ${Math.round(EVENT_LOGO_MAX_SIZE / 1024)} KB).`
+    );
+  }
+
+  // Behåll filextensionen så Storage-objektets Content-Type är korrekt.
+  // Fallback: ingen extension — Firebase använder då file.type direkt.
+  const ext = file.name.includes(".")
+    ? file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "")
+    : "";
+  const path = ext ? `events/${eventId}/logo.${ext}` : `events/${eventId}/logo`;
+
+  const objectRef = ref(storage, path);
+  await uploadBytes(objectRef, file, { contentType: file.type });
+  return getDownloadURL(objectRef);
+}
+
+/**
+ * Radera en uppladdad logo. Best-effort — fel sväljs eftersom logo:n
+ * kanske inte ligger på vår Storage (kan vara extern URL) eller redan
+ * är raderad. Anropas inte automatiskt vid `deleteEvent` eftersom vi
+ * inte vet exakt vilken extension som användes — skulle kräva att vi
+ * sparar path:en på event-doc:en.
+ */
+export async function deleteEventLogo(
+  eventId: string,
+  logoUrl: string
+): Promise<void> {
+  // Bara om URL:en pekar mot vår egen Storage. Externa URLer rörs inte.
+  if (!logoUrl.includes("firebasestorage")) return;
+  try {
+    // Försök extrahera path:en från download-URL:en.
+    // Format: .../o/events%2F<id>%2Flogo.png?alt=media&token=...
+    const match = logoUrl.match(/\/o\/([^?]+)/);
+    if (!match) return;
+    const path = decodeURIComponent(match[1]);
+    if (!path.startsWith(`events/${eventId}/`)) return;
+    await deleteObject(ref(storage, path));
+  } catch {
+    // Tyst — best-effort
+  }
 }

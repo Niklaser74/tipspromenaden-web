@@ -18,6 +18,10 @@ användar-orienterad text.
   välkomsttext, datumintervall, valfri walk-filter).
 - Per-event-knapp som genererar en **QR-kod** att skriva ut/skicka.
   Skannas i Tipspromenaden-appen → event-läge aktiveras direkt.
+- **Logo-upload direkt till Firebase Storage** — välj fil från datorn
+  istället för att klistra in en URL (URL-fältet finns kvar som
+  alternativ). Filer sparas på `events/{id}/logo.<ext>`, max 1 MB,
+  admin-only write.
 - Datadeln (events-collection i Firestore) levererades i app-OTA
   samma dag — admin-fliken är skapande-sidan av samma feature.
 

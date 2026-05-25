@@ -20,9 +20,11 @@ import type { User } from "firebase/auth";
 import {
   buildEventDeepLink,
   deleteEvent,
+  EVENT_LOGO_MAX_SIZE,
   isValidEventId,
   listEvents,
   saveEvent,
+  uploadEventLogo,
   type EventBranding,
 } from "../../lib/events";
 import type { Walk } from "../../lib/types";
@@ -250,6 +252,27 @@ function EventEditor(props: {
   const [walkSearch, setWalkSearch] = useState("");
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  async function handleLogoUpload(file: File) {
+    // Verifiera event-id innan upload — Storage-path kräver det.
+    if (!isValidEventId(id)) {
+      setFormError(
+        "Ange en giltig event-kod ovan innan du laddar upp en logo (Storage-path:en kräver den)."
+      );
+      return;
+    }
+    setFormError(null);
+    setUploading(true);
+    try {
+      const url = await uploadEventLogo(id, file);
+      setLogoUrl(url);
+    } catch (e: any) {
+      setFormError(e?.message || "Kunde inte ladda upp logo");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   const filteredWalks = useMemo(() => {
     const term = walkSearch.trim().toLowerCase();
@@ -355,23 +378,51 @@ function EventEditor(props: {
           </Field>
 
           <Field
-            label="Logo-URL"
-            hint="Publik URL till PNG/JPG (rekommenderat ~96 px hög). Lämna tom för standard."
+            label="Logo"
+            hint={`Ladda upp en bild (PNG/JPG/SVG/WebP, max ${Math.round(EVENT_LOGO_MAX_SIZE / 1024)} KB) eller klistra in en publik URL. Rekommenderat ~96 px hög.`}
           >
-            <input
-              type="url"
-              value={logoUrl}
-              onChange={(e) => setLogoUrl(e.target.value)}
-              placeholder="https://example.com/logo.png"
-              className="w-full border border-rule rounded px-3 py-2 text-sm"
-            />
-            {logoUrl && (
-              <img
-                src={logoUrl}
-                alt="förhandsgranskning"
-                className="mt-2 h-12 object-contain bg-cream rounded p-1 border border-rule"
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <label className="bg-white border border-rule text-text-warm px-3 py-1.5 rounded-full text-sm font-semibold cursor-pointer hover:border-green-dark">
+                  {uploading ? "Laddar upp…" : "📤 Välj fil…"}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    disabled={uploading}
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) handleLogoUpload(f);
+                      // Tillåt samma fil väljas igen (t.ex. efter fel)
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+                {logoUrl && (
+                  <button
+                    type="button"
+                    onClick={() => setLogoUrl("")}
+                    className="text-xs text-red-700 hover:underline"
+                  >
+                    Ta bort logo
+                  </button>
+                )}
+              </div>
+              <input
+                type="url"
+                value={logoUrl}
+                onChange={(e) => setLogoUrl(e.target.value)}
+                placeholder="…eller https://example.com/logo.png"
+                className="w-full border border-rule rounded px-3 py-2 text-sm"
               />
-            )}
+              {logoUrl && (
+                <img
+                  src={logoUrl}
+                  alt="förhandsgranskning"
+                  className="h-16 object-contain bg-cream rounded p-2 border border-rule self-start"
+                />
+              )}
+            </div>
           </Field>
 
           <div className="grid grid-cols-2 gap-3">
