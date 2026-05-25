@@ -363,7 +363,7 @@ function EventEditor(props: {
               type="text"
               value={id}
               onChange={(e) => setId(e.target.value.toLowerCase())}
-              placeholder="scania2026"
+              placeholder="eventkod"
               disabled={mode === "edit"}
               className="w-full border border-rule rounded px-3 py-2 font-mono text-sm disabled:bg-cream disabled:text-text-warm"
             />
@@ -374,7 +374,7 @@ function EventEditor(props: {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Scania Family Day 2026"
+              placeholder="Event"
               className="w-full border border-rule rounded px-3 py-2"
             />
           </Field>
