@@ -58,8 +58,9 @@ import WalkMiniMap from "./WalkMiniMap";
 import BatchUploadDropZone from "./BatchUploadDropZone";
 import TipspackEditor from "./TipspackEditor";
 import { FlyerDialog } from "./FlyerDialog";
+import EventsManager from "./EventsManager";
 
-type Tab = "overview" | "walks" | "tipspacks" | "sessions";
+type Tab = "overview" | "walks" | "tipspacks" | "events" | "sessions";
 
 interface CuratedPack {
   slug: string;
@@ -300,7 +301,7 @@ function AdminContent({ user }: { user: User }) {
     <>
       <div className="flex items-center justify-between mb-6">
         <div className="flex gap-2 flex-wrap">
-          {(["overview", "walks", "tipspacks", "sessions"] as Tab[]).map((t) => (
+          {(["overview", "walks", "tipspacks", "events", "sessions"] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -383,6 +384,8 @@ function AdminContent({ user }: { user: User }) {
         </>
       )}
 
+      {tab === "events" && <EventsManager user={user} walks={walks} />}
+
       {tab === "sessions" && (
         <SessionsList sessions={sessions} walks={walks} />
       )}
@@ -404,6 +407,8 @@ function tabLabel(t: Tab): string {
       return "🚶 Walks";
     case "tipspacks":
       return "📚 Tipspacks";
+    case "events":
+      return "🏁 Events";
     case "sessions":
       return "🎯 Sessioner";
   }

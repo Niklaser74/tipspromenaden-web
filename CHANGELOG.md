@@ -11,6 +11,18 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-25 — Admin: Events-flik för branded customization
+
+- Ny **Events**-flik i `/admin` (kräver admin-UID). Skapa event-doc:er
+  som anpassar appen för en sponsor (logo, primär-/accentfärg,
+  välkomsttext, datumintervall, valfri walk-filter).
+- Per-event-knapp som genererar en **QR-kod** att skriva ut/skicka.
+  Skannas i Tipspromenaden-appen → event-läge aktiveras direkt.
+- Datadeln (events-collection i Firestore) levererades i app-OTA
+  samma dag — admin-fliken är skapande-sidan av samma feature.
+
+---
+
 ## 2026-05-24 — 🎉 iOS-launch: Tipspromenaden nu på App Store
 
 **Tipspromenaden är live på både Google Play och App Store.**
