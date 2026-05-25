@@ -242,6 +242,7 @@ function EventEditor(props: {
   const [logoUrl, setLogoUrl] = useState(initial?.logoUrl ?? "");
   const [primaryColor, setPrimaryColor] = useState(initial?.primaryColor ?? "#1B6B35");
   const [accentColor, setAccentColor] = useState(initial?.accentColor ?? "#C8362D");
+  const [secondaryColor, setSecondaryColor] = useState(initial?.secondaryColor ?? "");
   const [welcomeSv, setWelcomeSv] = useState(initial?.welcomeText?.sv ?? "");
   const [welcomeEn, setWelcomeEn] = useState(initial?.welcomeText?.en ?? "");
   const [startDate, setStartDate] = useState(initial?.startDate ?? "");
@@ -311,6 +312,7 @@ function EventEditor(props: {
           logoUrl: logoUrl.trim() || undefined,
           primaryColor: primaryColor || undefined,
           accentColor: accentColor || undefined,
+          secondaryColor: secondaryColor || undefined,
           welcomeText:
             welcomeSv.trim() || welcomeEn.trim()
               ? {
@@ -426,7 +428,7 @@ function EventEditor(props: {
           </Field>
 
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Primärfärg" hint="Header, knappar.">
+            <Field label="Primärfärg" hint="Header, hero, banner.">
               <div className="flex gap-2 items-center">
                 <input
                   type="color"
@@ -459,6 +461,36 @@ function EventEditor(props: {
               </div>
             </Field>
           </div>
+
+          <Field
+            label="Sekundärfärg (valfri)"
+            hint='"Skapa promenad"-kortet och andra supporterande ytor. Lämna tom så används primärfärgen där också.'
+          >
+            <div className="flex gap-2 items-center">
+              <input
+                type="color"
+                value={secondaryColor || "#1B6B35"}
+                onChange={(e) => setSecondaryColor(e.target.value)}
+                className="h-10 w-12 border border-rule rounded"
+              />
+              <input
+                type="text"
+                value={secondaryColor}
+                onChange={(e) => setSecondaryColor(e.target.value)}
+                placeholder="ex. #2D7A3A — lämna tom för att återanvända primär"
+                className="flex-1 border border-rule rounded px-3 py-2 font-mono text-sm"
+              />
+              {secondaryColor && (
+                <button
+                  type="button"
+                  onClick={() => setSecondaryColor("")}
+                  className="text-xs text-red-700 hover:underline shrink-0"
+                >
+                  Rensa
+                </button>
+              )}
+            </div>
+          </Field>
 
           <Field label="Välkomsttext (svenska)" hint="Visas när användaren aktiverat event:et.">
             <textarea

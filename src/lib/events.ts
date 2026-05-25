@@ -38,6 +38,8 @@ export interface EventBranding {
   logoUrl?: string;
   primaryColor?: string;
   accentColor?: string;
+  /** Sekundärfärg för supporterande ytor (Skapa-kortet på Hem m.fl.). */
+  secondaryColor?: string;
   welcomeText?: {
     sv?: string;
     en?: string;
