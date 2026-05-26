@@ -381,7 +381,7 @@ function EventEditor(props: {
 
           <Field
             label="Logo"
-            hint={`Ladda upp en bild (PNG/JPG/SVG/WebP, max ${Math.round(EVENT_LOGO_MAX_SIZE / 1024)} KB) eller klistra in en publik URL. Rekommenderat ~96 px hög.`}
+            hint={`Ladda upp en bild (PNG, JPG eller WebP — max ${Math.round(EVENT_LOGO_MAX_SIZE / 1024)} KB) eller klistra in en publik URL. SVG stöds inte av appen. Rekommenderat ~96 px hög.`}
           >
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 flex-wrap">
@@ -389,7 +389,7 @@ function EventEditor(props: {
                   {uploading ? "Laddar upp…" : "📤 Välj fil…"}
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/png,image/jpeg,image/webp"
                     disabled={uploading}
                     className="hidden"
                     onChange={(e) => {

@@ -153,7 +153,19 @@ export async function uploadEventLogo(
     throw new Error("Ogiltig event-kod.");
   }
   if (!file.type.startsWith("image/")) {
-    throw new Error("Filen måste vara en bild (PNG, JPG, SVG, WebP).");
+    throw new Error("Filen måste vara en bild (PNG, JPG eller WebP).");
+  }
+  // SVG stöds inte i appen — React Natives <Image> kan inte rendera SVG.
+  // Refusera här så användaren får tydligt felmeddelande direkt istället
+  // för att laddа upp en fil som ser tom ut i appen. Konvertera SVG till
+  // PNG via t.ex. cloudconvert.com först.
+  if (
+    file.type === "image/svg+xml" ||
+    file.name.toLowerCase().endsWith(".svg")
+  ) {
+    throw new Error(
+      "SVG stöds inte av appen. Konvertera till PNG eller WebP först (t.ex. via cloudconvert.com)."
+    );
   }
   if (file.size > EVENT_LOGO_MAX_SIZE) {
     throw new Error(

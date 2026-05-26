@@ -11,6 +11,12 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-25 — Event-logo: blockera SVG-upload
+
+- Admin refuserar nu SVG-filer vid logo-upload med tydligt felmeddelande
+  (mobilappen kan inte rendera SVG i React Natives `<Image>`).
+- Hint-texten och `<input accept>` justerade till PNG/JPG/WebP.
+
 ## 2026-05-25 — Event-editor får sekundärfärg
 
 - Tredje färgväljare i admin → Events: "Sekundärfärg (valfri)". Driver
