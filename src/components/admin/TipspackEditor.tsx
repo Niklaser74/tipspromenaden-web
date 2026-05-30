@@ -22,6 +22,7 @@ import type { User } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../../lib/firebase";
+import { HelpIcon } from "../HelpIcon";
 import {
   uploadTipspack,
   getDownloadUrl,
@@ -273,6 +274,7 @@ export default function TipspackEditor({
           </h2>
           <button
             onClick={onClose}
+            title="Stäng modalen utan att spara."
             className="text-text-warm hover:text-green-dark text-2xl leading-none"
             aria-label="Stäng"
           >
@@ -291,7 +293,7 @@ export default function TipspackEditor({
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-              <Field label="Namn">
+              <Field label="Namn" help="Visningsnamn för paketet. Visas i biblioteket och vid import i appen.">
                 <input
                   type="text"
                   value={name}
@@ -299,7 +301,10 @@ export default function TipspackEditor({
                   className="w-full px-3 py-2 rounded-lg border border-rule bg-white"
                 />
               </Field>
-              <Field label="Slug">
+              <Field
+                label="Slug"
+                help="URL-säker identifierare. Används i delningslänken (tipspromenaden.app/tipspack/<slug>) och som Firestore-doc-id. Kan inte ändras efter skapande — Auto-knappen genererar baserat på namnet."
+              >
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -315,6 +320,7 @@ export default function TipspackEditor({
                     <button
                       type="button"
                       onClick={() => setSlugAuto(true)}
+                      title="Återgå till auto-genererad slug baserad på namnet."
                       className="text-xs text-text-warm hover:underline"
                     >
                       Auto
@@ -322,7 +328,7 @@ export default function TipspackEditor({
                   )}
                 </div>
               </Field>
-              <Field label="Författare">
+              <Field label="Författare" help="Visas under paketets titel i biblioteket. Kan vara organisation eller skapare.">
                 <input
                   type="text"
                   value={author}
@@ -330,7 +336,7 @@ export default function TipspackEditor({
                   className="w-full px-3 py-2 rounded-lg border border-rule bg-white"
                 />
               </Field>
-              <Field label="Språk">
+              <Field label="Språk" help="Vilket språk frågorna är skrivna på. Visas som flagga i biblioteket och filtreras vid sök.">
                 <select
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
@@ -343,7 +349,7 @@ export default function TipspackEditor({
                   ))}
                 </select>
               </Field>
-              <Field label="Beskrivning" full>
+              <Field label="Beskrivning" full help="Kort förklaring av vad paketet handlar om. Visas under titeln i biblioteket.">
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -351,7 +357,11 @@ export default function TipspackEditor({
                   className="w-full px-3 py-2 rounded-lg border border-rule bg-white"
                 />
               </Field>
-              <Field label="Synlighet" full>
+              <Field
+                label="Synlighet"
+                full
+                help="Publik = syns i Biblioteks-listan i appen. Hemlig = bara delbar via direktlänk (tipspromenaden.app/tipspack/<slug>). Storage-filen är publikt läsbar i båda fallen — slug:en är obfuskeringen."
+              >
                 <label className="flex items-center gap-2 text-sm cursor-pointer">
                   <input
                     type="checkbox"
@@ -370,6 +380,7 @@ export default function TipspackEditor({
               </h3>
               <button
                 onClick={addQuestion}
+                title="Lägg till en ny fråga sist i listan. Tom mall — du fyller i text + 3 svarsalternativ."
                 className="text-xs bg-green-dark text-cream px-3 py-1 rounded-full"
               >
                 + Lägg till fråga
@@ -406,6 +417,7 @@ export default function TipspackEditor({
                       <button
                         onClick={() => removeQuestion(qi)}
                         disabled={questions.length <= 1}
+                        title="Ta bort denna fråga. Inaktiv om bara en fråga finns kvar (paket måste ha minst en)."
                         className="text-xs text-red-700 disabled:opacity-30 hover:underline px-1"
                       >
                         Ta bort
@@ -452,6 +464,7 @@ export default function TipspackEditor({
                     {q.options.length < MAX_OPTIONS && (
                       <button
                         onClick={() => addOption(qi)}
+                        title="Lägg till ett extra svarsalternativ. Klassiska tipspromenader har 3, men du kan gå upp till MAX_OPTIONS."
                         className="text-xs text-green-dark hover:underline mt-1"
                       >
                         + Alternativ
@@ -466,6 +479,7 @@ export default function TipspackEditor({
               <button
                 onClick={onClose}
                 disabled={saving}
+                title="Stäng utan att spara. Ändringar går förlorade."
                 className="text-text-warm px-4 py-2 hover:underline disabled:opacity-50"
               >
                 Avbryt
@@ -473,6 +487,11 @@ export default function TipspackEditor({
               <button
                 onClick={save}
                 disabled={saving}
+                title={
+                  mode === "create"
+                    ? "Skapa paketet och ladda upp som .tipspack-fil till Storage + metadata till Firestore."
+                    : "Spara ändringar och rotera .tipspack-filen i Storage."
+                }
                 className="bg-green-dark text-cream px-6 py-2 rounded-full font-semibold shadow disabled:opacity-50"
               >
                 {saving ? "Sparar…" : mode === "create" ? "Skapa" : "Spara"}
@@ -489,15 +508,19 @@ function Field({
   label,
   children,
   full,
+  help,
 }: {
   label: string;
   children: React.ReactNode;
   full?: boolean;
+  /** Valfri popover-hjälptext bredvid label:n. */
+  help?: string;
 }) {
   return (
     <label className={`block ${full ? "md:col-span-2" : ""}`}>
       <span className="block text-xs uppercase tracking-wide text-text-warm mb-1">
         {label}
+        {help && <HelpIcon text={help} />}
       </span>
       {children}
     </label>

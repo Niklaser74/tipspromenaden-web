@@ -118,6 +118,7 @@ export default function AdminDashboard() {
             }
           }}
           disabled={signingIn}
+          title="Öppna Google-popup för att logga in med ditt Firebase Auth-konto. Krävs för att verifiera om din UID är på admin-listan."
           className="bg-green-dark text-cream px-6 py-2 rounded-full font-semibold shadow hover:shadow-md disabled:opacity-50"
         >
           {signingIn ? "Loggar in…" : "Logga in med Google"}
@@ -358,6 +359,7 @@ function AdminContent({ user }: { user: User }) {
             <h2 className="font-serif text-xl text-green-dark">Tipspacks</h2>
             <button
               onClick={() => setEditorState({ mode: "create" })}
+              title="Skapa ett nytt tipspack från grunden via formuläret (titel, beskrivning, frågor en-och-en). Alternativet är att ladda upp en .tipspack-fil via drop-zonen nedan."
               className="bg-green-dark text-cream px-4 py-1.5 rounded-full text-sm font-semibold shadow"
             >
               ➕ Skapa nytt
@@ -695,6 +697,11 @@ function WalksList({
                 <div className="flex flex-col gap-2 shrink-0">
                   <button
                     onClick={() => setExpanded(isExpanded ? null : w.id)}
+                    title={
+                      isExpanded
+                        ? "Stäng inspektera-vyn."
+                        : "Visa kart-thumbnail, frågor med facit, feedback-uppdelning och delningsbara länkar för denna walk."
+                    }
                     className="text-xs border border-green-dark text-green-dark px-3 py-1 rounded-full hover:bg-green-dark/5"
                   >
                     {isExpanded ? "Dölj" : "Inspektera"}
@@ -702,12 +709,17 @@ function WalksList({
                   <button
                     onClick={() => setFlyerWalk(w)}
                     className="text-xs border border-green-dark text-green-dark px-3 py-1 rounded-full hover:bg-green-dark/5"
-                    title="Skapa printbart A5-flygblad med QR-koder"
+                    title="Generera ett printbart A5-flygblad med walk-info + QR-kod att sätta upp på platsen."
                   >
                     📄 Flygblad
                   </button>
                   <button
                     onClick={() => onToggleHidden(w.id)}
+                    title={
+                      isHidden
+                        ? "Visa walken igen i publika listor (bibliotek på app + webb)."
+                        : "Göm walken från publika listor. Den är fortfarande spelbar via direktlänk — bara listning blockeras."
+                    }
                     className={`text-xs px-3 py-1 rounded-full ${
                       isHidden
                         ? "bg-green-dark text-cream"
@@ -954,6 +966,11 @@ function TipspacksList({
                 <div className="flex flex-col gap-2 shrink-0">
                   <button
                     onClick={() => expand(p)}
+                    title={
+                      isExpanded
+                        ? "Stäng inspektera-vyn."
+                        : "Ladda hela JSON-filen och visa frågor + svarsalternativ (med facit markerat)."
+                    }
                     className="text-xs border border-green-dark text-green-dark px-3 py-1 rounded-full hover:bg-green-dark/5"
                   >
                     {isExpanded ? "Dölj" : "Inspektera"}
@@ -963,6 +980,7 @@ function TipspacksList({
                     p.raw && (
                       <button
                         onClick={() => onEdit(p.raw!)}
+                        title="Öppna redigerings-modalen. Du kan ändra metadata och växla mellan publik/hemlig länk."
                         className="text-xs border border-green-dark text-green-dark px-3 py-1 rounded-full hover:bg-green-dark/5"
                       >
                         📝 Redigera
@@ -970,6 +988,11 @@ function TipspacksList({
                     )}
                   <button
                     onClick={() => onToggleHidden(p.slug)}
+                    title={
+                      isHidden
+                        ? "Visa paketet igen i biblioteket."
+                        : "Göm paketet från Biblioteks-listan i appen. Direktlänk fungerar fortfarande."
+                    }
                     className={`text-xs px-3 py-1 rounded-full ${
                       isHidden
                         ? "bg-green-dark text-cream"

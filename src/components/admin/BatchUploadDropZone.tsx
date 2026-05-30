@@ -149,6 +149,7 @@ export default function BatchUploadDropZone({ user, onUploaded }: Props) {
       </h3>
       <div
         onClick={() => inputRef.current?.click()}
+        title="Drag och släpp en eller flera .tipspack-filer hit, eller klicka för att öppna fildialogen. Filer laddas upp sekventiellt — befintliga slugs som du äger hoppas över."
         onDragOver={(e) => {
           e.preventDefault();
           setDragOver(true);
@@ -185,7 +186,10 @@ export default function BatchUploadDropZone({ user, onUploaded }: Props) {
         />
       </div>
 
-      <label className="flex items-center gap-2 mt-3 text-sm text-text-warm cursor-pointer">
+      <label
+        title="Om bockad: alla uppladdade paket sätts som publika (syns i biblioteket). Annars är de bara nåbara via direktlänk. Synligheten kan ändras per paket efteråt."
+        className="flex items-center gap-2 mt-3 text-sm text-text-warm cursor-pointer"
+      >
         <input
           type="checkbox"
           checked={makePublic}
@@ -204,6 +208,7 @@ export default function BatchUploadDropZone({ user, onUploaded }: Props) {
             <button
               onClick={processAll}
               disabled={busy || files.every((f) => f.status.kind !== "pending")}
+              title="Starta sekventiell uppladdning av alla väntande filer. Status uppdateras live — fel på enskild fil stoppar inte hela batchen."
               className="bg-green-dark text-cream px-4 py-1.5 rounded-full text-sm font-semibold disabled:opacity-50"
             >
               {busy ? "Laddar upp…" : `Ladda upp ${files.filter((f) => f.status.kind === "pending").length} st`}
@@ -211,6 +216,7 @@ export default function BatchUploadDropZone({ user, onUploaded }: Props) {
             <button
               onClick={clearDone}
               disabled={busy}
+              title="Ta bort filer som är klara eller skippade från listan, behåll fel + väntande för retry."
               className="text-xs text-text-warm hover:underline disabled:opacity-50"
             >
               Rensa klara/skippade
