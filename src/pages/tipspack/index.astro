@@ -95,12 +95,14 @@ const packs = getCuratedTipspacks().map((p) => ({
                   <a
                     href={p.url}
                     download={p.filename}
+                    title="Ladda ner .tipspack-filen till datorn. Du kan sedan dela den eller importera i appen via 'Importera fil'-knappen."
                     class="border border-green-dark text-green-dark px-5 py-2 rounded-full text-sm font-semibold hover:bg-green-dark/5 transition text-center"
                   >
                     📥 Ladda ner fil
                   </a>
                   <button
                     data-copy-url={`https://tipspromenaden.app${p.url}`}
+                    title="Kopiera nedladdnings-URL:en till urklipp. Användbart för att dela paketet via mejl eller chatt."
                     class="copy-btn text-text-warm text-xs hover:text-green-dark"
                   >
                     Kopiera länk
@@ -111,6 +113,7 @@ const packs = getCuratedTipspacks().map((p) => ({
                 <button
                   data-preview-url={p.url}
                   data-preview-slug={p.slug}
+                  title="Visa alla frågor i paketet (utan svaren) så du kan kolla nivå och innehåll innan nedladdning."
                   class="preview-btn text-xs text-green-dark hover:underline"
                 >
                   Förhandsgranska frågor

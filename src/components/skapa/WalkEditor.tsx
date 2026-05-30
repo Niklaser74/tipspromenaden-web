@@ -320,6 +320,7 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
           </a>
           <button
             onClick={onClose}
+            title={t("Tillbaka till listan över dina promenader (autosparas).", "Back to the list of your walks (auto-saved).")}
             className="text-text-warm hover:text-green-dark whitespace-nowrap"
           >
             {t("← Mina", "← Mine")}
@@ -348,6 +349,7 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
           <button
             onClick={handleSave}
             disabled={saving}
+            title={t("Spara till molnet. Sparas också automatiskt var ~10 sek medan du arbetar.", "Save to the cloud. Also auto-saves every ~10 sec while you work.")}
             className="bg-green-dark text-cream px-5 py-2 rounded-full font-semibold text-sm shadow hover:shadow-md transition disabled:opacity-50"
           >
             {saving ? t("Sparar…", "Saving…") : t("Spara", "Save")}
@@ -544,6 +546,10 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
 
             <button
               onClick={addQuestion}
+              title={t(
+                "Skapa en ny tom fråga. Du fyller i text + 3 svarsalternativ och placerar den på kartan.",
+                "Create a new empty question. Fill in text + 3 answer options and place it on the map."
+              )}
               className="w-full bg-green-dark text-cream px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition"
             >
               {t("+ Lägg till fråga", "+ Add question")}
@@ -611,6 +617,10 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
           <div className="p-5 border-t border-gray-100">
             <button
               onClick={handleDelete}
+              title={t(
+                "Permanent radering. Promenaden tas bort från Firestore + ditt lokala cache. Delade QR-koder slutar fungera.",
+                "Permanent deletion. The walk is removed from Firestore + your local cache. Shared QR codes stop working."
+              )}
               className="text-sm text-red-700 hover:underline"
             >
               {t("Radera promenaden", "Delete the walk")}

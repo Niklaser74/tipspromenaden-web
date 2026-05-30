@@ -11,6 +11,24 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-25 — Hjälptexter & tooltips: sweep över hela siten
+
+Spridning av hjälpsystemet från Events-admin till resten av siten:
+
+- **Admin** alla flikar: Walks (Inspektera/Flygblad/Göm), Tipspacks
+  (Inspektera/Redigera/Göm, ➕ Skapa nytt), TipspackEditor (6 form-
+  fält med HelpIcon + alla knappar), BatchUploadDropZone (drop-zone,
+  publik-toggle, Ladda upp/Rensa), Logga in.
+- **/skapa**: WalkEditor (Mina, Spara, + Lägg till fråga, Radera),
+  QuestionForm (Ta bort, + Alternativ, Klicka om, 📍 Placera på kartan).
+- **/** (startsidan): footer-länkar (Så funkar det, Stöd oss, Villkor,
+  Integritet).
+- **/tipspack**: Ladda ner fil, Kopiera länk, Förhandsgranska frågor.
+
+Mönster: kort `title=""` på knappar och länkar (browserns native hover-
+tooltip), `<HelpIcon>` på form-fält där konsekvensen behöver djupare
+förklaring (synlig på både hover och tap).
+
 ## 2026-05-25 — Hjälptexter på event-admin
 
 - Ny återanvändbar `<HelpIcon>`-komponent: liten "?"-ikon med popover-
