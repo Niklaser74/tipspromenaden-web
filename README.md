@@ -131,6 +131,44 @@ Färger definieras som design-tokens i `src/styles/global.css` under
 | `--color-rule`       | `border-rule`     | `#D9D2C2` |
 | `--color-yellow`     | `bg-yellow`       | `#E8B830` |
 
+### Hjälptexter & tooltips (HÅRT KRAV på nya UI-element)
+
+Alla interaktiva element ska ha en kort förklaring av vad som händer
+när användaren interagerar med dem. Två mönster, välj rätt:
+
+**`title="…"` på `<button>` och `<a>`** — kort en-meningstext (10-25 ord).
+Använder browserns native hover-tooltip på desktop. Mobil ser det inte
+men knapparnas labels är vanligtvis tydliga nog.
+
+```tsx
+<button onClick={onShowQR} title="Visa QR-kod att skriva ut eller dela.">
+  📱 QR
+</button>
+```
+
+**`<HelpIcon text="…" />` bredvid form-fält-labels** — när
+konsekvensen behöver djupare förklaring (2-4 meningar) eller fältet
+har permanenta effekter (något bakas in i en QR-kod, något kan inte
+ändras senare, etc.). Funkar på både hover (desktop) och tap (mobil).
+Källfilen är `src/components/HelpIcon.tsx`.
+
+```tsx
+import { HelpIcon } from "../HelpIcon";
+
+<label>
+  Event-kod (id)
+  <HelpIcon text="Koden bakas in i QR-koden permanent. Om du ändrar den måste alla redan utskrivna QR-koder kasseras." />
+</label>
+```
+
+Form-komponenter i admin (`Field` i `EventsManager.tsx` och
+`TipspackEditor.tsx`) tar en valfri `help?: string`-prop som auto-
+renderar HelpIcon vid label:n. Återanvänd det mönstret i nya editorer.
+
+**Regel:** lägg till antingen `title` eller `HelpIcon` på varje ny
+knapp/länk/fält. Sweepen 2026-05-25 dokumenterade ~50+ element —
+brott mot konventionen är en regression att fixa direkt.
+
 ## Deep links
 
 `/walk/<id>` ska öppna promenaden i appen. Två vägar:
