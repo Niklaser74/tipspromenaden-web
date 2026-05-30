@@ -305,6 +305,7 @@ function AdminContent({ user }: { user: User }) {
             <button
               key={t}
               onClick={() => setTab(t)}
+              title={tabTooltip(t)}
               className={`px-4 py-1.5 rounded-full text-sm font-semibold transition ${
                 tab === t
                   ? "bg-green-dark text-cream"
@@ -317,6 +318,7 @@ function AdminContent({ user }: { user: User }) {
         </div>
         <button
           onClick={() => signOut(auth)}
+          title="Logga ut från Firebase Auth. Din session avslutas och admin-sidan kräver login igen vid nästa besök."
           className="text-xs text-text-warm hover:underline"
         >
           Logga ut ({user.email})
@@ -411,6 +413,21 @@ function tabLabel(t: Tab): string {
       return "🏁 Events";
     case "sessions":
       return "🎯 Sessioner";
+  }
+}
+
+function tabTooltip(t: Tab): string {
+  switch (t) {
+    case "overview":
+      return "Aggregerade KPIs: antal walks, sessioner, paket, deltagar-feedback. Topp-walks efter användning.";
+    case "walks":
+      return "Alla skapade walks (publika och privata). Expandera för att se frågor + facit. 🚩 göm från publika listor.";
+    case "tipspacks":
+      return "Användar-uppladdade och curated frågebatterier. Skapa nya, ladda upp i batch, göm olämpliga.";
+    case "events":
+      return "Branded customization för sponsor-event (Scania m.fl.). Egen logo, färger och valfri walk-filter. Generera QR-kod direkt här.";
+    case "sessions":
+      return "Lista över de senaste sessionerna per walk — vem som spelat när och hur mycket de hann.";
   }
 }
 

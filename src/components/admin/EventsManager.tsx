@@ -28,6 +28,7 @@ import {
   type EventBranding,
 } from "../../lib/events";
 import type { Walk } from "../../lib/types";
+import { HelpIcon } from "../HelpIcon";
 
 interface Props {
   user: User;
@@ -80,6 +81,7 @@ export default function EventsManager({ user, walks }: Props) {
         <h2 className="font-serif text-xl text-green-dark">Events</h2>
         <button
           onClick={() => setEditor({ mode: "create" })}
+          title="Skapa ett nytt branded event. Du anger event-kod, namn, färger, logo och valfri walk-lista."
           className="bg-green-dark text-cream px-4 py-1.5 rounded-full text-sm font-semibold shadow"
         >
           ➕ Nytt event
@@ -205,18 +207,21 @@ function EventRow(props: {
         <div className="flex flex-col gap-1 shrink-0">
           <button
             onClick={onShowQR}
+            title="Visa en QR-kod som öppnar appen direkt i event-läge. Skriv ut, projicera eller skicka som bild till deltagarna."
             className="text-xs bg-green-dark text-cream px-3 py-1 rounded-full font-semibold"
           >
             📱 QR
           </button>
           <button
             onClick={onEdit}
+            title="Ändra event-data (namn, färger, logo, walks, datum). Event-koden kan inte ändras eftersom den är inbakad i redan delade QR-koder."
             className="text-xs bg-white border border-rule text-text-warm px-3 py-1 rounded-full hover:border-green-dark"
           >
             Redigera
           </button>
           <button
             onClick={onDelete}
+            title="Radera eventet permanent. Användare som redan har koden kommer få ett felmeddelande när de försöker aktivera."
             className="text-xs text-red-700 hover:underline"
           >
             Radera
@@ -358,6 +363,7 @@ function EventEditor(props: {
           <Field
             label="Event-kod (id)"
             hint="Används i QR-koden och som identifierare. Endast a-z, A-Z, 0-9, _, -. Kan inte ändras efter skapande."
+            help="Koden bakas in i QR-koden permanent. Om du senare ändrar koden måste alla redan utskrivna QR-koder kasseras. Välj en kort kod som speglar eventet, t.ex. förkortning + årtal."
           >
             <input
               type="text"
@@ -369,7 +375,11 @@ function EventEditor(props: {
             />
           </Field>
 
-          <Field label="Visningsnamn" hint="Visas i hero på startskärmen och i banner.">
+          <Field
+            label="Visningsnamn"
+            hint="Visas i hero på startskärmen och i banner."
+            help="Detta är det stora namnet användaren ser när hen aktiverar eventet — på välkomstskärmen, hemskärmens hero och i banner-listen högst upp."
+          >
             <input
               type="text"
               value={name}
@@ -382,10 +392,14 @@ function EventEditor(props: {
           <Field
             label="Logo"
             hint={`Ladda upp en bild (PNG, JPG eller WebP — max ${Math.round(EVENT_LOGO_MAX_SIZE / 1024)} KB) eller klistra in en publik URL. SVG stöds inte av appen. Rekommenderat ~96 px hög.`}
+            help="Logon visas på tre platser: stor på välkomstskärmen (~280×140), framträdande i hero på Hem (~240×80) och som liten ikon i banner högst upp (24×24). Wordmark-logos (breda) funkar bra — kvadratiska också."
           >
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 flex-wrap">
-                <label className="bg-white border border-rule text-text-warm px-3 py-1.5 rounded-full text-sm font-semibold cursor-pointer hover:border-green-dark">
+                <label
+                  title="Öppna en fildialog och ladda upp bilden direkt till Firebase Storage. Sätter logoUrl-fältet automatiskt när uppladdningen lyckas."
+                  className="bg-white border border-rule text-text-warm px-3 py-1.5 rounded-full text-sm font-semibold cursor-pointer hover:border-green-dark"
+                >
                   {uploading ? "Laddar upp…" : "📤 Välj fil…"}
                   <input
                     type="file"
@@ -404,6 +418,7 @@ function EventEditor(props: {
                   <button
                     type="button"
                     onClick={() => setLogoUrl("")}
+                    title="Töm logoUrl-fältet. Filen ligger kvar i Storage tills någon manuellt rensar — men appen visar fallback-emoji 🏁 istället."
                     className="text-xs text-red-700 hover:underline"
                   >
                     Ta bort logo
@@ -428,34 +443,46 @@ function EventEditor(props: {
           </Field>
 
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Primärfärg" hint="Header, hero, banner.">
+            <Field
+              label="Primärfärg"
+              hint="Header, hero, banner."
+              help="Stämningsbärande huvudfärg. Appens topp-banner, hemskärmens hero-bakgrund och stack-navigatorns header alla färgas av denna. Sätt till sponsorernas brand-färg."
+            >
               <div className="flex gap-2 items-center">
                 <input
                   type="color"
                   value={primaryColor}
                   onChange={(e) => setPrimaryColor(e.target.value)}
+                  title="Färgväljare"
                   className="h-10 w-12 border border-rule rounded"
                 />
                 <input
                   type="text"
                   value={primaryColor}
                   onChange={(e) => setPrimaryColor(e.target.value)}
+                  title="Hex-värde (t.ex. #041E42)"
                   className="flex-1 border border-rule rounded px-3 py-2 font-mono text-sm"
                 />
               </div>
             </Field>
-            <Field label="Accentfärg" hint="Pin på kartan.">
+            <Field
+              label="Accentfärg"
+              hint="Pin på kartan."
+              help="Färgen på checkpoint-pin:n på kartan (där frågorna ligger). Bör ha bra kontrast mot både ljusa och mörka kartor — en kraftig röd, orange eller magenta funkar oftast."
+            >
               <div className="flex gap-2 items-center">
                 <input
                   type="color"
                   value={accentColor}
                   onChange={(e) => setAccentColor(e.target.value)}
+                  title="Färgväljare"
                   className="h-10 w-12 border border-rule rounded"
                 />
                 <input
                   type="text"
                   value={accentColor}
                   onChange={(e) => setAccentColor(e.target.value)}
+                  title="Hex-värde (t.ex. #E6321A)"
                   className="flex-1 border border-rule rounded px-3 py-2 font-mono text-sm"
                 />
               </div>
@@ -465,6 +492,7 @@ function EventEditor(props: {
           <Field
             label="Sekundärfärg (valfri)"
             hint='"Skapa promenad"-kortet och andra supporterande ytor. Lämna tom så används primärfärgen där också.'
+            help='Används där primärfärgen skulle stå tätt intill sig själv — t.ex. "Skapa promenad"-kortet på Hem som annars hamnar precis under hero:n. Lämna tom så återanvänds primärfärgen även här.'
           >
             <div className="flex gap-2 items-center">
               <input
@@ -484,6 +512,7 @@ function EventEditor(props: {
                 <button
                   type="button"
                   onClick={() => setSecondaryColor("")}
+                  title="Töm sekundärfärgen så primärfärgen återanvänds även på Skapa-kortet."
                   className="text-xs text-red-700 hover:underline shrink-0"
                 >
                   Rensa
@@ -492,7 +521,11 @@ function EventEditor(props: {
             </div>
           </Field>
 
-          <Field label="Välkomsttext (svenska)" hint="Visas när användaren aktiverat event:et.">
+          <Field
+            label="Välkomsttext (svenska)"
+            hint="Visas när användaren aktiverat event:et."
+            help="Visas i 2 sekunder på välkomstskärmen direkt efter QR-skanning, innan användaren routas vidare till Hem. Håll det kort och välkomnande — max ~2 meningar."
+          >
             <textarea
               value={welcomeSv}
               onChange={(e) => setWelcomeSv(e.target.value)}
@@ -502,7 +535,11 @@ function EventEditor(props: {
             />
           </Field>
 
-          <Field label="Välkomsttext (engelska)" hint="Visas för engelska användare.">
+          <Field
+            label="Välkomsttext (engelska)"
+            hint="Visas för engelska användare."
+            help="Plockas automatiskt om användaren har engelska som appspråk. Om bara svenska är ifyllt visas svenska för alla — och tvärtom."
+          >
             <textarea
               value={welcomeEn}
               onChange={(e) => setWelcomeEn(e.target.value)}
@@ -513,7 +550,11 @@ function EventEditor(props: {
           </Field>
 
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Startdatum" hint="ISO-format (YYYY-MM-DD)">
+            <Field
+              label="Startdatum"
+              hint="ISO-format (YYYY-MM-DD)"
+              help="Informativt fält just nu — appen aktiverar inte event-läget automatiskt på startdatumet. Användaren måste alltid skanna QR-koden eller mata in koden själv."
+            >
               <input
                 type="date"
                 value={startDate}
@@ -524,6 +565,7 @@ function EventEditor(props: {
             <Field
               label="Slutdatum"
               hint="Efter detta auto-avslutar appen event-läget."
+              help="Strängare än startdatum: så fort dagens datum passerar slutdatumet kommer appen automatiskt att avaktivera event-läget vid nästa start. Lämna tom för ett 'evigt' event."
             >
               <input
                 type="date"
@@ -537,6 +579,7 @@ function EventEditor(props: {
           <Field
             label={`Walks i biblioteket (${walkIds.size} valda)`}
             hint="Lämna tomt för att visa alla publika walks i biblioteket. Annars filtreras Upptäck-fliken till bara dessa."
+            help="Valda walks visas ALLTID på hemskärmen som 'Här på <event>'-listan (inkl. icke-publika). Påverkar också vilka walks som syns under Bibliotek → Upptäck. Tomt val betyder ingen lista på Hem, och Upptäck visar alla publika walks som vanligt."
           >
             <input
               type="search"
@@ -578,6 +621,7 @@ function EventEditor(props: {
           <button
             onClick={onClose}
             disabled={saving}
+            title="Stäng utan att spara. Ändringar går förlorade."
             className="px-4 py-2 text-sm text-text-warm hover:underline"
           >
             Avbryt
@@ -585,6 +629,7 @@ function EventEditor(props: {
           <button
             onClick={handleSave}
             disabled={saving}
+            title="Spara event till Firestore. Användare som redan har koden ser ändringarna nästa gång de aktiverar event-läget."
             className="bg-green-dark text-cream px-6 py-2 rounded-full font-semibold shadow disabled:opacity-50"
           >
             {saving ? "Sparar…" : "Spara"}
@@ -598,12 +643,19 @@ function EventEditor(props: {
 function Field(props: {
   label: string;
   hint?: string;
+  /**
+   * Längre hjälptext som visas i en HelpIcon-popover bredvid label:n.
+   * Använd när konsekvenserna av fältet behöver förklaras djupare än
+   * den vanliga `hint`-raden räcker till.
+   */
+  help?: string;
   children: React.ReactNode;
 }) {
   return (
     <div>
       <label className="block text-sm font-semibold text-green-dark mb-1">
         {props.label}
+        {props.help && <HelpIcon text={props.help} />}
       </label>
       {props.hint && (
         <p className="text-xs text-text-warm mb-1">{props.hint}</p>
@@ -678,12 +730,14 @@ function QRDialog(props: { event: EventBranding; onClose: () => void }) {
           <button
             onClick={handleDownload}
             disabled={!dataUrl}
+            title="Spara QR-koden som PNG-fil på din dator. Filnamnet blir event-<id>.png."
             className="flex-1 bg-green-dark text-cream px-4 py-2 rounded-full text-sm font-semibold shadow disabled:opacity-50"
           >
             ⬇️ Ladda ner PNG
           </button>
           <button
             onClick={handleCopyLink}
+            title="Kopiera den underliggande deep-link-URL:en till urklipp. Användbart om du vill testa direkt i Expo Go eller bädda in i mail/SMS."
             className="flex-1 bg-white border border-rule text-text-warm px-4 py-2 rounded-full text-sm font-semibold hover:border-green-dark"
           >
             📋 Kopiera länk

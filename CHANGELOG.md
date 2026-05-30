@@ -11,6 +11,19 @@ användar-orienterad text.
 
 ---
 
+## 2026-05-25 — Hjälptexter på event-admin
+
+- Ny återanvändbar `<HelpIcon>`-komponent: liten "?"-ikon med popover-
+  hjälptext, fungerar på både hover (desktop) och tap (mobil).
+- Alla nyckel-fält i event-editorn har nu ett ? bredvid label:n med
+  djupare förklaring av konsekvenser (event-koden permanent, logo-platser,
+  färger där, datumens semantik, walk-listans effekt).
+- Hover-tooltips (`title=""`) på alla knappar i Events-fliken:
+  📱 QR, Redigera, Radera, Spara, Avbryt, Ladda ner PNG, Kopiera länk,
+  Välj fil, Ta bort logo, Rensa, ➕ Nytt event.
+- Tab-knapparna i admin-rubriken har också tooltips som förklarar
+  vad respektive flik innehåller.
+
 ## 2026-05-25 — Event-logo: blockera SVG-upload
 
 - Admin refuserar nu SVG-filer vid logo-upload med tydligt felmeddelande
