@@ -11,6 +11,25 @@ användar-orienterad text.
 
 ---
 
+## 2026-06-01 — `/walk/<id>` på desktop visar QR-kod
+
+När någon delar en walk-länk i en chatt och mottagaren klickar på
+datorn fick man tidigare bara texten "öppna länken på en Android-
+telefon". Nu visar `/walk/<id>` på desktop istället en stor QR-kod
+av samma URL — skanna med mobilkameran och promenaden öppnas direkt
+i appen. Mycket smidigare flöde för det vanliga fallet "länken kom
+in på Slack/Messenger som jag har öppet på laptopen".
+
+Samtidigt uppdaterat iOS-grenen: tidigare sa den "iOS inte släppt än"
+(stale sedan App Store-launchen 2026-05-24). Nu försöker den deep-
+linka `tipspromenaden://walk/<id>` med fallback till App Store, samma
+mönster som Android-grenen.
+
+Inga ändringar i app-repo:n. QR-koden genereras klient-side via det
+redan bundlade `qrcode`-paketet — inget externt API-anrop.
+
+---
+
 ## 2026-05-25 — Hjälptexter & tooltips: sweep över hela siten
 
 Spridning av hjälpsystemet från Events-admin till resten av siten:
