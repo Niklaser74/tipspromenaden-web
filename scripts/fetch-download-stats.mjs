@@ -197,38 +197,44 @@ async function fetchAscMonth(yearMonth) {
   const gz = Buffer.from(await res.arrayBuffer());
   const tsv = gunzipSync(gz).toString("utf8");
   const lines = tsv.split(/\r?\n/).filter((l) => l.trim());
-  if (lines.length < 2) return { units: 0, downloads: 0 };
+  if (lines.length < 2) {
+    console.log(`iOS ${yearMonth}: rapporten är tom (0 rader)`);
+    return { units: 0, downloads: 0 };
+  }
 
   const headers = lines[0].split("\t");
-  const skuIdx = headers.indexOf("SKU");
   const unitsIdx = headers.indexOf("Units");
   const productTypeIdx = headers.indexOf("Product Type Identifier");
+  const skuIdx = headers.indexOf("SKU");
 
+  console.log(
+    `iOS ${yearMonth}: ${lines.length - 1} rader, headers: ${headers.length} kolumner`
+  );
+
+  // Diagnostik: lista distinkta produkttyper så vi ser om Apple bytt format
+  const seenTypes = new Set();
   let units = 0;
   let downloads = 0;
   for (let i = 1; i < lines.length; i++) {
     const cells = lines[i].split("\t");
-    if (skuIdx >= 0 && cells[skuIdx] !== "tipspromenaden") {
-      // Filtrera till bara vår app om SKU finns; saknas SKU räknar vi allt
-      // (single-app-konto)
-      if (cells[skuIdx]?.trim()) continue;
-    }
     const u = parseInt(cells[unitsIdx], 10);
     if (Number.isNaN(u)) continue;
+    const productType = (cells[productTypeIdx] ?? "").trim();
+    seenTypes.add(productType);
 
-    const productType = cells[productTypeIdx] ?? "";
-    // 1F = First-time app units (unika Apple-ID)
-    // 1   = App download (inkl. re-downloads, alla enheter)
-    // 7F  = iPad first-time
-    // 7   = iPad download
-    if (productType === "1F" || productType === "7F") {
-      units += u;
-    }
-    if (productType === "1" || productType === "7" ||
-        productType === "1F" || productType === "7F") {
-      downloads += u;
-    }
+    // First-time downloads: 1F (iPhone gratis), 7F (iPad gratis),
+    // 1 (iPhone betald), 7 (iPad betald), 1T (universell). I praktiken
+    // räknar vi allt som börjar med 1 eller 7 och inte är en uppdatering.
+    // Total downloads inkluderar även uppdateringar (3, 3F).
+    const isFirstTime = /^(1F?T?|7F?)$/.test(productType);
+    const isAnyDownload = /^[137]F?T?$/.test(productType);
+
+    if (isFirstTime) units += u;
+    if (isAnyDownload) downloads += u;
   }
+  console.log(
+    `iOS ${yearMonth}: distinkta typer = [${[...seenTypes].join(", ")}]`
+  );
   return { units, downloads };
 }
 
