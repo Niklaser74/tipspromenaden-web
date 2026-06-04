@@ -1,0 +1,47 @@
+# Hämtar nedladdningssiffror från Play Console + App Store Connect och
+# skriver till Firestore-doc stats/downloads. Drivs av admin-dashboardens
+# DownloadsWidget.
+#
+# Kör 1×/dygn kl 03:15 UTC (= 04:15/05:15 CET/CEST). Apples sales-rapporter
+# är typiskt tillgängliga ~5 dagar efter månadens slut — så vi accepterar
+# att aktuell månad fångas av nästa körning.
+#
+# Vid behov: kör manuellt via "Run workflow"-knappen på GitHub Actions-fliken.
+#
+# Setup: se docs/auto-fetch-setup.md
+
+name: Hämta nedladdningssiffror
+
+on:
+  schedule:
+    - cron: "15 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Run fetch script
+        env:
+          GCP_SERVICE_ACCOUNT_JSON: ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
+          PLAY_DEVELOPER_ID: ${{ secrets.PLAY_DEVELOPER_ID }}
+          PLAY_PACKAGE_NAME: com.tipspromenaden.app
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+          ASC_VENDOR_NUMBER: ${{ secrets.ASC_VENDOR_NUMBER }}
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          LAUNCH_YYYYMM: "202605"
+        run: node scripts/fetch-download-stats.mjs

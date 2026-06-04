@@ -67,6 +67,22 @@ redan bundlade `qrcode`-paketet — inget externt API-anrop.
 
 ---
 
+## 2026-05-25 — Auto-fetch av nedladdningssiffror via GitHub Actions
+
+- Ny cron-workflow `.github/workflows/fetch-download-stats.yml` kör
+  dagligen 03:15 UTC och uppdaterar `stats/downloads`.
+- Scriptet `scripts/fetch-download-stats.mjs`:
+  - Android: läser CSV från Play Console GCS-bucket (Storage Object
+    Viewer-roll på service-account)
+  - iOS: JWT-autentiserad App Store Connect Sales Reports API +
+    gunzip + TSV-parsning + ackumulering över alla månader sen launch
+- Widget visar nu 🤖 Auto / ✍️ Manuell-källa.
+- Setup-guide för 8 GitHub-secrets: `docs/auto-fetch-setup.md`.
+- npm-deps: firebase-admin + googleapis + @google-cloud/storage
+  (devDependencies — körs bara i CI-jobbet).
+- Manuell entry-knappen kvar — om du vill överskriva tillfälligt får
+  du avaktivera workflow:n.
+
 ## 2026-05-25 — Nedladdningssiffror på admin-översikten
 
 - Ny widget högst upp i Översikt-fliken med totalsiffror från Play

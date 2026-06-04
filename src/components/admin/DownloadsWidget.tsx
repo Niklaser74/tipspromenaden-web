@@ -77,7 +77,8 @@ export default function DownloadsWidget({ user }: Props) {
             </h2>
             {stats.updatedAt && (
               <p className="text-xs text-sage mt-0.5">
-                Senast uppdaterad {formatRelativeTime(stats.updatedAt)}
+                {stats.updatedBy === "auto-fetch" ? "🤖 Auto" : "✍️ Manuell"}{" "}
+                · senast uppdaterad {formatRelativeTime(stats.updatedAt)}
               </p>
             )}
           </div>
