@@ -67,6 +67,18 @@ redan bundlade `qrcode`-paketet — inget externt API-anrop.
 
 ---
 
+## 2026-05-25 — Nedladdningssiffror på admin-översikten
+
+- Ny widget högst upp i Översikt-fliken med totalsiffror från Play
+  Console + App Store Connect (Android-installs, iOS App Units etc).
+- Siffrorna fylls i manuellt via en redigera-modal. Helt enkelt:
+  öppna konsolen, kopiera siffran, klistra in, spara.
+- Senast-uppdaterad-tidsstämpel + snabblänkar till bägge konsoler.
+- Lagras i Firestore-doc `stats/downloads`, admin-only read/write.
+- API-integration (auto-fetch via Play Developer Reporting API +
+  ASC API) ligger på roadmap men inte gjort nu — manuell entry
+  räcker så länge appen är ny.
+
 ## 2026-05-25 — Hjälptexter & tooltips: sweep över hela siten
 
 Spridning av hjälpsystemet från Events-admin till resten av siten:

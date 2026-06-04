@@ -59,6 +59,7 @@ import BatchUploadDropZone from "./BatchUploadDropZone";
 import TipspackEditor from "./TipspackEditor";
 import { FlyerDialog } from "./FlyerDialog";
 import EventsManager from "./EventsManager";
+import DownloadsWidget from "./DownloadsWidget";
 
 type Tab = "overview" | "walks" | "tipspacks" | "events" | "sessions";
 
@@ -325,6 +326,8 @@ function AdminContent({ user }: { user: User }) {
           Logga ut ({user.email})
         </button>
       </div>
+
+      {tab === "overview" && <DownloadsWidget user={user} />}
 
       {tab === "overview" && (
         <Overview
