@@ -31,10 +31,17 @@ Apple-godkännanden.
 3. Klicka på den nya kontot → **Keys → Add Key → Create New Key → JSON**.
    En .json-fil laddas ner. **Den är hemligheten.**
 4. Gå till **play.google.com/console**
-5. **Settings → API access → Users and Permissions → Invite new user**
-6. Mata in service account-mejlet (slutar med `@tipspromenaden-491207.iam.gserviceaccount.com`)
-7. **Account permissions: View app information and download bulk reports**
-8. **Spara**. Vänta ~10 min på att rollen propagerar.
+5. **Användare och behörigheter** i vänstermenyn (INTE under Inställningar
+   — Google flyttade hit den 2023)
+6. Klicka fliken **API-åtkomst** högst upp på sidan
+7. Om sidan är tom: klicka **Länka Google Cloud-projekt** och välj
+   `tipspromenaden-491207`. Annars hoppa över.
+8. I service-account-listan: hitta
+   `play-stats-fetcher@tipspromenaden-491207.iam.gserviceaccount.com`
+   och klicka **Bevilja åtkomst** bredvid
+9. **App-behörigheter:** Tipspromenaden (com.tipspromenaden.app)
+10. **Account permissions:** `View app information and download bulk reports`
+11. **Bjud in användare**. Vänta ~10 min på att rollen propagerar.
 
 ## Steg 2 — Play Developer ID
 
