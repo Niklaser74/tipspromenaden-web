@@ -11,6 +11,27 @@ användar-orienterad text.
 
 ---
 
+## 2026-06-04 — Flygbladen + 404: stale "iOS på gång"-text borttagen
+
+Admin-flygbladsgeneratorns texter och 404-sidans iOS-gren sa fortfarande
+att iPhone-versionen var på gång. iOS-appen har varit live på App Store
+sedan 2026-05-24, så texterna är uppdaterade till att beskriva båda
+butikerna jämställt:
+
+- **FlyerDialog**: STEG 1-bildtexten + bottenraden säger nu "Android
+  öppnar Google Play, iPhone öppnar App Store. Appen är gratis."
+  Tidigare hänvisade iPhone till stödsidan.
+- **404.astro**: iOS-grenen försöker nu deep-linka `tipspromenaden://`
+  med fallback till App Store, samma mönster som walk-redirect.astro.
+  Desktop-grenen säger "öppna på telefonen — finns på Google Play och
+  App Store" istället för bara Android.
+
+Inga ändringar i hur flygbladet ser ut i layout — bara texterna. Redan
+utskrivna flygblad är fortfarande funktionella eftersom QR-koden pekar
+på `/get-app` som redan routar korrekt sedan launch.
+
+---
+
 ## 2026-06-04 — Eventläge i webbens /skapa
 
 Tidigare kunde man bara sätta start-/slutdatum för en walk i mobil-

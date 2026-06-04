@@ -27,7 +27,7 @@ import { createPortal } from "react-dom";
 import QRCode from "qrcode";
 import type { Walk } from "../../lib/types";
 
-// Smart-redirect-sida: Android → Google Play, iPhone → /stod.
+// Smart-redirect-sida: Android → Google Play, iPhone → App Store.
 // Encodes som EN QR-kod oavsett OS — sidan client-side detekterar och
 // skickar vidare. Se /src/pages/get-app.astro för logiken.
 const GET_APP_URL = "https://tipspromenaden.app/get-app";
@@ -67,13 +67,13 @@ const STRINGS: Record<Lang, Strings> = {
     step1Label: "STEG 1",
     step1Title: "Få appen",
     step1Caption:
-      "Android: öppnar Google Play. iPhone: öppnar stödsidan — iOS-versionen är på gång.",
+      "Android öppnar Google Play, iPhone öppnar App Store. Appen är gratis.",
     step2Label: "STEG 2",
     step2Title: "Starta promenaden",
     step2Caption:
       "Skanna när du har fått appen installerad — promenaden öppnas direkt.",
     bottomNote:
-      "Gratis på Google Play. iPhone-versionen är på gång — stötta gärna så vi kan släppa den.",
+      "Gratis på Google Play och App Store.",
     printButton: "🖨 Skriv ut / Spara som PDF",
     closeButton: "Stäng",
     langLabel: "Språk",
@@ -88,13 +88,13 @@ const STRINGS: Record<Lang, Strings> = {
     step1Label: "STEP 1",
     step1Title: "Get the app",
     step1Caption:
-      "Android: opens Google Play. iPhone: opens the support page — iOS version on the way.",
+      "Android opens Google Play, iPhone opens the App Store. The app is free.",
     step2Label: "STEP 2",
     step2Title: "Start the walk",
     step2Caption:
       "Scan once you have the app installed — the walk opens directly.",
     bottomNote:
-      "Free on Google Play. The iPhone version is on the way — support us to help release it.",
+      "Free on Google Play and the App Store.",
     printButton: "🖨 Print / Save as PDF",
     closeButton: "Close",
     langLabel: "Language",

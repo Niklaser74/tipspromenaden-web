@@ -48,6 +48,8 @@ import Layout from "../layouts/Layout.astro";
   <script>
     const PLAY_STORE =
       "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
+    const APP_STORE =
+      "https://apps.apple.com/se/app/id6770503457";
 
     const path = window.location.pathname;
     // Strikt validering — slug ska bara innehålla URL-säkra tecken så att
@@ -81,14 +83,19 @@ import Layout from "../layouts/Layout.astro";
           }
         }, 1500);
       } else if (isIos) {
-        setStatus(
-          "iOS-versionen är inte släppt än. Be skaparen om en Android-installation, eller kom tillbaka när iOS-appen lanseras.",
-          "The iOS version isn't released yet. Ask the creator for an Android installation, or come back once the iOS app launches."
-        );
+        // Samma mönster som walk-redirect.astro: försök custom-scheme,
+        // faller tillbaka på App Store om appen inte fångar.
+        const start = Date.now();
+        window.location.href = `tipspromenaden://walk/${encodeURIComponent(walkId)}`;
+        setTimeout(() => {
+          if (Date.now() - start < 2500) {
+            window.location.href = APP_STORE;
+          }
+        }, 1500);
       } else {
         setStatus(
-          "Öppna länken på en Android-telefon med Tipspromenaden installerad för att starta promenaden.",
-          "Open this link on an Android phone with Tipspromenaden installed to start the walk."
+          "Öppna länken på telefonen med Tipspromenaden installerad för att starta promenaden. Appen finns på Google Play och App Store.",
+          "Open this link on a phone with Tipspromenaden installed to start the walk. Available on Google Play and the App Store."
         );
       }
     } else {
