@@ -11,6 +11,22 @@ användar-orienterad text.
 
 ---
 
+## 2026-06-04 — Eventläge i webbens /skapa
+
+Tidigare kunde man bara sätta start-/slutdatum för en walk i mobil-
+appen. Nu finns samma toggle i webbens WalkEditor: ny **Eventläge**-
+ruta direkt under fältet för promenadens namn/språk-rad, ovanför
+"Publicera till bibliotek". Bocka i, välj start- och slutdatum, klar
+— skrivs som `walk.event = { startDate, endDate }` i samma form som
+appen redan läser. Topplistan visar då bara resultat från perioden.
+
+Default-datum när toggeln slås på: idag + idag+7 dagar. Slutdatumet
+har `min` knutet till startdatumet så man inte kan välja ett slut-
+datum före start. Toggla av → `event` sätts till `undefined` och
+saveWalk-helpern städar bort fältet vid Firestore-skrivningen.
+
+---
+
 ## 2026-06-01 — `/walk/<id>` på desktop visar QR-kod
 
 När någon delar en walk-länk i en chatt och mottagaren klickar på

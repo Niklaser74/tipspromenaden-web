@@ -457,6 +457,90 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
               </span>
             </label>
 
+            {/* Eventläge — giltighetsdatum för en specifik period.
+                Skrivs som walk.event = { startDate, endDate } i ISO 8601
+                (YYYY-MM-DD). När toggeln slås av sätts event tillbaka till
+                undefined och stripUndefined i saveWalk tar bort det.
+                Default-datum: idag respektive idag + 7 dagar — appens
+                CreateWalkScreen använder samma mönster. */}
+            <label className="flex items-start gap-2 mt-5 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={!!walk.event}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    const today = new Date();
+                    const weekLater = new Date();
+                    weekLater.setDate(today.getDate() + 7);
+                    const toIso = (d: Date) => d.toISOString().slice(0, 10);
+                    update({
+                      event: {
+                        startDate: toIso(today),
+                        endDate: toIso(weekLater),
+                      },
+                    });
+                  } else {
+                    update({ event: undefined });
+                  }
+                }}
+                className="mt-1 accent-green-dark"
+              />
+              <span className="text-sm">
+                <strong>{t("Eventläge", "Event mode")}</strong>
+                <br />
+                <span className="text-text-warm text-xs">
+                  {t(
+                    "Sätt ett start- och slutdatum för promenaden. Topplistan visar bara resultat från perioden.",
+                    "Set a start and end date for the walk. The leaderboard only shows results from this period."
+                  )}
+                </span>
+              </span>
+            </label>
+
+            {walk.event && (
+              <div className="mt-3 space-y-3 bg-cream/50 border border-rule rounded-lg p-3">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs uppercase tracking-wide text-text-warm mb-1">
+                      {t("Startdatum", "Start date")}
+                    </label>
+                    <input
+                      type="date"
+                      value={walk.event.startDate}
+                      onChange={(e) =>
+                        update({
+                          event: {
+                            startDate: e.target.value,
+                            endDate: walk.event!.endDate,
+                          },
+                        })
+                      }
+                      className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-green-dark focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-wide text-text-warm mb-1">
+                      {t("Slutdatum", "End date")}
+                    </label>
+                    <input
+                      type="date"
+                      value={walk.event.endDate}
+                      min={walk.event.startDate}
+                      onChange={(e) =>
+                        update({
+                          event: {
+                            startDate: walk.event!.startDate,
+                            endDate: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-green-dark focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
             {walk.public && (
               <div className="mt-3 space-y-3 bg-cream/50 border border-rule rounded-lg p-3">
                 <div>
