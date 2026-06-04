@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import UpcomingEventsTeaser from "../components/UpcomingEventsTeaser.tsx";
+import appIcon from "../assets/icon.png";
 import skarmHem from "../assets/screenshots/skarm-hem.jpg";
 import skarmGaMed from "../assets/screenshots/skarm-ga-med.jpg";
 import skarmAktiv from "../assets/screenshots/skarm-aktiv.jpg";
@@ -11,6 +12,53 @@ import skarmAktiv from "../assets/screenshots/skarm-aktiv.jpg";
 const PLAY_STORE_URL =
   "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
 const APP_STORE_URL = "https://apps.apple.com/se/app/id6770503457";
+
+// FAQ — vanliga frågor som besvaras strukturerat. Samma datakälla
+// driver både den synliga sektionen längst ner och FAQPage-schemat i
+// <head>, så att svaren kan extraheras direkt av LLM:er och Google
+// (GEO/AEO). Håll svaren korta och faktiska — ett svar per fråga.
+const faq = [
+  {
+    q: "Krävs internet?",
+    a: "Du behöver internet för att ladda ner promenaden första gången. Sedan fungerar den offline om du tappar täckning ute — GPS:en låser upp frågorna lokalt.",
+  },
+  {
+    q: "Hur många deltagare kan vara med?",
+    a: "Obegränsat. Alla som har länken eller skannar QR-koden kan gå samtidigt och syns i samma topplista i realtid.",
+  },
+  {
+    q: "Vad kostar appen?",
+    a: "Inget. Tipspromenaden är helt gratis utan reklam och utan köp i appen — den drivs som ett hobbyprojekt.",
+  },
+  {
+    q: "Måste jag logga in för att delta?",
+    a: "Nej. Som deltagare anger du bara ett namn. Inloggning med Google krävs bara om du vill skapa egna promenader.",
+  },
+  {
+    q: "Vilka enheter och plattformar stöds?",
+    a: "Appen finns för både iPhone (iOS) och Android. Du kan dessutom skapa promenader i webbläsaren på dator eller iPad via /skapa.",
+  },
+  {
+    q: "Hur delar jag en promenad med andra?",
+    a: "När du sparat en promenad får du automatiskt en QR-kod och en länk. Skriv ut QR-koden eller dela länken — deltagarna behöver inget konto.",
+  },
+  {
+    q: "Vilka språk finns appen på?",
+    a: "Svenska, engelska, tyska, norska, danska, finska, franska och spanska. Appen kan följa systemspråket eller ställas in manuellt.",
+  },
+];
+
+// FAQPage-schema byggt från samma faq-array — skickas till Layout som
+// renderar det som ett JSON-LD-block i <head>.
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
 
 const screenshots = [
   {
@@ -31,7 +79,7 @@ const screenshots = [
 ];
 ---
 
-<Layout lang="sv" alternateUrl="/en/">
+<Layout lang="sv" alternateUrl="/en/" jsonLd={[faqJsonLd]}>
   <main class="min-h-screen">
     {/* ─── HERO ──────────────────────────────────────────── */}
     <section class="max-w-3xl mx-auto px-6 pt-20 pb-12 text-center">
@@ -40,11 +88,18 @@ const screenshots = [
       </p>
       <hr class="w-12 border-t border-green mx-auto mb-12" />
 
-      <img
-        src="/icon.png"
-        alt=""
-        width="128"
-        height="128"
+      {/* Optimerad app-ikon — Astro genererar små webp-varianter
+          (128/256px) istället för att skicka original-PNG:n på 1024px.
+          fetchpriority=high + eager-laddning eftersom ikonen ligger
+          ovanför vikningen och ofta är LCP-elementet på mobil. */}
+      <Image
+        src={appIcon}
+        alt="Tipspromenaden-appens ikon"
+        width={128}
+        height={128}
+        densities={[1, 2]}
+        loading="eager"
+        fetchpriority="high"
         class="w-28 h-28 mx-auto rounded-3xl mb-10 shadow-sm"
       />
 
@@ -137,6 +192,75 @@ const screenshots = [
       </div>
     </section>
 
+    {/* ─── SÅ SKAPAR DU DIN FÖRSTA PROMENAD ───────────────────
+        Fördjupande innehåll om användarresan — ger AI-modeller och
+        nya användare konkret kontext om hur appen faktiskt används,
+        steg för steg. Ordnad lista så stegen kan extraheras direkt. */}
+    <section class="max-w-2xl mx-auto px-6 pb-20">
+      <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl text-center mb-4">
+        Så här skapar du din första tipspromenad
+      </h2>
+      <p class="text-base leading-relaxed text-center text-text-warm mb-10 max-w-xl mx-auto">
+        Från tom karta till färdig QR-kod tar några minuter. Du kan bygga
+        i appen ute på plats eller vid datorn på <a href="/skapa" class="text-green underline">tipspromenaden.app/skapa</a>.
+      </p>
+      <ol class="space-y-6">
+        {[
+          {
+            title: "Skapa en promenad och välj plats",
+            body: "Tryck på Skapa promenad och logga in med Google. Zooma kartan till parken, skolgården eller stadsdelen där promenaden ska gå.",
+          },
+          {
+            title: "Placera kontrollpunkter på kartan",
+            body: "Tryck där varje kontroll ska ligga — appen numrerar dem automatiskt. En typisk familjepromenad har 8–13 kontroller på 1–3 km.",
+          },
+          {
+            title: "Skriv frågor och svarsalternativ",
+            body: "Koppla en fråga till varje kontroll, lägg till svarsalternativ och markera det rätta. Du kan ladda upp en bild per fråga, eller importera ett färdigt frågebatteri från biblioteket.",
+          },
+          {
+            title: "Välj aktivitetstyp och eventläge",
+            body: "Promenad (15 m GPS-trigger) eller cykel (50 m med förvarning). Sätt start- och slutdatum om alla ska tävla i samma omgång med gemensam topplista.",
+          },
+          {
+            title: "Dela QR-koden",
+            body: "Spara så får du en QR-kod och en länk. Skriv ut koden vid startpunkten eller dela länken — deltagarna behöver varken konto eller inloggning för att gå.",
+          },
+        ].map(({ title, body }, i) => (
+          <li class="flex gap-4">
+            <span class="shrink-0 w-9 h-9 rounded-full bg-green-dark text-cream font-serif font-bold flex items-center justify-center">
+              {i + 1}
+            </span>
+            <div>
+              <h3 class="font-serif font-bold text-xl mb-1">{title}</h3>
+              <p class="text-base leading-relaxed text-text-warm">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p class="text-sm text-sage italic text-center mt-10">
+        Vill du ha hela steg-för-steg-guiden för både skapare och
+        deltagare? Läs <a href="/sa-funkar-det" class="text-green underline not-italic">Så funkar det</a>.
+      </p>
+    </section>
+
+    {/* ─── ANVÄNDNINGSOMRÅDEN ─────────────────────────────────
+        Konkreta scenarier — hjälper både besökare och AI förstå vad
+        appen används till. Punktlista optimerad för extraktion. */}
+    <section class="max-w-3xl mx-auto px-6 pb-20">
+      <h2 class="font-serif text-2xl sm:text-3xl text-center mb-8">
+        Perfekt för
+      </h2>
+      <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-4 max-w-2xl mx-auto list-disc pl-5 marker:text-green">
+        <li class="text-base leading-relaxed"><strong>Skola och fritids</strong> — lärorika utomhusövningar där frågorna kopplas till naturen eller orten.</li>
+        <li class="text-base leading-relaxed"><strong>Familjefester och kalas</strong> — en lagom tävling som får alla åldrar att röra på sig.</li>
+        <li class="text-base leading-relaxed"><strong>Möhippor och svensexor</strong> — bygg en rolig runda med personliga frågor om paret.</li>
+        <li class="text-base leading-relaxed"><strong>Företagskickoff och teambuilding</strong> — lag tävlar mot varandra med live-topplista.</li>
+        <li class="text-base leading-relaxed"><strong>Föreningar och evenemang</strong> — publicera promenaden så alla i området kan delta.</li>
+        <li class="text-base leading-relaxed"><strong>Turistrundor</strong> — guida besökare mellan sevärdheter med frågor om platsen.</li>
+      </ul>
+    </section>
+
     {/* ─── CTA ───────────────────────────────────────────── */}
     <section class="max-w-3xl mx-auto px-6 pb-20">
       <div class="bg-green-dark text-cream rounded-3xl p-10 md:p-14 text-center">
@@ -209,6 +333,23 @@ const screenshots = [
           </p>
         </a>
       </div>
+    </section>
+
+    {/* ─── FAQ ───────────────────────────────────────────────
+        Vanliga frågor — samma datakälla som FAQPage-schemat i <head>.
+        Strukturerat så svaren kan citeras direkt av LLM:er (GEO). */}
+    <section class="max-w-2xl mx-auto px-6 pb-20">
+      <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl text-center mb-10">
+        Vanliga frågor
+      </h2>
+      <dl class="divide-y divide-rule border-y border-rule">
+        {faq.map(({ q, a }) => (
+          <div class="py-5">
+            <dt class="font-serif font-bold text-lg text-green-dark mb-2">{q}</dt>
+            <dd class="text-base leading-relaxed text-text-warm">{a}</dd>
+          </div>
+        ))}
+      </dl>
     </section>
 
     {/* ─── FOOTER ────────────────────────────────────────── */}

@@ -16,14 +16,25 @@ interface Props {
    * när du kan).
    */
   alternateUrl?: string;
+  /**
+   * Extra JSON-LD-block som renderas i <head> utöver de globala
+   * MobileApplication- och Organization-scheman som alltid finns med.
+   * Sidor skickar t.ex. ett FAQPage-schema här för att besvara vanliga
+   * frågor strukturerat (AEO/GEO — låter LLM:er och Google extrahera
+   * svar direkt). Varje objekt serialiseras till ett eget script-block.
+   */
+  jsonLd?: Record<string, unknown>[];
 }
 
+// Meta-beskrivning hålls under 160 tecken så hela budskapet syns i
+// sökresultat utan trunkering (answer-first).
 const {
   title = "Tipspromenaden — quizpromenad i fickan",
-  description = "Gratis app för att skapa och delta i tipspromenader utomhus. Kontrollpunkter på karta, frågor som låses upp via GPS, topplista och QR-kod för delning. Finns på Google Play.",
+  description = "Gratis app för att skapa och gå tipspromenader utomhus. Kontrollpunkter på karta, frågor som låses upp via GPS och topplista i realtid.",
   ogImage = "/og-image.png",
   lang,
   alternateUrl,
+  jsonLd = [],
 } = Astro.props;
 
 // Auto-detektera lang från URL om inte explicit angivet — gör att md-sidor
@@ -39,23 +50,47 @@ const otherLang = effectiveLang === "sv" ? "en" : "sv";
 const svURL = effectiveLang === "sv" ? canonicalURL : alternateUrl;
 const enURL = effectiveLang === "en" ? canonicalURL : alternateUrl;
 
+// Store-länkar — används både som installUrl och som sameAs så att
+// app-entiteten knyts ihop med sina butikssidor (entity linking).
+const PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
+const APP_STORE_URL = "https://apps.apple.com/se/app/id6770503457";
+
 // JSON-LD: minimal MobileApplication-schema. Inga påhittade betyg —
 // håll fälten sanna så Google inte bestraffar missvisande markup.
+// Appen finns på både Android och iOS sedan maj 2026.
 const appJsonLd = {
   "@context": "https://schema.org",
   "@type": "MobileApplication",
   name: "Tipspromenaden",
-  operatingSystem: "Android",
+  operatingSystem: "Android, iOS",
   applicationCategory: "GameApplication",
   url: "https://tipspromenaden.app",
-  installUrl:
-    "https://play.google.com/store/apps/details?id=com.tipspromenaden.app",
+  installUrl: PLAY_STORE_URL,
+  sameAs: [PLAY_STORE_URL, APP_STORE_URL],
   offers: {
     "@type": "Offer",
     price: "0",
     priceCurrency: "SEK",
   },
   inLanguage: ["sv", "en", "de", "no", "da", "fi", "fr", "es"],
+};
+
+// Organization-schema: kopplar appen till en ansvarig entitet
+// (utvecklaren) med kontaktväg och butikssidor som sameAs. Hjälper
+// AI-modeller och Google att förstå vem som står bakom tjänsten (E-E-A-T).
+const orgJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Tipspromenaden",
+  url: "https://tipspromenaden.app",
+  logo: "https://tipspromenaden.app/icon.png",
+  email: "support@tipspromenaden.app",
+  founder: {
+    "@type": "Person",
+    name: "Niklas Eriksson",
+  },
+  sameAs: [PLAY_STORE_URL, APP_STORE_URL],
 };
 
 // Visa inte den globala språkväljaren på:
@@ -96,11 +131,24 @@ const hideLanguageSwitcher =
 
     <title>{title}</title>
 
-    {/* Strukturerad data — hjälper Google visa app-info i sökresultat */}
+    {/* Strukturerad data — hjälper Google och AI-modeller förstå
+        app-info, ansvarig entitet och vanliga frågor. */}
     <script
       type="application/ld+json"
       set:html={JSON.stringify(appJsonLd)}
     />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(orgJsonLd)}
+    />
+    {
+      jsonLd.map((schema) => (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(schema)}
+        />
+      ))
+    }
 
 
     {/* Open Graph */}
@@ -120,13 +168,25 @@ const hideLanguageSwitcher =
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
 
-    {/* Fonts — Lora för rubriker, Instrument Sans för brödtext */}
+    {/* Fonts — Lora för rubriker, Instrument Sans för brödtext.
+        Laddas icke-renderingsblockerande via media="print" + onload-
+        swap så att texten (oftast LCP-elementet) målas direkt med
+        system-fallback och byter till webbfonten när den hämtats
+        (display=swap). <noscript> ger korrekt fallback utan JS. */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,700;1,400;1,500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,700;1,400;1,500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
   </head>
   <body class="bg-cream text-text-warm overflow-x-hidden">
     {!hideLanguageSwitcher && <LanguageSwitcher alternateUrl={alternateUrl} />}
