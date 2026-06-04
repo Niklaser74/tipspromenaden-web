@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import UpcomingEventsTeaser from "../../components/UpcomingEventsTeaser.tsx";
+import appIcon from "../../assets/icon.png";
 import skarmHem from "../../assets/screenshots/skarm-hem.jpg";
 import skarmGaMed from "../../assets/screenshots/skarm-ga-med.jpg";
 import skarmAktiv from "../../assets/screenshots/skarm-aktiv.jpg";
@@ -11,6 +12,52 @@ import skarmAktiv from "../../assets/screenshots/skarm-aktiv.jpg";
 const PLAY_STORE_URL =
   "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
 const APP_STORE_URL = "https://apps.apple.com/se/app/id6770503457";
+
+// FAQ — common questions answered in a structured way. The same data
+// drives both the visible section and the FAQPage schema in <head>, so
+// answers can be extracted directly by LLMs and Google (GEO/AEO).
+const faq = [
+  {
+    q: "Is internet required?",
+    a: "You need internet to download the walk the first time. After that it works offline if you lose signal outdoors — GPS unlocks the questions locally.",
+  },
+  {
+    q: "How many participants can join?",
+    a: "Unlimited. Anyone with the link or who scans the QR code can walk at the same time and appears on the same live leaderboard.",
+  },
+  {
+    q: "What does the app cost?",
+    a: "Nothing. Tipspromenaden is completely free with no ads and no in-app purchases — it runs as a hobby project.",
+  },
+  {
+    q: "Do I need to log in to take part?",
+    a: "No. As a participant you only enter a name. Signing in with Google is required only if you want to create your own walks.",
+  },
+  {
+    q: "Which devices and platforms are supported?",
+    a: "The app is available for both iPhone (iOS) and Android. You can also create walks in your browser on a computer or iPad at /skapa.",
+  },
+  {
+    q: "How do I share a walk with others?",
+    a: "Once you save a walk you automatically get a QR code and a link. Print the QR code or share the link — participants need no account.",
+  },
+  {
+    q: "Which languages does the app support?",
+    a: "Swedish, English, German, Norwegian, Danish, Finnish, French and Spanish. The app can follow the system language or be set manually.",
+  },
+];
+
+// FAQPage schema built from the same faq array — passed to Layout,
+// which renders it as a JSON-LD block in <head>.
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
 
 const screenshots = [
   {
@@ -33,9 +80,10 @@ const screenshots = [
 
 <Layout
   title="Tipspromenaden — quiz walks in your pocket"
-  description="A free app for creating and joining outdoor quiz walks. Checkpoints on a map, questions unlocked by GPS, leaderboard and QR-code sharing. Available on App Store and Google Play."
+  description="Free app for creating and joining outdoor quiz walks. Checkpoints on a map, questions unlocked by GPS, and a live leaderboard."
   lang="en"
   alternateUrl="/"
+  jsonLd={[faqJsonLd]}
 >
   <main class="min-h-screen">
     {/* ─── HERO ──────────────────────────────────────────── */}
@@ -45,11 +93,18 @@ const screenshots = [
       </p>
       <hr class="w-12 border-t border-green mx-auto mb-12" />
 
-      <img
-        src="/icon.png"
-        alt=""
-        width="128"
-        height="128"
+      {/* Optimized app icon — Astro generates small webp variants
+          (128/256px) instead of shipping the 1024px source PNG.
+          fetchpriority=high + eager loading since the icon is above
+          the fold and is often the LCP element on mobile. */}
+      <Image
+        src={appIcon}
+        alt="The Tipspromenaden app icon"
+        width={128}
+        height={128}
+        densities={[1, 2]}
+        loading="eager"
+        fetchpriority="high"
         class="w-28 h-28 mx-auto rounded-3xl mb-10 shadow-sm"
       />
 
@@ -140,6 +195,76 @@ const screenshots = [
       </div>
     </section>
 
+    {/* ─── HOW TO CREATE YOUR FIRST WALK ──────────────────────
+        In-depth content about the user journey — gives AI models and
+        new users concrete, step-by-step context on how the app is
+        actually used. Ordered list so the steps can be extracted. */}
+    <section class="max-w-2xl mx-auto px-6 pb-20">
+      <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl text-center mb-4">
+        How to create your first quiz walk
+      </h2>
+      <p class="text-base leading-relaxed text-center text-text-warm mb-10 max-w-xl mx-auto">
+        Going from an empty map to a finished QR code takes a few minutes.
+        Build it in the app on location or at your desk via
+        <a href="/en/skapa" class="text-green underline">tipspromenaden.app/skapa</a>.
+      </p>
+      <ol class="space-y-6">
+        {[
+          {
+            title: "Create a walk and pick the location",
+            body: "Tap Create walk and sign in with Google. Zoom the map to the park, schoolyard or neighbourhood where the walk will take place.",
+          },
+          {
+            title: "Place checkpoints on the map",
+            body: "Tap where each checkpoint should be — the app numbers them automatically. A typical family walk has 8–13 checkpoints over 1–3 km.",
+          },
+          {
+            title: "Write questions and answer options",
+            body: "Link a question to each checkpoint, add answer options and mark the correct one. You can upload an image per question, or import a ready-made question pack from the library.",
+          },
+          {
+            title: "Choose activity type and event mode",
+            body: "Walking (15 m GPS trigger) or cycling (50 m with an early warning). Set a start and end date if everyone should compete in the same round with a shared leaderboard.",
+          },
+          {
+            title: "Share the QR code",
+            body: "Save and you get a QR code and a link. Print the code at the starting point or share the link — participants need no account or login to play.",
+          },
+        ].map(({ title, body }, i) => (
+          <li class="flex gap-4">
+            <span class="shrink-0 w-9 h-9 rounded-full bg-green-dark text-cream font-serif font-bold flex items-center justify-center">
+              {i + 1}
+            </span>
+            <div>
+              <h3 class="font-serif font-bold text-xl mb-1">{title}</h3>
+              <p class="text-base leading-relaxed text-text-warm">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p class="text-sm text-sage italic text-center mt-10">
+        Want the full step-by-step guide for both creators and
+        participants? Read <a href="/en/how-it-works" class="text-green underline not-italic">How it works</a>.
+      </p>
+    </section>
+
+    {/* ─── USE CASES ──────────────────────────────────────────
+        Concrete scenarios — helps both visitors and AI understand
+        what the app is used for. Bullet list optimised for extraction. */}
+    <section class="max-w-3xl mx-auto px-6 pb-20">
+      <h2 class="font-serif text-2xl sm:text-3xl text-center mb-8">
+        Perfect for
+      </h2>
+      <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-4 max-w-2xl mx-auto list-disc pl-5 marker:text-green">
+        <li class="text-base leading-relaxed"><strong>Schools and after-school care</strong> — educational outdoor activities where questions tie into nature or the local area.</li>
+        <li class="text-base leading-relaxed"><strong>Family parties and birthdays</strong> — a friendly competition that gets all ages moving.</li>
+        <li class="text-base leading-relaxed"><strong>Hen and stag parties</strong> — build a fun route with personal questions about the couple.</li>
+        <li class="text-base leading-relaxed"><strong>Company kickoffs and team building</strong> — teams compete against each other with a live leaderboard.</li>
+        <li class="text-base leading-relaxed"><strong>Clubs and events</strong> — publish the walk so everyone in the area can take part.</li>
+        <li class="text-base leading-relaxed"><strong>Tourist trails</strong> — guide visitors between sights with questions about each place.</li>
+      </ul>
+    </section>
+
     {/* ─── CTA ───────────────────────────────────────────── */}
     <section class="max-w-3xl mx-auto px-6 pb-20">
       <div class="bg-green-dark text-cream rounded-3xl p-10 md:p-14 text-center">
@@ -210,6 +335,23 @@ const screenshots = [
           </p>
         </a>
       </div>
+    </section>
+
+    {/* ─── FAQ ───────────────────────────────────────────────
+        Common questions — same data source as the FAQPage schema in
+        <head>. Structured so answers can be cited directly by LLMs. */}
+    <section class="max-w-2xl mx-auto px-6 pb-20">
+      <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl text-center mb-10">
+        Frequently asked questions
+      </h2>
+      <dl class="divide-y divide-rule border-y border-rule">
+        {faq.map(({ q, a }) => (
+          <div class="py-5">
+            <dt class="font-serif font-bold text-lg text-green-dark mb-2">{q}</dt>
+            <dd class="text-base leading-relaxed text-text-warm">{a}</dd>
+          </div>
+        ))}
+      </dl>
     </section>
 
     {/* ─── FOOTER ────────────────────────────────────────── */}
