@@ -123,12 +123,17 @@ export async function deleteEvent(id: string): Promise<void> {
 }
 
 /**
- * Bygger en deep-link-URL som öppnar appen direkt i event-läge.
- * Custom-scheme bara (inte https) — `EVENT_PATH` är reserverad på
- * webben för en framtida landningssida.
+ * Bygger en delningsbar URL till ett event. Använder https-formatet
+ * sedan 2026-06-05 — det fungerar både för installerade användare
+ * (smart-redirect öppnar appen via custom-scheme) och oinstallerade
+ * (samma sida visar Play Store/App Store-länkar). Webb-sidan ligger
+ * på `/event-redirect.astro` och routas via Cloudflare _redirects.
+ *
+ * Skanning från appens egna kamera funkar också — `parseEventQR()`
+ * i appen matchar både scheme och https-format.
  */
 export function buildEventDeepLink(eventId: string): string {
-  return `tipspromenaden://event/${encodeURIComponent(eventId)}`;
+  return `https://tipspromenaden.app/event/${encodeURIComponent(eventId)}`;
 }
 
 /** Max storlek (bytes) för uppladdad event-logo. Speglar storage.rules. */

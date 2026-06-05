@@ -6,3 +6,8 @@
 # /walk/<id> returnera 404 (smart-redirect-JS i 404.astro fungerar
 # fortfarande som backup men HTTP-statusen avvisas av sociala plattformar).
 /walk/*  /walk-redirect/  200
+
+# Event-länkar — QR-koder för branded customization. Samma mönster som
+# /walk/*: smart-redirect öppnar appen direkt om installerad, annars
+# Play Store/App Store. Genereras från admin → Events → QR-knappen.
+/event/* /event-redirect/ 200

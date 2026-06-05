@@ -1,0 +1,163 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Smart-redirect för event-QR-koder.
+//
+// Mönster speglat från walk-redirect.astro. Cloudflare _redirects
+// rewrite:ar /event/* → /event-redirect/ med HTTP 200, så att
+// sociala plattformar får giltigt 200-svar med OG-tags.
+//
+// Klient-side:
+//   1. Android: deep-link tipspromenaden://event/<id> → om appen finns
+//      öppnas den och aktiverar event-läget; annars fallback till
+//      Play Store efter 1.5s.
+//   2. iOS: samma mönster, fallback till App Store.
+//   3. Desktop: visar QR-koden själv så användaren kan skanna med
+//      mobilen — användbart när någon delar event-länken i en chatt
+//      som öppnas på datorn.
+
+const title = "Aktiverar event… — Tipspromenaden";
+const description =
+  "Du har fått en inbjudan till ett event i Tipspromenaden. Skanna QR-koden med telefonen eller öppna länken på en mobil med appen installerad.";
+---
+
+<Layout title={title} description={description}>
+  <main class="min-h-screen flex flex-col items-center justify-center px-6 py-12 text-center">
+    <img
+      src="/icon.png"
+      alt=""
+      width="96"
+      height="96"
+      class="w-24 h-24 rounded-2xl mb-8"
+    />
+
+    <h1 class="font-serif text-4xl md:text-5xl text-green-dark mb-4">
+      Aktiverar event…
+    </h1>
+
+    <p id="status" class="text-lg max-w-md mb-4 leading-relaxed">
+      Om appen inte öppnas automatiskt skickas du vidare för att ladda ner den.
+    </p>
+
+    <p id="status-en" class="text-base max-w-md mb-10 leading-relaxed text-text-warm italic">
+      If the app doesn't open automatically you'll be redirected to install it.
+    </p>
+
+    {/* QR-blocket visas bara på desktop. */}
+    <div id="qr-wrap" class="hidden flex-col items-center gap-4 mb-10">
+      <div class="bg-white p-4 rounded-2xl shadow-lg">
+        <img
+          id="qr-img"
+          alt="QR-kod till detta event"
+          width="280"
+          height="280"
+          class="block w-[280px] h-[280px]"
+        />
+      </div>
+      <p class="text-sm text-text-warm max-w-xs leading-relaxed">
+        Skanna med mobilkameran för att aktivera event-läget i Tipspromenaden-appen.
+      </p>
+      <p class="text-xs text-text-warm/80 italic max-w-xs leading-relaxed">
+        Scan with your phone's camera to activate event mode in the Tipspromenaden app.
+      </p>
+      <div class="flex gap-3 mt-2">
+        <a
+          id="store-android"
+          href="https://play.google.com/store/apps/details?id=com.tipspromenaden.app"
+          class="text-sm text-green font-semibold hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Google Play</a>
+        <span class="text-text-warm/60">·</span>
+        <a
+          id="store-ios"
+          href="https://apps.apple.com/se/app/id6770503457"
+          class="text-sm text-green font-semibold hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >App Store</a>
+      </div>
+    </div>
+
+    <a href="/" class="text-green font-semibold hover:underline">
+      ← Tipspromenaden.app
+    </a>
+  </main>
+
+  <script>
+    import QRCode from "qrcode";
+
+    const PLAY_STORE =
+      "https://play.google.com/store/apps/details?id=com.tipspromenaden.app";
+    const APP_STORE = "https://apps.apple.com/se/app/id6770503457";
+
+    // Extrahera event-id ur path:en. Samma regex som appens isValidEventId.
+    const m = window.location.pathname.match(
+      /^\/event\/([a-zA-Z0-9_-]{1,100})\/?$/
+    );
+    const eventId = m ? m[1] : null;
+
+    const ua = navigator.userAgent.toLowerCase();
+    const isAndroid = /android/.test(ua);
+    const isIos = /iphone|ipad|ipod/.test(ua);
+    const status = document.getElementById("status");
+    const statusEn = document.getElementById("status-en");
+    const qrWrap = document.getElementById("qr-wrap");
+    const qrImg = document.getElementById("qr-img") as HTMLImageElement | null;
+
+    function setStatus(sv: string, en: string) {
+      if (status) status.textContent = sv;
+      if (statusEn) statusEn.textContent = en;
+    }
+
+    function showQrFor(url: string) {
+      if (!qrWrap || !qrImg) return;
+      QRCode.toDataURL(url, {
+        errorCorrectionLevel: "M",
+        width: 560,
+        margin: 1,
+        color: { dark: "#1B3D2B", light: "#FFFFFF" },
+      })
+        .then((dataUrl) => {
+          qrImg.src = dataUrl;
+          qrWrap.classList.remove("hidden");
+          qrWrap.classList.add("flex");
+        })
+        .catch(() => {});
+    }
+
+    if (!eventId) {
+      setStatus(
+        "Saknar event-kod i länken. Be arrangören om en ny länk.",
+        "The link is missing the event code. Ask the organizer for a new link."
+      );
+    } else if (isAndroid) {
+      // Försök custom-scheme först (snabbast om appen är installerad),
+      // fallback till Play Store om appen inte fångar inom 1.5 s. Användare
+      // som installerar från Play Store och sen scannar QR:en igen får
+      // event-läget aktiverat då.
+      const start = Date.now();
+      window.location.href = `tipspromenaden://event/${encodeURIComponent(eventId)}`;
+      setTimeout(() => {
+        if (Date.now() - start < 2500) {
+          window.location.href = PLAY_STORE;
+        }
+      }, 1500);
+    } else if (isIos) {
+      const start = Date.now();
+      window.location.href = `tipspromenaden://event/${encodeURIComponent(eventId)}`;
+      setTimeout(() => {
+        if (Date.now() - start < 2500) {
+          window.location.href = APP_STORE;
+        }
+      }, 1500);
+    } else {
+      // Desktop: visa QR-koden så att användaren kan skanna med mobilen.
+      setStatus(
+        "Skanna QR-koden med telefonen för att aktivera eventet.",
+        "Scan the QR code with your phone to activate the event."
+      );
+      showQrFor(window.location.href);
+    }
+  </script>
+</Layout>
