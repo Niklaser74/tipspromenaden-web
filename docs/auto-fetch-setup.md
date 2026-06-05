@@ -7,6 +7,20 @@ till Firestore-doc:en `stats/downloads` som admin-dashboarden läser.
 Du gör det här en gång. Tar ~30 minuter inklusive att vänta på Google/
 Apple-godkännanden.
 
+> ⚠️ **Status 2026-06-04: iOS funkar, Android väntar på roadmap.**
+> GCS-bucket-vägen för Play Console-stats (stegen för
+> `GCP_SERVICE_ACCOUNT_JSON` + `PLAY_DEVELOPER_ID`) failar med
+> "storage.objects.list denied" trots korrekta Play Console-permissions
+> och flera timmars IAM-propagering. Verkar vara ett känt problem i
+> moderna Play Console-konton. Plan B är att porta Android-delen till
+> Play Developer Reporting API (`playdeveloperreporting.googleapis.com`)
+> — se README → Roadmap. Tills dess: Android-siffror fylls i manuellt
+> via admin-widget:ens "✏️ Uppdatera siffror"-knapp.
+>
+> Du kan ändå sätta upp Google Play-secrets enligt nedan — workflow:n
+> sätter `notes`-fältet med felmeddelandet på Android utan att krascha,
+> och iOS-delen fungerar parallellt.
+
 ## Vad du behöver i slutet
 
 8 GitHub Actions-secrets:

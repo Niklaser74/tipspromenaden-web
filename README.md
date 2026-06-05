@@ -189,6 +189,13 @@ hela projektet). Webb-specifika öppna idéer:
 - `/result/<sessionId>` — publik delningsbar leaderboard efter avslutat event
 - `/upptack` — publik katalog över opt-in-publicerade promenader (SEO)
 - Astro 5→6 major bump (uppskjuten — se ROADMAP)
+- **Auto-fetch Android-stats via Reporting API** — nuvarande GCS-bucket-
+  vägen failar med "storage.objects.list denied" i modern Play Console
+  trots korrekta permissions. Plan: porta till
+  `playdeveloperreporting.googleapis.com` som använder samma service-
+  account men annan permission-mekanism. iOS-auto-fetch funkar redan.
+  Tills dess fylls Android-siffror i manuellt i admin-widget:en. Se
+  `scripts/fetch-download-stats.mjs` TODO-block för detaljer.
 
 ## Changelog & release-rutiner
 

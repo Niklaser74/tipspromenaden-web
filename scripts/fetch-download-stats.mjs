@@ -46,6 +46,17 @@ import { getFirestore } from "firebase-admin/firestore";
 import { createSign } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 
+// TODO ROADMAP: Android-vägen via GCS-bucket (pubsite_prod_<id>) failar med
+// "storage.objects.list denied" trots korrekta Play Console-permissions
+// ("Visa appinformation och ladda ned grupprapporter (skrivskyddat)" +
+// projekt-länkning ej tillgänglig i modern Play Console). Verkar vara ett
+// öppet problem i moderna Play Console-konton — service-account-grants
+// propagerar inte konsekvent till bucket-IAM (testat 2026-06-04, >6h
+// väntan). Plan B: porta till Play Developer Reporting API
+// (playdeveloperreporting.googleapis.com) som använder samma service-
+// account men annan permission-mekanism. Tills dess: Android fylls i
+// manuellt via admin-widget:ens "✏️ Uppdatera siffror"-knapp.
+
 const {
   GCP_SERVICE_ACCOUNT_JSON,
   PLAY_DEVELOPER_ID,
