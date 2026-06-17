@@ -191,5 +191,45 @@ const hideLanguageSwitcher =
   <body class="bg-cream text-text-warm overflow-x-hidden">
     {!hideLanguageSwitcher && <LanguageSwitcher alternateUrl={alternateUrl} />}
     <slot />
+
+    {/* ─── STUDIO-CREDIT ─────────────────────────────────────
+        Liten signatur från Nordic Sidequest (vår studio-credit).
+        Per NSQ Brand Guidelines §7: studio-credit, INTE produkt-brand
+        — så vi använder bara symbolen (currentColor → ärver tipspro-
+        menadens text-warm) och en diskret en-rad. Ingen NSQ-palett,
+        ingen NSQ-typo. Renderas på alla sidor via Layout.astro. */}
+    <footer class="py-6 px-6 border-t border-rule mt-12">
+      <div class="max-w-6xl mx-auto flex items-center justify-center gap-2 text-text-warm/70 text-xs">
+        <svg
+          width="14"
+          height="16"
+          viewBox="0 0 170 200"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M40 200 L40 0"
+            stroke="currentColor"
+            stroke-width="14"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M40 100 L160 0 M138 0 L160 0 L160 22"
+            stroke="currentColor"
+            stroke-width="14"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <circle cx="40" cy="100" r="14" fill="currentColor" />
+        </svg>
+        <span>
+          {lang === "en"
+            ? "A Nordic Sidequest product"
+            : "En Nordic Sidequest-produkt"}
+        </span>
+      </div>
+    </footer>
   </body>
 </html>
