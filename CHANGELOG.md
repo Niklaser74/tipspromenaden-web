@@ -11,6 +11,26 @@ användar-orienterad text.
 
 ---
 
+## 2026-07-05 — Supporter-formulär på /admin
+
+Appens tacksida (Inställningar → "Tack till våra supportrar") kan nu
+redigeras direkt från webben istället för via CLI-scriptet i app-repot.
+Ny flik **💚 Supportrar** på /admin, bredvid Events:
+
+- **Namnlista** i en textarea med ett namn per rad — radordningen blir
+  visningsordningen i appen. Spara skriver om hela listan, så borttagna
+  rader försvinner ur appen. Varning visas för namn över 100 tecken
+  (appen kortar av dem).
+- **Valfri intro-text** på svenska och/eller engelska som ersätter
+  appens default-intro. Lämnas fälten tomma används default-texten.
+- Formuläret för-ifylls med nuvarande innehåll från `config/supporters`
+  och visar när listan senast uppdaterades.
+
+Inga ändringar i säkerhetsregler behövdes — `config/*` har redan publik
+läsning och admin-låst skrivning.
+
+---
+
 ## 2026-06-04 — Flygbladen + 404: stale "iOS på gång"-text borttagen
 
 Admin-flygbladsgeneratorns texter och 404-sidans iOS-gren sa fortfarande

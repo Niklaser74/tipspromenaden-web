@@ -59,9 +59,16 @@ import BatchUploadDropZone from "./BatchUploadDropZone";
 import TipspackEditor from "./TipspackEditor";
 import { FlyerDialog } from "./FlyerDialog";
 import EventsManager from "./EventsManager";
+import SupportersManager from "./SupportersManager";
 import DownloadsWidget from "./DownloadsWidget";
 
-type Tab = "overview" | "walks" | "tipspacks" | "events" | "sessions";
+type Tab =
+  | "overview"
+  | "walks"
+  | "tipspacks"
+  | "events"
+  | "supporters"
+  | "sessions";
 
 interface CuratedPack {
   slug: string;
@@ -303,7 +310,7 @@ function AdminContent({ user }: { user: User }) {
     <>
       <div className="flex items-center justify-between mb-6">
         <div className="flex gap-2 flex-wrap">
-          {(["overview", "walks", "tipspacks", "events", "sessions"] as Tab[]).map((t) => (
+          {(["overview", "walks", "tipspacks", "events", "supporters", "sessions"] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -393,6 +400,8 @@ function AdminContent({ user }: { user: User }) {
 
       {tab === "events" && <EventsManager user={user} walks={walks} />}
 
+      {tab === "supporters" && <SupportersManager />}
+
       {tab === "sessions" && (
         <SessionsList sessions={sessions} walks={walks} />
       )}
@@ -416,6 +425,8 @@ function tabLabel(t: Tab): string {
       return "📚 Tipspacks";
     case "events":
       return "🏁 Events";
+    case "supporters":
+      return "💚 Supportrar";
     case "sessions":
       return "🎯 Sessioner";
   }
@@ -431,6 +442,8 @@ function tabTooltip(t: Tab): string {
       return "Användar-uppladdade och curated frågebatterier. Skapa nya, ladda upp i batch, göm olämpliga.";
     case "events":
       return "Branded customization för sponsor-event (Scania m.fl.). Egen logo, färger och valfri walk-filter. Generera QR-kod direkt här.";
+    case "supporters":
+      return "Namnlistan på appens tacksida (Inställningar → Tack till våra supportrar). Ett namn per rad + valfri egen intro-text.";
     case "sessions":
       return "Lista över de senaste sessionerna per walk — vem som spelat när och hur mycket de hann.";
   }
