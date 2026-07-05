@@ -11,6 +11,14 @@ användar-orienterad text.
 
 ---
 
+## 2026-07-05 — Studio-credit uppdaterad: Nordic Sidequest → Knackpot AB
+
+Studion har bytt namn till Knackpot AB, så footerns credit-rad på alla
+sidor säger nu "En Knackpot AB-produkt" / "A Knackpot AB product".
+Symbolen i footern är oförändrad.
+
+---
+
 ## 2026-07-05 — Supporter-formulär på /admin
 
 Appens tacksida (Inställningar → "Tack till våra supportrar") kan nu
