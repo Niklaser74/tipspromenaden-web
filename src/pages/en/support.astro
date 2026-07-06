@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import SupportersSection from "../../components/SupportersSection.tsx";
 
 const SWISH_NUMBER = "070-520 54 52";
 const SWISH_NUMBER_RAW = "46705205452";
@@ -226,6 +227,12 @@ const description =
         </p>
       </div>
     </section>
+
+    {/* ─── SUPPORTERS ─────────────────────────────────────
+        Name list from the config/supporters Firestore doc (same as
+        the app's thank-you screen). Edited via /admin → 💚 Supportrar.
+        Renders nothing at all if the list is empty. */}
+    <SupportersSection client:idle lang="en" />
 
     {/* ─── FALLBACK ───────────────────────────────────── */}
     <section class="max-w-2xl mx-auto px-6 pb-20 text-center">
