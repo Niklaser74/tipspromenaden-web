@@ -11,6 +11,20 @@ användar-orienterad text.
 
 ---
 
+## 2026-07-06 — Supporter-listan visas på stödsidan
+
+Namnen från appens tacksida (redigeras via /admin → 💚 Supportrar)
+visas nu även på webbens stödsida, på både /stod och /en/support:
+
+- Ny sektion "Tack till våra supportrar" mellan PayPal-blocket och
+  kontakt-raden, med namnen som små namnbrickor.
+- Egen intro-text från admin-formuläret används om den finns (med
+  språk-fallback sv ↔ en), annars en default-text.
+- Sektionen läser samma publika Firestore-doc som appen och visas
+  inte alls om listan är tom.
+
+---
+
 ## 2026-07-05 — Studio-credit uppdaterad: Nordic Sidequest → Knackpot AB
 
 Studion har bytt namn till Knackpot AB, så footerns credit-rad på alla
