@@ -11,6 +11,14 @@ användar-orienterad text.
 
 ---
 
+## 2026-08-08 — Verifieringstagg för Vibekollen
+
+Lagt in en `vibekollen-verifiering`-metatagg i sidhuvudet på alla sidor
+så att tjänsten kan verifiera att vi äger domänen. Inget syns för
+besökare.
+
+---
+
 ## 2026-07-06 — Supporter-listan visas på stödsidan
 
 Namnen från appens tacksida (redigeras via /admin → 💚 Supportrar)
