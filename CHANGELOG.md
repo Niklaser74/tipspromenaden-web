@@ -11,6 +11,19 @@ användar-orienterad text.
 
 ---
 
+## 2026-08-10 — Städad sitemap och /sitemap.xml pekar rätt
+
+Sökmotorer får nu en renare bild av sajten:
+
+- De interna redirect-sidorna (`/walk-redirect`, `/event-redirect`)
+  ligger inte längre i sitemappen. De är bara tekniska mellanled för
+  `/walk/*`- och `/event/*`-länkar, inte sidor någon ska hitta via
+  Google.
+- `/sitemap.xml` går vidare till den riktiga `/sitemap-index.xml`
+  istället för att svara 404.
+
+---
+
 ## 2026-08-08 — Verifieringstagg för Vibekollen
 
 Lagt in en `vibekollen-verifiering`-metatagg i sidhuvudet på alla sidor

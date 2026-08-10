@@ -15,12 +15,16 @@ import sitemap from "@astrojs/sitemap";
 // klienter som faktiskt besöker /skapa, så marknadssidan förblir lätt.
 export default defineConfig({
   site: "https://tipspromenaden.app",
-  // Sitemap auto-genereras (/sitemap-index.xml) vid build. Admin-sidor
-  // exkluderas — de är login-gated och ska inte indexeras.
+  // Sitemap auto-genereras (/sitemap-index.xml) vid build. Två grupper
+  // exkluderas: admin-sidor (login-gated, ska inte indexeras) och
+  // *-redirect-sidorna, som bara är interna rewrite-mål för /walk/* och
+  // /event/* (se public/_redirects). Ingen ska landa på dem från en
+  // sökträff — de bidrar bara med tunt duplicerat innehåll.
   integrations: [
     react(),
     sitemap({
-      filter: (page) => !page.includes("/admin"),
+      filter: (page) =>
+        !page.includes("/admin") && !page.includes("-redirect/"),
     }),
   ],
   vite: {

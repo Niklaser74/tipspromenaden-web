@@ -11,3 +11,8 @@
 # /walk/*: smart-redirect öppnar appen direkt om installerad, annars
 # Play Store/App Store. Genereras från admin → Events → QR-knappen.
 /event/* /event-redirect/ 200
+
+# Astro genererar sitemappen som /sitemap-index.xml → /sitemap-0.xml.
+# robots.txt pekar på index-filen, men /sitemap.xml är vad folk (och
+# vissa verktyg) gissar på — skicka dem rätt istället för till 404.
+/sitemap.xml /sitemap-index.xml 301
