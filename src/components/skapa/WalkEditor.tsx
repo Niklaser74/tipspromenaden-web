@@ -497,6 +497,45 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
               </span>
             </label>
 
+            {/* Dolda resultat — deltagarna ser varken rätt/fel, poäng eller
+                topplista förrän arrangören trycker "Redovisa resultat" i
+                appens topplista. När toggeln slås AV nollställs även en ev.
+                resultsRevealedAt (stripUndefined i saveWalk scrubbar).
+                OBS asymmetri mot appen: app-edit nollställer alltid
+                resultsRevealedAt, webb-edit bevarar den (utom här). */}
+            <label className="flex items-start gap-2 mt-5 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={!!walk.hideResultsUntilReveal}
+                onChange={(e) =>
+                  update(
+                    e.target.checked
+                      ? { hideResultsUntilReveal: true }
+                      : {
+                          hideResultsUntilReveal: undefined,
+                          resultsRevealedAt: undefined,
+                        }
+                  )
+                }
+                className="mt-1 accent-green-dark"
+              />
+              <span className="text-sm">
+                <strong>
+                  {t(
+                    "Dolda resultat tills du redovisar",
+                    "Hidden results until you reveal"
+                  )}
+                </strong>
+                <br />
+                <span className="text-text-warm text-xs">
+                  {t(
+                    "Passar event: deltagarna ser varken rätt/fel, poäng eller topplista förrän du trycker ”Redovisa resultat” på topplistan i appen.",
+                    "Great for events: participants see neither right/wrong, score nor leaderboard until you tap “Reveal results” on the leaderboard in the app."
+                  )}
+                </span>
+              </span>
+            </label>
+
             {walk.event && (
               <div className="mt-3 space-y-3 bg-cream/50 border border-rule rounded-lg p-3">
                 <div className="grid grid-cols-2 gap-3">

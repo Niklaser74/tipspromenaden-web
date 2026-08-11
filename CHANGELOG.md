@@ -11,6 +11,21 @@ användar-orienterad text.
 
 ---
 
+## 2026-08-11 — Dolda resultat-toggle i walk-editorn
+
+Ny inställning i `/skapa`-editorn: **Dolda resultat tills du redovisar**.
+För eventpromenader där svaren ska hållas hemliga till den gemensamma
+prisutdelningen:
+
+- Deltagarna ser varken rätt/fel, poäng eller topplista under promenaden
+  — bara "svar registrerat".
+- Arrangören trycker "Redovisa resultat" på topplistan i appen när alla
+  är klara, och alla deltagares skärmar visar resultaten i samma stund.
+- Kräver appversion med dagens OTA-uppdatering; äldre appar visar
+  svaren direkt som vanligt.
+
+---
+
 ## 2026-08-10 — Städad sitemap och /sitemap.xml pekar rätt
 
 Sökmotorer får nu en renare bild av sajten:

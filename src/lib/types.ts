@@ -77,6 +77,28 @@ export interface Walk {
    * save. Driver "nära mig"-sortering i biblioteket.
    */
   centroid?: Coordinate;
+  /**
+   * Aktivitetstyp — styr trigger-tröskel och kartzoom i appen.
+   * Default "walk" när fältet saknas. Sätts i appens CreateWalk;
+   * webben redigerar inte fältet men typen måste känna till det.
+   */
+  activityType?: "walk" | "bike";
+  /**
+   * Strict-order-läge (appen): deltagaren måste besöka kontrollerna i
+   * ordning. Sätts i appens CreateWalk; webben rör inte fältet.
+   */
+  enforceSequentialOrder?: boolean;
+  /**
+   * Dolda resultat-läge (event): ingen rätt/fel-feedback, poäng eller
+   * topplista för deltagarna förrän arrangören redovisar i appen.
+   */
+  hideResultsUntilReveal?: boolean;
+  /**
+   * Unix-ms när arrangören tryckte "Redovisa resultat" i appen.
+   * Webben skriver aldrig fältet (utom att nollställa det när
+   * dolda resultat-läget slås av i editorn).
+   */
+  resultsRevealedAt?: number;
 }
 
 /** Tillåtna kategori-koder för publika walks. */
