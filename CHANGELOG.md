@@ -11,6 +11,15 @@ användar-orienterad text.
 
 ---
 
+## 2026-08-11 — Bot-skyddet på webben fungerar igen
+
+- Sajtens säkerhetsregler blockerade av misstag anropet som verifierar att
+  du är en riktig besökare (App Check/reCAPTCHA). Skyddet slog därför fel
+  och stängdes av i ett dygn åt gången. Nu släpps anropet igenom som det
+  ska, så inloggning och sparande på `/skapa` är skyddat som avsett igen.
+
+---
+
 ## 2026-08-11 — Dolda resultat-toggle i walk-editorn
 
 Ny inställning i `/skapa`-editorn: **Dolda resultat tills du redovisar**.
