@@ -11,6 +11,15 @@ användar-orienterad text.
 
 ---
 
+## 2026-09-11 — Ny sida: Radera konto och data
+
+- `/radera-konto` beskriver steg för steg hur du raderar ditt konto i appen
+  (Inställningar → Farozon), vad som tas bort, vad som inte raderas
+  automatiskt och hur du begär radering via e-post om du inte längre har
+  appen. Sidan är den som Google Play länkar till från butiksuppgifterna;
+  tidigare låg den på en GitHub-adress.
+- Integritetspolicyn länkar till den nya sidan från avsnittet om radering.
+
 ## 2026-08-11 — Bot-skyddet på webben fungerar igen
 
 - Sajtens säkerhetsregler blockerade av misstag anropet som verifierar att

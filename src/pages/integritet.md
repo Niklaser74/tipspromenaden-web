@@ -86,7 +86,8 @@ Som användare i EU/EES har du rätt att:
 
 ### 5.1 Hur du raderar din data
 
-1. **I appen:** Inställningar → Radera konto. Tar bort:
+1. **I appen:** Inställningar → Farozon → Radera konto och data
+   (steg för steg på [/radera-konto](/radera-konto)). Tar bort:
    - Ditt Firebase Auth-konto
    - Promenader du skapat
    - Sessioner du startat
