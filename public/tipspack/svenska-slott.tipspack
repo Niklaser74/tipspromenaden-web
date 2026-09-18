@@ -8,38 +8,38 @@
   "questions": [
     {
       "text": "Vilket slott är den svenska kungafamiljens nuvarande huvudresidens?",
-      "options": ["Drottningholms slott", "Stockholms slott", "Sofiero", "Gripsholms slott"],
-      "correctOptionIndex": 0
+      "options": ["Sofiero", "Stockholms slott", "Drottningholms slott", "Gripsholms slott"],
+      "correctOptionIndex": 2
     },
     {
       "text": "På vilken ö i Mälaren ligger Drottningholms slott?",
-      "options": ["Lovön", "Björkö", "Värmdö", "Adelsö"],
+      "options": ["Lovön", "Björkö", "Adelsö", "Värmdö"],
       "correctOptionIndex": 0
     },
     {
       "text": "Vilket slott i Skåne är känt för sina rhododendronträdgårdar?",
-      "options": ["Sofiero", "Vadstena slott", "Gripsholm", "Tjolöholms slott"],
-      "correctOptionIndex": 0
+      "options": ["Gripsholm", "Tjolöholms slott", "Vadstena slott", "Sofiero"],
+      "correctOptionIndex": 3
     },
     {
       "text": "Vilken svensk kung dog under slaget vid Lützen 1632?",
-      "options": ["Gustav II Adolf", "Karl XII", "Gustav Vasa", "Karl IX"],
-      "correctOptionIndex": 0
+      "options": ["Karl XII", "Gustav II Adolf", "Karl IX", "Gustav Vasa"],
+      "correctOptionIndex": 1
     },
     {
       "text": "Vad heter Sveriges nuvarande regerande kung?",
-      "options": ["Carl XVI Gustaf", "Karl XIV Johan", "Gustav VI Adolf", "Oscar II"],
-      "correctOptionIndex": 0
+      "options": ["Gustav VI Adolf", "Carl XVI Gustaf", "Karl XIV Johan", "Oscar II"],
+      "correctOptionIndex": 1
     },
     {
       "text": "Vilken kung grundade Bernadotteätten i Sverige?",
-      "options": ["Karl XIV Johan", "Karl XIII", "Oscar I", "Gustav IV Adolf"],
-      "correctOptionIndex": 0
+      "options": ["Gustav IV Adolf", "Karl XIII", "Karl XIV Johan", "Oscar I"],
+      "correctOptionIndex": 2
     },
     {
       "text": "Vilket slott ligger på en ö i Mälaren och hyser idag det statliga porträttmuseet?",
-      "options": ["Gripsholms slott", "Skoklosters slott", "Tullgarn", "Strömsholm"],
-      "correctOptionIndex": 0
+      "options": ["Skoklosters slott", "Gripsholms slott", "Strömsholm", "Tullgarn"],
+      "correctOptionIndex": 1
     },
     {
       "text": "I vilken stad ligger Kalmar slott?",
@@ -48,12 +48,12 @@
     },
     {
       "text": "Vad hette den drottning som abdikerade och konverterade till katolicismen 1654?",
-      "options": ["Drottning Kristina", "Drottning Margareta", "Drottning Lovisa Ulrika", "Drottning Hedvig Eleonora"],
-      "correctOptionIndex": 0
+      "options": ["Drottning Lovisa Ulrika", "Drottning Margareta", "Drottning Hedvig Eleonora", "Drottning Kristina"],
+      "correctOptionIndex": 3
     },
     {
       "text": "Vad användes Kalmar slott huvudsakligen till på 1500-talet?",
-      "options": ["Gränsfästning mot Danmark", "Sommarslott", "Kloster", "Universitet"],
+      "options": ["Gränsfästning mot Danmark", "Sommarslott", "Universitet", "Kloster"],
       "correctOptionIndex": 0
     }
   ]

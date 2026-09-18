@@ -8,20 +8,20 @@
     {
       "text": "Vad äter jättepandor allra mest av?",
       "options": [
-        "Gräs",
         "Bambu",
-        "Blåbär",
-        "Löv från ekträd"
+        "Gräs",
+        "Löv från ekträd",
+        "Blåbär"
       ],
-      "correctOptionIndex": 1
+      "correctOptionIndex": 0
     },
     {
       "text": "I vilket land lever vilda jättepandor?",
       "options": [
         "Japan",
-        "Indien",
+        "Thailand",
         "Kina",
-        "Thailand"
+        "Indien"
       ],
       "correctOptionIndex": 2
     },
@@ -38,8 +38,8 @@
     {
       "text": "Hur mycket bambu kan en jättepanda äta per dag?",
       "options": [
-        "Upp till 5 kg",
         "Upp till 15 kg",
+        "Upp till 5 kg",
         "Upp till 38 kg",
         "Upp till 60 kg"
       ],
@@ -48,70 +48,70 @@
     {
       "text": "Vilken färg har en nyfödd pandaunge?",
       "options": [
-        "Svartvit precis som en vuxen",
         "Helt svart",
-        "Rosa och nästan hårlös",
-        "Brun med vita fläckar"
+        "Svartvit precis som en vuxen",
+        "Brun med vita fläckar",
+        "Rosa och nästan hårlös"
       ],
-      "correctOptionIndex": 2
+      "correctOptionIndex": 3
     },
     {
       "text": "Hur stor är en nyfödd pandaunge jämfört med sin mamma?",
       "options": [
-        "Ungefär hälften så stor",
         "Ungefär en tiondel så stor",
-        "Ungefär en tusendel så stor",
-        "Ungefär en hundradel så stor"
+        "Ungefär hälften så stor",
+        "Ungefär en hundradel så stor",
+        "Ungefär en tusendel så stor"
       ],
-      "correctOptionIndex": 2
+      "correctOptionIndex": 3
     },
     {
       "text": "Vad gör jättepandor största delen av dagen?",
       "options": [
-        "Simmar i floder",
         "Äter och vilar",
+        "Leker med varandra",
         "Klättrar i träd",
-        "Leker med varandra"
+        "Simmar i floder"
       ],
-      "correctOptionIndex": 1
+      "correctOptionIndex": 0
     },
     {
       "text": "Till vilken djurfamilj hör jättepandan?",
       "options": [
-        "Kattdjur",
         "Björnar",
+        "Halvbjörnar",
         "Tvättbjörnar",
-        "Halvbjörnar"
+        "Kattdjur"
       ],
-      "correctOptionIndex": 1
+      "correctOptionIndex": 0
     },
     {
       "text": "Varför har jättepandor en speciell 'tumme' på framtassarna?",
       "options": [
         "För att gräva bon",
-        "För att klättra snabbare",
         "För att gripa tag i bambu",
+        "För att klättra snabbare",
         "För att slåss mot fiender"
       ],
-      "correctOptionIndex": 2
+      "correctOptionIndex": 1
     },
     {
       "text": "Vad betyder pandans kinesiska namn 'dà xióngmāo' (大熊猫) på svenska?",
       "options": [
         "Svartvit björn",
         "Stor björnkatt",
-        "Bambumästare",
-        "Bergsbjörn"
+        "Bergsbjörn",
+        "Bambumästare"
       ],
       "correctOptionIndex": 1
     },
     {
       "text": "Hur lever vilda jättepandor helst – ensamma eller i grupp?",
       "options": [
-        "I stora flockar",
         "I par",
+        "I familjegrupper",
         "Ensamma",
-        "I familjegrupper"
+        "I stora flockar"
       ],
       "correctOptionIndex": 2
     },
@@ -119,21 +119,21 @@
       "text": "Var i Kina bor de flesta vilda jättepandor?",
       "options": [
         "I öknar i norr",
-        "I bergsskogar i sydvästra Kina",
+        "I tropisk regnskog i söder",
         "På slätter nära kusten",
-        "I tropisk regnskog i söder"
+        "I bergsskogar i sydvästra Kina"
       ],
-      "correctOptionIndex": 1
+      "correctOptionIndex": 3
     },
     {
       "text": "Vilken organisation använder jättepandan som sin symbol?",
       "options": [
         "Greenpeace",
-        "Unicef",
         "WWF",
-        "Röda Korset"
+        "Röda Korset",
+        "Unicef"
       ],
-      "correctOptionIndex": 2
+      "correctOptionIndex": 1
     },
     {
       "text": "Hur länge är en pandamamma dräktig ungefär?",
@@ -148,12 +148,12 @@
     {
       "text": "Är den röda pandan nära släkt med jättepandan?",
       "options": [
-        "Ja, de tillhör samma familj",
         "Nej, den röda pandan tillhör en helt egen familj",
+        "Nej, den röda pandan är ett kattdjur",
         "Ja, de är nästan samma art",
-        "Nej, den röda pandan är ett kattdjur"
+        "Ja, de tillhör samma familj"
       ],
-      "correctOptionIndex": 1
+      "correctOptionIndex": 0
     }
   ],
   "language": "sv"

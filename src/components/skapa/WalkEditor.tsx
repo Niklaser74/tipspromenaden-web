@@ -15,7 +15,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { User } from "firebase/auth";
-import { getWalk, saveWalk, deleteWalk } from "../../lib/walks";
+import {
+  getWalk,
+  saveWalk,
+  deleteWalk,
+  getOpenRoundSummary,
+  closeRounds,
+} from "../../lib/walks";
+import { shuffleQuestionOptions } from "../../lib/shuffleOptions";
 import {
   generateId,
   WALK_CATEGORIES,
@@ -72,6 +79,7 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
   const [showReuse, setShowReuse] = useState(false);
   const [showLibrary, setShowLibrary] = useState(false);
   const [importMessage, setImportMessage] = useState<string | null>(null);
+  const [shuffling, setShuffling] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -168,7 +176,8 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
    */
   function importBattery(battery: QuestionBattery) {
     if (!walk) return;
-    const newQuestions: Question[] = battery.questions.map((bq, i) => ({
+    // Tipspack skrivs ofta med rätt svar först — blanda alltid vid import.
+    const newQuestions: Question[] = shuffleQuestionOptions(battery.questions).map((bq, i) => ({
       id: generateId(),
       text: bq.text,
       options: [...bq.options],
@@ -196,11 +205,85 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
 
     setImportMessage(
       t(
-        `✅ Importerade ${newQuestions.length} frågor från "${battery.name}". Klicka på kartan för att placera fråga 1, sen fortsätter du till nästa automatiskt.`,
-        `✅ Imported ${newQuestions.length} questions from "${battery.name}". Click the map to place question 1, then the next one is auto-selected.`
+        `✅ Importerade ${newQuestions.length} frågor från "${battery.name}". Svarsalternativen är blandade så att rätt svar inte ligger på samma plats. Klicka på kartan för att placera fråga 1, sen fortsätter du till nästa automatiskt.`,
+        `✅ Imported ${newQuestions.length} questions from "${battery.name}". The answer options are shuffled so the correct answer isn't always in the same place. Click the map to place question 1, then the next one is auto-selected.`
       )
     );
     setTimeout(() => setImportMessage(null), 12000);
+  }
+
+  /**
+   * "Blanda svarsalternativ" — nya platser för rätt svar på frågor som
+   * redan finns, t.ex. när samma walk ska gås igen. Bara frågor med text
+   * blandas. Gäller först när walken sparas.
+   *
+   * Står en runda öppen frågar vi först: deltagare mitt i den har svarat
+   * mot de gamla platserna och statistiken räknas per alternativ-index.
+   * Poängen blir rätt ändå. Två confirm() i rad i stället för en egen
+   * dialog, samma enkla mönster som radera-knappen.
+   */
+  async function handleShuffleOptions() {
+    if (!walk || shuffling) return;
+    setShuffling(true);
+    try {
+      let summary: Awaited<ReturnType<typeof getOpenRoundSummary>> = null;
+      try {
+        summary = await getOpenRoundSummary(walk.id);
+      } catch {
+        // Läsfel: blanda ändå. Varningen är en service och inget ändras
+        // förrän walken sparas.
+      }
+      if (summary) {
+        const who =
+          summary.unfinished > 0
+            ? t(
+                `${summary.unfinished} deltagare är mitt i rundan. Poängen blir rätt, men svaren gäller de gamla platserna och statistiken blandas ihop.`,
+                `${summary.unfinished} participant(s) are mid-round. Scores stay correct, but their answers refer to the old positions and the insights get mixed up.`
+              )
+            : t(
+                "Walken har en öppen runda. Blandar du nu hamnar tidigare svar i otakt i statistiken.",
+                "This walk has an open round. Shuffling now puts earlier answers out of step in the insights."
+              );
+        if (
+          confirm(
+            who +
+              "\n\n" +
+              t(
+                "OK = avsluta rundan och blanda. Avbryt = fler val.",
+                "OK = end the round and shuffle. Cancel = more options."
+              )
+          )
+        ) {
+          await closeRounds(summary.sessionIds);
+        } else if (
+          !confirm(
+            t(
+              "Blanda ändå, utan att avsluta rundan?",
+              "Shuffle anyway, without ending the round?"
+            )
+          )
+        ) {
+          return;
+        }
+      }
+
+      const filled = walk.questions.filter((q) => q.text.trim());
+      const shuffled = shuffleQuestionOptions(filled);
+      const byId = new Map(shuffled.map((q) => [q.id, q]));
+      update({ questions: walk.questions.map((q) => byId.get(q.id) ?? q) });
+      setImportMessage(
+        t(
+          "🔀 Svarsalternativen är blandade. Spara walken för att ändringen ska gälla.",
+          "🔀 Answer options shuffled. Save the walk for the change to take effect."
+        )
+      );
+      setTimeout(() => setImportMessage(null), 8000);
+    } catch (e: any) {
+      setImportMessage(`❌ ${e?.message || e}`);
+      setTimeout(() => setImportMessage(null), 6000);
+    } finally {
+      setShuffling(false);
+    }
   }
 
   async function handleImportFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -710,6 +793,20 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
                 {t("🗺 Återanvänd rutt", "🗺 Reuse route")}
               </button>
             </div>
+
+            {walk.questions.filter((q) => q.text.trim()).length >= 2 && (
+              <button
+                onClick={handleShuffleOptions}
+                disabled={shuffling}
+                className="w-full mt-2 bg-white border border-green-dark text-green-dark px-3 py-2 rounded-lg text-xs font-semibold hover:bg-green-dark/5 transition disabled:opacity-50"
+                title={t(
+                  "Ge rätt svar nya platser, t.ex. när samma frågor ska användas igen",
+                  "Move the correct answers to new places, e.g. when reusing the same questions"
+                )}
+              >
+                {t("🔀 Blanda svarsalternativ", "🔀 Shuffle answer options")}
+              </button>
+            )}
 
             <input
               ref={fileInputRef}

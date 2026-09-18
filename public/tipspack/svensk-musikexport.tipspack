@@ -13,23 +13,23 @@
     },
     {
       "text": "Vad var Aviciis riktiga namn?",
-      "options": ["Tim Bergling", "Tim Norén", "Erik Hassle", "Albin Myers"],
-      "correctOptionIndex": 0
+      "options": ["Tim Norén", "Erik Hassle", "Tim Bergling", "Albin Myers"],
+      "correctOptionIndex": 2
     },
     {
       "text": "Vilken svensk grupp hade världshiten \"All That She Wants\" 1992?",
-      "options": ["Ace of Base", "Roxette", "The Cardigans", "A-Teens"],
-      "correctOptionIndex": 0
+      "options": ["A-Teens", "Roxette", "The Cardigans", "Ace of Base"],
+      "correctOptionIndex": 3
     },
     {
       "text": "Vilken svensk hitlåts­producent ligger bakom låtar för bland andra Britney Spears, Backstreet Boys och Katy Perry?",
-      "options": ["Max Martin", "Avicii", "Pelle Almqvist", "Andreas Carlsson"],
-      "correctOptionIndex": 0
+      "options": ["Pelle Almqvist", "Andreas Carlsson", "Avicii", "Max Martin"],
+      "correctOptionIndex": 3
     },
     {
       "text": "Vilken DJ-trio producerade hiten \"Don't You Worry Child\" 2012?",
-      "options": ["Swedish House Mafia", "Galantis", "Cazzette", "Dada Life"],
-      "correctOptionIndex": 0
+      "options": ["Dada Life", "Swedish House Mafia", "Galantis", "Cazzette"],
+      "correctOptionIndex": 1
     },
     {
       "text": "Vilken svensk artist hade världshiten \"Habits (Stay High)\" 2014?",
@@ -38,23 +38,23 @@
     },
     {
       "text": "Vilken svensk grupp hade världshiten \"Lovefool\" 1996?",
-      "options": ["The Cardigans", "Roxette", "Ace of Base", "The Hives"],
-      "correctOptionIndex": 0
+      "options": ["Ace of Base", "The Cardigans", "Roxette", "The Hives"],
+      "correctOptionIndex": 1
     },
     {
       "text": "Vilken svensk artist hade hiten \"Dancing on My Own\" 2010?",
-      "options": ["Robyn", "Tove Lo", "Lykke Li", "Veronica Maggio"],
-      "correctOptionIndex": 0
+      "options": ["Lykke Li", "Robyn", "Veronica Maggio", "Tove Lo"],
+      "correctOptionIndex": 1
     },
     {
       "text": "Vad heter Aviciis genombrottslåt från 2011?",
-      "options": ["Levels", "Wake Me Up", "Hey Brother", "Waiting For Love"],
+      "options": ["Levels", "Hey Brother", "Waiting For Love", "Wake Me Up"],
       "correctOptionIndex": 0
     },
     {
       "text": "Vilken svensk artist vann Eurovision Song Contest 2015 med \"Heroes\"?",
-      "options": ["Måns Zelmerlöw", "Loreen", "Eric Saade", "Sanna Nielsen"],
-      "correctOptionIndex": 0
+      "options": ["Eric Saade", "Sanna Nielsen", "Måns Zelmerlöw", "Loreen"],
+      "correctOptionIndex": 2
     }
   ]
 }

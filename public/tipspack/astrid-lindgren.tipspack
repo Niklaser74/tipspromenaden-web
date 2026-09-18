@@ -8,53 +8,53 @@
   "questions": [
     {
       "text": "Vilken karaktär bor på Villa Villekulla?",
-      "options": ["Pippi Långstrump", "Madicken", "Lotta på Bråkmakargatan", "Emil i Lönneberga"],
+      "options": ["Pippi Långstrump", "Emil i Lönneberga", "Madicken", "Lotta på Bråkmakargatan"],
       "correctOptionIndex": 0
     },
     {
       "text": "Vad heter Emils lillasyster i böckerna om Emil i Lönneberga?",
-      "options": ["Ida", "Lina", "Maja", "Anna"],
-      "correctOptionIndex": 0
+      "options": ["Lina", "Anna", "Ida", "Maja"],
+      "correctOptionIndex": 2
     },
     {
       "text": "Vad heter Pippi Långstrumps häst?",
-      "options": ["Lilla gubben", "Stora gubben", "Pelle", "Tjorven"],
+      "options": ["Lilla gubben", "Pelle", "Tjorven", "Stora gubben"],
       "correctOptionIndex": 0
     },
     {
       "text": "Vad är Pippi Långstrumps pappas namn?",
-      "options": ["Efraim Långstrump", "Karl Långstrump", "Bertil Långstrump", "Lasse Långstrump"],
-      "correctOptionIndex": 0
+      "options": ["Karl Långstrump", "Bertil Långstrump", "Lasse Långstrump", "Efraim Långstrump"],
+      "correctOptionIndex": 3
     },
     {
       "text": "I vilken småländsk stad ligger temaparken Astrid Lindgrens Värld?",
-      "options": ["Vimmerby", "Kalmar", "Växjö", "Eksjö"],
-      "correctOptionIndex": 0
+      "options": ["Eksjö", "Vimmerby", "Kalmar", "Växjö"],
+      "correctOptionIndex": 1
     },
     {
       "text": "Vad är smeknamnet på den yngre brodern i Bröderna Lejonhjärta?",
-      "options": ["Skorpan", "Snickaren", "Krösa", "Vesslan"],
+      "options": ["Skorpan", "Snickaren", "Vesslan", "Krösa"],
       "correctOptionIndex": 0
     },
     {
       "text": "Vem är Karlsson på takets bästa vän?",
-      "options": ["Lillebror", "Bullerby-Lasse", "Emil", "Bosse"],
-      "correctOptionIndex": 0
+      "options": ["Emil", "Lillebror", "Bosse", "Bullerby-Lasse"],
+      "correctOptionIndex": 1
     },
     {
       "text": "Vad heter Madickens lillasyster?",
-      "options": ["Lisabet", "Britta", "Anna", "Ida"],
-      "correctOptionIndex": 0
+      "options": ["Ida", "Anna", "Britta", "Lisabet"],
+      "correctOptionIndex": 3
     },
     {
       "text": "Vilket år gick Astrid Lindgren bort?",
-      "options": ["2002", "1998", "2005", "1995"],
-      "correctOptionIndex": 0
+      "options": ["1995", "1998", "2002", "2005"],
+      "correctOptionIndex": 2
     },
     {
       "text": "Vad är förkortningen på det internationella barnlitteraturpriset som instiftades till Astrid Lindgrens minne?",
-      "options": ["ALMA", "LISA", "ELLA", "ANNA"],
-      "correctOptionIndex": 0
+      "options": ["LISA", "ANNA", "ALMA", "ELLA"],
+      "correctOptionIndex": 2
     }
   ]
 }

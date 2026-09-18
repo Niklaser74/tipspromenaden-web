@@ -13,48 +13,48 @@
     },
     {
       "text": "Vilket träd är vanligast i svenska skogar räknat i volym?",
-      "options": ["Gran", "Tall", "Björk", "Ek"],
-      "correctOptionIndex": 0
+      "options": ["Tall", "Ek", "Björk", "Gran"],
+      "correctOptionIndex": 3
     },
     {
       "text": "Vilken är Sveriges nationalblomma?",
-      "options": ["Linnea", "Smörblomma", "Vallmo", "Maskros"],
-      "correctOptionIndex": 0
+      "options": ["Maskros", "Smörblomma", "Linnea", "Vallmo"],
+      "correctOptionIndex": 2
     },
     {
       "text": "Vilket är Sveriges största landlevande däggdjur?",
-      "options": ["Älg", "Björn", "Vildsvin", "Ren"],
-      "correctOptionIndex": 0
+      "options": ["Björn", "Älg", "Vildsvin", "Ren"],
+      "correctOptionIndex": 1
     },
     {
       "text": "Vilken fågel är Sveriges nationalfågel?",
-      "options": ["Koltrast", "Bofink", "Domherre", "Sångsvan"],
-      "correctOptionIndex": 0
+      "options": ["Domherre", "Bofink", "Sångsvan", "Koltrast"],
+      "correctOptionIndex": 3
     },
     {
       "text": "Vilken fisk räknas som Sveriges nationalfisk?",
-      "options": ["Abborre", "Gädda", "Lax", "Sik"],
-      "correctOptionIndex": 0
+      "options": ["Sik", "Abborre", "Lax", "Gädda"],
+      "correctOptionIndex": 1
     },
     {
       "text": "Vilken är Sveriges största nationalpark till ytan?",
-      "options": ["Padjelanta", "Sarek", "Abisko", "Tyresta"],
-      "correctOptionIndex": 0
+      "options": ["Tyresta", "Padjelanta", "Abisko", "Sarek"],
+      "correctOptionIndex": 1
     },
     {
       "text": "Vilket bär har högst halt av C-vitamin per gram?",
-      "options": ["Nypon", "Blåbär", "Hjortron", "Lingon"],
+      "options": ["Nypon", "Lingon", "Hjortron", "Blåbär"],
       "correctOptionIndex": 0
     },
     {
       "text": "Vilket rovdjur är vanligast i Sverige?",
-      "options": ["Räv", "Lo", "Björn", "Varg"],
+      "options": ["Räv", "Varg", "Lo", "Björn"],
       "correctOptionIndex": 0
     },
     {
       "text": "Vilket landskap är känt som \"Sveriges trädgård\" på grund av sin bördighet?",
-      "options": ["Skåne", "Halland", "Östergötland", "Småland"],
-      "correctOptionIndex": 0
+      "options": ["Småland", "Halland", "Skåne", "Östergötland"],
+      "correctOptionIndex": 2
     }
   ]
 }

@@ -27,6 +27,7 @@ import {
   where,
   setDoc,
   deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import type { Walk } from "./types";
@@ -108,6 +109,50 @@ export async function saveWalk(walk: Walk): Promise<void> {
     createdAt: walk.createdAt || Date.now(),
   });
   await setDoc(ref, cleaned);
+}
+
+/**
+ * Öppna rundor för en walk: antal sessioner med status waiting/active och
+ * hur många deltagare i dem som svarat men inte gått i mål. `null` när
+ * inget står öppet. Speglar `getOpenRoundSummary` i appens firestore.ts.
+ *
+ * Används av "Blanda svarsalternativ" för att varna: den som är mitt i en
+ * runda har svarat mot de gamla platserna. Sessioner och deltagare är
+ * publikt läsbara enligt firestore.rules, så ingen regeländring behövs.
+ */
+export async function getOpenRoundSummary(
+  walkId: string
+): Promise<{ sessionIds: string[]; unfinished: number } | null> {
+  const snap = await getDocs(
+    query(
+      collection(db, "sessions"),
+      where("walkId", "==", walkId),
+      where("status", "in", ["waiting", "active"])
+    )
+  );
+  if (snap.empty) return null;
+  const sessionIds = snap.docs.map((d) => d.id);
+  const perSession = await Promise.all(
+    sessionIds.map((sid) => getDocs(collection(db, "sessions", sid, "participants")))
+  );
+  let unfinished = 0;
+  for (const ps of perSession) {
+    for (const p of ps.docs) {
+      const data = p.data() as { completedAt?: number; answers?: unknown[] };
+      if (!data.completedAt && (data.answers?.length ?? 0) > 0) unfinished++;
+    }
+  }
+  return { sessionIds, unfinished };
+}
+
+/**
+ * Stänger rundorna — samma som appens "Avsluta rundan". Reglerna släpper
+ * igenom `status: completed` från walk-ägaren. Irreversibelt.
+ */
+export async function closeRounds(sessionIds: string[]): Promise<void> {
+  await Promise.all(
+    sessionIds.map((sid) => updateDoc(doc(db, "sessions", sid), { status: "completed" }))
+  );
 }
 
 /** Radera en walk. */

@@ -11,6 +11,18 @@ användar-orienterad text.
 
 ---
 
+## 2026-09-18 — Svarsalternativen blandas
+
+- När du hämtar frågor från ett tipspack på `/skapa` blandas nu
+  svarsalternativen, så att rätt svar inte ligger på samma plats hela
+  promenaden. Svar som är tal eller årtal sorteras i stigande ordning i
+  stället.
+- Ny knapp **🔀 Blanda svarsalternativ** i editorn ger rätt svar nya platser,
+  till exempel när samma frågor ska användas igen. Pågår en runda får du
+  välja att avsluta den först.
+- Åtta av de färdiga tipspacken hade rätt svar snett placerat — sex av dem
+  hade det först på varje fråga. De är nu omblandade.
+
 ## 2026-09-11 — Ny sida: Radera konto och data
 
 - `/radera-konto` beskriver steg för steg hur du raderar ditt konto i appen
