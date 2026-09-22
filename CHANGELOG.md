@@ -23,6 +23,9 @@ användar-orienterad text.
 - Ett nytt pack som inte sparats än sparas som utkast i webbläsaren, så inget
   försvinner om fliken stängs.
 - Admin-sidans tipspack-formulär är ersatt av samma editor.
+- Väljer du **Bibliotek** i promenad-editorn eller frågeeditorn visas nu
+  också dina egna tipspack, även de med hemlig länk. De ligger överst och
+  är märkta "Mitt".
 
 ## 2026-09-18 — Svarsalternativen blandas
 

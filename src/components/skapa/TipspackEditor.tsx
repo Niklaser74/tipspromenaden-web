@@ -892,6 +892,7 @@ export function TipspackEditor({ user, slug, onClose, onCreated }: Props) {
 
       {showLibrary && (
         <LibraryPickerDialog
+          ownerUid={user.uid}
           onPick={(b) => {
             appendBattery(b);
             setShowLibrary(false);

@@ -868,6 +868,7 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
 
       {showLibrary && (
         <LibraryPickerDialog
+          ownerUid={user.uid}
           onClose={() => setShowLibrary(false)}
           onPick={(battery) => {
             setShowLibrary(false);

@@ -8,6 +8,8 @@
  *      Cloudflare, committade i web-repot).
  *   2. **Uppladdade publika pack** från Firestore `tipspacks` där
  *      `isPublic === true` — hämtas via `tipspackLibrary.getPublicTipspacks()`.
+ *   3. **Egna pack** (även hemliga) när `ownerUid` skickas in — hämtas via
+ *      `getMyTipspacks()` och sorteras först, märkta "Mitt".
  *
  * Dedup-strategi: om curated och uploaded delar samma slug, vinner
  * curated (samma som app-biblioteket). Modererade pack (i
@@ -28,6 +30,7 @@ import { useEffect, useState } from "react";
 import { Flag } from "../Flag";
 import { useT } from "./i18n";
 import {
+  getMyTipspacks,
   getPublicTipspacks,
   getDownloadUrl,
   type TipspackMeta,
@@ -48,6 +51,9 @@ interface CuratedPack {
 
 interface DisplayPack {
   source: "curated" | "uploaded";
+  /** Användarens eget pack — visas först, oavsett synlighet. */
+  mine?: boolean;
+  isPublic?: boolean;
   slug: string;
   name: string;
   description?: string;
@@ -64,9 +70,11 @@ interface DisplayPack {
 interface Props {
   onPick: (battery: QuestionBattery) => void;
   onClose: () => void;
+  /** Inloggad användare — tar med dennes egna pack, även hemliga. */
+  ownerUid?: string;
 }
 
-export function LibraryPickerDialog({ onPick, onClose }: Props) {
+export function LibraryPickerDialog({ onPick, onClose, ownerUid }: Props) {
   const t = useT();
   const [packs, setPacks] = useState<DisplayPack[] | null>(null);
   const [loadingError, setLoadingError] = useState<string | null>(null);
@@ -92,12 +100,21 @@ export function LibraryPickerDialog({ onPick, onClose }: Props) {
         })
           .then((r) => (r.ok ? r.json() : { packs: [] }))
           .catch(() => ({ packs: [] }));
-        const [curatedRes, uploaded] = await Promise.all([
+        const [curatedRes, publicPacks, myPacks] = await Promise.all([
           curatedPromise as Promise<{ packs: CuratedPack[] }>,
           getPublicTipspacks().catch(() => [] as TipspackMeta[]),
+          ownerUid
+            ? getMyTipspacks(ownerUid).catch(() => [] as TipspackMeta[])
+            : Promise.resolve([] as TipspackMeta[]),
         ]);
         if (cancelled) return;
 
+        // Egna pack ersätter sin publika dubblett och tar med de hemliga.
+        const mySlugs = new Set(myPacks.map((p) => p.slug));
+        const uploaded = [
+          ...myPacks,
+          ...publicPacks.filter((p) => !mySlugs.has(p.slug)),
+        ];
         const curatedSlugs = new Set(curatedRes.packs.map((p) => p.slug));
         const merged: DisplayPack[] = [
           ...curatedRes.packs.map((p) => ({
@@ -115,6 +132,8 @@ export function LibraryPickerDialog({ onPick, onClose }: Props) {
             .filter((u) => !curatedSlugs.has(u.slug))
             .map((u) => ({
               source: "uploaded" as const,
+              mine: mySlugs.has(u.slug),
+              isPublic: u.isPublic,
               slug: u.slug,
               name: u.name,
               description: u.description,
@@ -128,7 +147,11 @@ export function LibraryPickerDialog({ onPick, onClose }: Props) {
 
         // Sortera alfabetiskt på namn — curated och uploaded blandas
         // ihop så användaren letar på innehåll, inte på källa.
-        merged.sort((a, b) => a.name.localeCompare(b.name, "sv"));
+        // Egna pack först, annars alfabetiskt.
+        merged.sort(
+          (a, b) =>
+            Number(!!b.mine) - Number(!!a.mine) || a.name.localeCompare(b.name, "sv")
+        );
 
         setPacks(merged);
       } catch (e: any) {
@@ -145,7 +168,7 @@ export function LibraryPickerDialog({ onPick, onClose }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [t]);
+  }, [t, ownerUid]);
 
   async function handlePick(pack: DisplayPack) {
     setImportingSlug(pack.slug);
@@ -153,7 +176,8 @@ export function LibraryPickerDialog({ onPick, onClose }: Props) {
     try {
       // Lös URL: curated har den direkt, uploaded kräver Storage-signering.
       const url = pack.url ?? (await getDownloadUrl(pack.slug));
-      const res = await fetch(url);
+      // Egna pack kan just ha sparats om — gå förbi HTTP-cachen (max-age=3600).
+      const res = await fetch(url, pack.mine ? { cache: "no-store" } : undefined);
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}`);
       }
@@ -269,6 +293,13 @@ export function LibraryPickerDialog({ onPick, onClose }: Props) {
                             <span className="font-semibold text-text-warm">
                               {pack.name}
                             </span>
+                            {pack.mine && (
+                              <span className="text-xs px-1.5 py-0.5 rounded bg-orange-100 text-orange-900 font-medium">
+                                {pack.isPublic
+                                  ? t("Mitt", "Mine")
+                                  : t("Mitt · 🔗 hemligt", "Mine · 🔗 secret")}
+                              </span>
+                            )}
                             {pack.source === "curated" && (
                               <span className="text-xs px-1.5 py-0.5 rounded bg-green-dark/10 text-green-dark font-medium">
                                 {t("Kurerad", "Curated")}
