@@ -13,7 +13,7 @@ användar-orienterad text.
 
 ## 2026-09-22 — Frågeeditor för tipspack
 
-- Nytt på : **+ Skapa nytt** under Mina tipspacks öppnar en
+- Nytt på `/skapa`: **+ Skapa nytt** under Mina tipspacks öppnar en
   frågeeditor. Skriv frågor, svarsalternativ och rätt svar direkt i
   webbläsaren och spara packet i biblioteket — ingen .tipspack-fil behövs.
 - Egna pack kan nu redigeras i efterhand (**✏️ Redigera**).
