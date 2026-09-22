@@ -6,6 +6,7 @@
  *   1. Inte inloggad        → <Login />
  *   2. Inloggad, ingen walk → <WalkList />
  *   3. Inloggad, walk vald  → <WalkEditor walkId={...} />
+ *   4. Tipspack-editorn     → <TipspackEditor /> (#newpack, #pack/<slug>)
  *
  * Hash-routing är medvetet val — hela appen är client-side och vi vill
  * undvika att sätta upp Astro SSR-routing eller en tung router-bibliotek
@@ -19,6 +20,7 @@ import { auth } from "../../lib/firebase";
 import { Login } from "./Login";
 import { WalkList } from "./WalkList";
 import { WalkEditor } from "./WalkEditor";
+import { TipspackEditor } from "./TipspackEditor";
 import { LangProvider, useT, type Locale } from "./i18n";
 
 interface AppProps {
@@ -38,6 +40,8 @@ function AppInner() {
   const t = useT();
   const [user, setUser] = useState<User | null | undefined>(undefined);
   const [activeWalkId, setActiveWalkId] = useState<string | null>(null);
+  // undefined = ingen pack-editor, null = nytt pack, sträng = slug.
+  const [activePack, setActivePack] = useState<string | null | undefined>(undefined);
 
   // Lyssna på auth-state. `undefined` = väntar, `null` = utloggad,
   // User = inloggad. Vi behöver tristate eftersom vi vill visa en
@@ -47,11 +51,16 @@ function AppInner() {
     return unsub;
   }, []);
 
-  // Hash-baserad walk-id i URL: #walk/<id> eller tom för listan.
+  // Hash-routing: #walk/<id>, #newpack, #pack/<slug> eller tom för listan.
   useEffect(() => {
     const readHash = () => {
-      const m = window.location.hash.match(/^#walk\/(.+)$/);
+      const hash = window.location.hash;
+      const m = hash.match(/^#walk\/(.+)$/);
       setActiveWalkId(m ? decodeURIComponent(m[1]) : null);
+      const pm = hash.match(/^#pack\/(.+)$/);
+      setActivePack(
+        hash === "#newpack" ? null : pm ? decodeURIComponent(pm[1]) : undefined
+      );
     };
     readHash();
     window.addEventListener("hashchange", readHash);
@@ -76,6 +85,21 @@ function AppInner() {
 
   if (user === null) {
     return <Login />;
+  }
+
+  if (activePack !== undefined) {
+    return (
+      <TipspackEditor
+        // key: remount när ett nytt pack sparats och hashen byts till dess slug.
+        key={activePack ?? "new"}
+        user={user}
+        slug={activePack}
+        onClose={closeWalk}
+        onCreated={(slug) => {
+          window.location.hash = `pack/${encodeURIComponent(slug)}`;
+        }}
+      />
+    );
   }
 
   if (activeWalkId) {

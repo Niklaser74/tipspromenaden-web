@@ -113,6 +113,12 @@ export async function getMyTipspacks(uid: string): Promise<TipspackMeta[]> {
   return list;
 }
 
+/** Hämtar metadata för ett pack, eller null om det inte finns. */
+export async function getTipspackMeta(slug: string): Promise<TipspackMeta | null> {
+  const snap = await getDoc(doc(db, TIPSPACKS, slug));
+  return snap.exists() ? (snap.data() as TipspackMeta) : null;
+}
+
 /** Kolla om slug redan är taget — innan upload. */
 export async function tipspackExists(slug: string): Promise<boolean> {
   const ref = doc(db, TIPSPACKS, slug);
@@ -200,6 +206,58 @@ export async function uploadTipspack(params: {
   }
 
   return meta as TipspackMeta;
+}
+
+/**
+ * Skriv över innehållet i ett eget pack (från frågeeditorn på /skapa).
+ *
+ * Storage först, sedan metadata: Storage-regeln kollar ägarskap mot den
+ * befintliga Firestore-doc:en, och misslyckas uppladdningen ligger den
+ * gamla filen + metadatan kvar orörda. `createdAt` och `ownerUid` behålls.
+ */
+export async function updateTipspack(params: {
+  slug: string;
+  ownerName?: string;
+  fileContent: string;
+  parsedJson: {
+    name: string;
+    description?: string;
+    author?: string;
+    language?: string;
+    questions: unknown[];
+  };
+  isPublic: boolean;
+}): Promise<TipspackMeta> {
+  const { slug, ownerName, fileContent, parsedJson, isPublic } = params;
+  const docRef = doc(db, TIPSPACKS, slug);
+  const snap = await getDoc(docRef);
+  if (!snap.exists()) throw new Error("Pack hittades inte");
+  const current = snap.data() as TipspackMeta;
+
+  const blob = new Blob([fileContent], { type: "application/json" });
+  await uploadBytes(ref(storage, storagePath(slug)), blob, {
+    contentType: "application/json",
+    cacheControl: "public, max-age=3600",
+    contentDisposition: `attachment; filename="${slug}.tipspack"`,
+  });
+
+  const meta: Record<string, unknown> = {
+    slug,
+    ownerUid: current.ownerUid,
+    name: parsedJson.name,
+    questionCount: parsedJson.questions.length,
+    fileSizeBytes: blob.size,
+    isPublic,
+    createdAt: current.createdAt,
+    updatedAt: Date.now(),
+  };
+  const name = ownerName ?? current.ownerName;
+  if (name) meta.ownerName = name;
+  if (parsedJson.description) meta.description = parsedJson.description;
+  if (parsedJson.author) meta.author = parsedJson.author;
+  if (parsedJson.language) meta.language = parsedJson.language;
+  await setDoc(docRef, meta);
+  return meta as unknown as TipspackMeta;
 }
 
 /** Uppdatera metadata på existerande pack (titel, isPublic, etc.). */

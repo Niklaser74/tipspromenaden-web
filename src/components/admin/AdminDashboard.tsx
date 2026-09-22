@@ -56,7 +56,6 @@ import type { Walk } from "../../lib/types";
 import { Flag } from "../Flag";
 import WalkMiniMap from "./WalkMiniMap";
 import BatchUploadDropZone from "./BatchUploadDropZone";
-import TipspackEditor from "./TipspackEditor";
 import { FlyerDialog } from "./FlyerDialog";
 import EventsManager from "./EventsManager";
 import SupportersManager from "./SupportersManager";
@@ -195,11 +194,6 @@ function AdminContent({ user }: { user: User }) {
     tipspacks: new Set(),
   });
   const [error, setError] = useState<string | null>(null);
-  const [editorState, setEditorState] = useState<
-    | { mode: "create" }
-    | { mode: "edit"; pack: TipspackMeta }
-    | null
-  >(null);
 
   async function refreshPacks() {
     const fresh = await getAllTipspacks();
@@ -367,13 +361,15 @@ function AdminContent({ user }: { user: User }) {
         <>
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-serif text-xl text-green-dark">Tipspacks</h2>
-            <button
-              onClick={() => setEditorState({ mode: "create" })}
-              title="Skapa ett nytt tipspack från grunden via formuläret (titel, beskrivning, frågor en-och-en). Alternativet är att ladda upp en .tipspack-fil via drop-zonen nedan."
+            {/* Frågeeditorn bor på /skapa och delas med användarna — en
+                editor att underhålla i stället för två. */}
+            <a
+              href="/skapa#newpack"
+              title="Öppna frågeeditorn på /skapa. Alternativet är att ladda upp en .tipspack-fil via drop-zonen nedan."
               className="bg-green-dark text-cream px-4 py-1.5 rounded-full text-sm font-semibold shadow"
             >
               ➕ Skapa nytt
-            </button>
+            </a>
           </div>
           <BatchUploadDropZone user={user} onUploaded={refreshPacks} />
           <TipspacksList
@@ -382,19 +378,10 @@ function AdminContent({ user }: { user: User }) {
             flags={flags}
             currentUid={user.uid}
             onToggleHidden={toggleTipspackHidden}
-            onEdit={(pack) => setEditorState({ mode: "edit", pack })}
+            onEdit={(pack) => {
+              window.location.href = `/skapa#pack/${encodeURIComponent(pack.slug)}`;
+            }}
           />
-          {editorState && (
-            <TipspackEditor
-              mode={editorState.mode}
-              user={user}
-              initialPack={
-                editorState.mode === "edit" ? editorState.pack : undefined
-              }
-              onClose={() => setEditorState(null)}
-              onSaved={refreshPacks}
-            />
-          )}
         </>
       )}
 
@@ -996,7 +983,7 @@ function TipspacksList({
                     p.raw && (
                       <button
                         onClick={() => onEdit(p.raw!)}
-                        title="Öppna redigerings-modalen. Du kan ändra metadata och växla mellan publik/hemlig länk."
+                        title="Öppna packet i frågeeditorn på /skapa."
                         className="text-xs border border-green-dark text-green-dark px-3 py-1 rounded-full hover:bg-green-dark/5"
                       >
                         📝 Redigera

@@ -183,17 +183,25 @@ export function WalkList({ user, onOpenWalk }: Props) {
           <h2 className="font-serif text-2xl text-green-dark">
             {t("Mina tipspacks", "My tipspacks")}
           </h2>
-          <button
-            onClick={() => setShowUpload(true)}
-            className="text-sm bg-green-dark text-cream px-4 py-2 rounded-full font-semibold hover:opacity-90"
-          >
-            {t("+ Ladda upp", "+ Upload")}
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setShowUpload(true)}
+              className="text-sm border border-green-dark text-green-dark px-4 py-2 rounded-full font-semibold hover:bg-green-dark/5"
+            >
+              {t("Ladda upp fil", "Upload file")}
+            </button>
+            <a
+              href="#newpack"
+              className="text-sm bg-green-dark text-cream px-4 py-2 rounded-full font-semibold hover:opacity-90"
+            >
+              {t("+ Skapa nytt", "+ Create new")}
+            </a>
+          </div>
         </div>
         <p className="text-sm text-text-warm mb-4 leading-relaxed">
           {t(
-            "Frågebatterier du laddat upp till webben. Publika dyker upp i ",
-            "Question packs you've uploaded. Public ones appear in "
+            "Egna frågebatterier — skriv dem i editorn eller ladda upp en .tipspack-fil. Publika dyker upp i ",
+            "Your own question packs — write them in the editor or upload a .tipspack file. Public ones appear in "
           )}
           <a
             href={lang === "en" ? "/en/tipspack" : "/tipspack"}

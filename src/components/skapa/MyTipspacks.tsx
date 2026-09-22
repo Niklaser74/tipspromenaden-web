@@ -187,10 +187,16 @@ export function MyTipspacks({ user, refreshKey }: Props) {
               <code className="text-text-warm">{p.slug}</code>
             </p>
             <div className="flex flex-wrap gap-2">
+              <a
+                href={`#pack/${encodeURIComponent(p.slug)}`}
+                className="text-xs bg-green-dark text-cream px-3 py-1.5 rounded-full hover:opacity-90"
+              >
+                {t("✏️ Redigera", "✏️ Edit")}
+              </a>
               <button
                 onClick={() => copyDeepLink(p.slug)}
                 disabled={busy}
-                className="text-xs bg-green-dark text-cream px-3 py-1.5 rounded-full hover:opacity-90 disabled:opacity-50"
+                className="text-xs border border-green-dark text-green-dark px-3 py-1.5 rounded-full hover:bg-green-dark/5 disabled:opacity-50"
               >
                 {copiedDeep
                   ? t("Kopierad!", "Copied!")

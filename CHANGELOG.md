@@ -11,6 +11,19 @@ användar-orienterad text.
 
 ---
 
+## 2026-09-22 — Frågeeditor för tipspack
+
+- Nytt på : **+ Skapa nytt** under Mina tipspacks öppnar en
+  frågeeditor. Skriv frågor, svarsalternativ och rätt svar direkt i
+  webbläsaren och spara packet i biblioteket — ingen .tipspack-fil behövs.
+- Egna pack kan nu redigeras i efterhand (**✏️ Redigera**).
+- I editorn går det att hämta in frågor från biblioteket eller från en fil,
+  flytta och duplicera frågor, blanda svarsalternativen och ladda ner packet
+  som .tipspack-fil.
+- Ett nytt pack som inte sparats än sparas som utkast i webbläsaren, så inget
+  försvinner om fliken stängs.
+- Admin-sidans tipspack-formulär är ersatt av samma editor.
+
 ## 2026-09-18 — Svarsalternativen blandas
 
 - När du hämtar frågor från ett tipspack på `/skapa` blandas nu
