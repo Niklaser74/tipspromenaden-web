@@ -51,6 +51,21 @@ function AppInner() {
     return unsub;
   }, []);
 
+  // Retur från Stripe Checkout: ?kop=ok eller ?kop=avbrutet. Visa en
+  // banner och städa bort parametrarna så att en omladdning inte visar
+  // den igen. Krediterna läggs till av webhooken — saldot uppdateras
+  // live via useCredits, oftast inom några sekunder.
+  const [purchase, setPurchase] = useState<"ok" | "cancelled" | null>(null);
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const kop = url.searchParams.get("kop");
+    if (kop !== "ok" && kop !== "avbrutet") return;
+    setPurchase(kop === "ok" ? "ok" : "cancelled");
+    url.searchParams.delete("kop");
+    url.searchParams.delete("session_id");
+    window.history.replaceState(null, "", url.pathname + url.search + url.hash);
+  }, []);
+
   // Hash-routing: #walk/<id>, #newpack, #pack/<slug> eller tom för listan.
   useEffect(() => {
     const readHash = () => {
@@ -75,20 +90,38 @@ function AppInner() {
     window.location.hash = "";
   }
 
+  const banner = purchase && (
+    <div
+      className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-[2200] max-w-md w-[calc(100%-2rem)] rounded-xl shadow-lg px-4 py-3 text-sm flex items-start gap-3 ${
+        purchase === "ok" ? "bg-green-dark text-cream" : "bg-white text-text-warm border border-rule"
+      }`}
+      role="status"
+    >
+      <span className="flex-1">
+        {purchase === "ok"
+          ? t(
+              "Tack för köpet! ✨ Krediterna dyker upp i ditt saldo om en liten stund.",
+              "Thanks for your purchase! ✨ The credits will show up in your balance shortly."
+            )
+          : t("Köpet avbröts — inget har dragits.", "Purchase cancelled — you have not been charged.")}
+      </span>
+      <button onClick={() => setPurchase(null)} aria-label={t("Stäng", "Close")} className="opacity-80 hover:opacity-100">
+        ✕
+      </button>
+    </div>
+  );
+
+  let content;
   if (user === undefined) {
-    return (
+    content = (
       <div className="min-h-screen flex items-center justify-center text-text-warm">
         <p>{t("Laddar…", "Loading…")}</p>
       </div>
     );
-  }
-
-  if (user === null) {
-    return <Login />;
-  }
-
-  if (activePack !== undefined) {
-    return (
+  } else if (user === null) {
+    content = <Login />;
+  } else if (activePack !== undefined) {
+    content = (
       <TipspackEditor
         // key: remount när ett nytt pack sparats och hashen byts till dess slug.
         key={activePack ?? "new"}
@@ -100,17 +133,16 @@ function AppInner() {
         }}
       />
     );
+  } else if (activeWalkId) {
+    content = <WalkEditor walkId={activeWalkId} user={user} onClose={closeWalk} />;
+  } else {
+    content = <WalkList user={user} onOpenWalk={openWalk} />;
   }
 
-  if (activeWalkId) {
-    return (
-      <WalkEditor
-        walkId={activeWalkId}
-        user={user}
-        onClose={closeWalk}
-      />
-    );
-  }
-
-  return <WalkList user={user} onOpenWalk={openWalk} />;
+  return (
+    <>
+      {content}
+      {banner}
+    </>
+  );
 }

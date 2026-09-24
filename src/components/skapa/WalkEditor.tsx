@@ -39,6 +39,7 @@ import { QuestionForm } from "./QuestionForm";
 import { ShareDialog } from "./ShareDialog";
 import { ReuseRouteDialog } from "./ReuseRouteDialog";
 import { LibraryPickerDialog } from "./LibraryPickerDialog";
+import { AiGenerateDialog } from "./AiGenerateDialog";
 import { Flag } from "../Flag";
 import { useT, useLocale } from "./i18n";
 
@@ -78,6 +79,7 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
   const [showShare, setShowShare] = useState(false);
   const [showReuse, setShowReuse] = useState(false);
   const [showLibrary, setShowLibrary] = useState(false);
+  const [showAi, setShowAi] = useState(false);
   const [importMessage, setImportMessage] = useState<string | null>(null);
   const [shuffling, setShuffling] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -761,7 +763,17 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
               {t("+ Lägg till fråga", "+ Add question")}
             </button>
 
-            <div className="grid grid-cols-3 gap-2 mt-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">
+              <button
+                onClick={() => setShowAi(true)}
+                className="bg-white border border-green-dark text-green-dark px-3 py-2 rounded-lg text-xs font-semibold hover:bg-green-dark/5 transition"
+                title={t(
+                  "Låt AI skriva frågor om ett tema, en text eller en plats (kostar krediter)",
+                  "Let AI write questions about a topic, a text or a place (costs credits)"
+                )}
+              >
+                {t("✨ Generera med AI", "✨ Generate with AI")}
+              </button>
               <button
                 onClick={() => setShowLibrary(true)}
                 className="bg-white border border-green-dark text-green-dark px-3 py-2 rounded-lg text-xs font-semibold hover:bg-green-dark/5 transition"
@@ -863,6 +875,19 @@ export function WalkEditor({ walkId, user, onClose }: Props) {
           currentWalkId={walk.id}
           onClose={() => setShowReuse(false)}
           onPickRoute={handleReuseRoute}
+        />
+      )}
+
+      {showAi && (
+        <AiGenerateDialog
+          user={user}
+          defaultLanguage={walk.language}
+          defaultPlace={walk.city}
+          onClose={() => setShowAi(false)}
+          onPick={(battery) => {
+            setShowAi(false);
+            importBattery(battery);
+          }}
         />
       )}
 

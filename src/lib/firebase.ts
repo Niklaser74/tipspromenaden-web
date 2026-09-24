@@ -17,6 +17,7 @@ import { initializeApp, getApps } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getStorage } from "firebase/storage";
+import { getFunctions } from "firebase/functions";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 
 // Samma config som i mobil-appens src/config/firebase.ts. Inga hemligheter
@@ -87,6 +88,10 @@ if (typeof window !== "undefined") {
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
+// Cloud Functions (AI-frågor + kreditköp) ligger i europe-north1 — samma
+// region som i app-repots functions/src/config.ts. App Check-token följer
+// med automatiskt på callable-anrop.
+export const functions = getFunctions(app, "europe-north1");
 export const googleProvider = new GoogleAuthProvider();
 
 export default app;

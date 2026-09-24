@@ -18,6 +18,7 @@ import { Flag } from "../Flag";
 import { ShareDialog } from "./ShareDialog";
 import { UploadTipspackDialog } from "./UploadTipspackDialog";
 import { MyTipspacks } from "./MyTipspacks";
+import { CreditsBadge } from "./CreditsBadge";
 import { useT, useLocale } from "./i18n";
 
 interface Props {
@@ -90,12 +91,15 @@ export function WalkList({ user, onOpenWalk }: Props) {
             {t("Inloggad som", "Signed in as")} {user.displayName || user.email}
           </p>
         </div>
-        <button
-          onClick={() => signOut(auth)}
-          className="text-sm text-text-warm hover:underline"
-        >
-          {t("Logga ut", "Sign out")}
-        </button>
+        <div className="flex flex-col items-end gap-2">
+          <button
+            onClick={() => signOut(auth)}
+            className="text-sm text-text-warm hover:underline"
+          >
+            {t("Logga ut", "Sign out")}
+          </button>
+          <CreditsBadge user={user} />
+        </div>
       </header>
 
       <button

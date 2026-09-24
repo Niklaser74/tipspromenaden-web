@@ -44,6 +44,7 @@ import {
 import { shuffleQuestionOptions } from "../../lib/shuffleOptions";
 import { LANGUAGES, normalizeLanguageCode } from "../../lib/languages";
 import { LibraryPickerDialog } from "./LibraryPickerDialog";
+import { AiGenerateDialog } from "./AiGenerateDialog";
 import { useT, useLocale } from "./i18n";
 
 interface Props {
@@ -141,6 +142,7 @@ export function TipspackEditor({ user, slug, onClose, onCreated }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [showLibrary, setShowLibrary] = useState(false);
+  const [showAi, setShowAi] = useState(false);
   const [showErrors, setShowErrors] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -672,6 +674,16 @@ export function TipspackEditor({ user, slug, onClose, onCreated }: Props) {
         </h2>
         <div className="flex flex-wrap gap-2">
           <button
+            onClick={() => setShowAi(true)}
+            className="text-xs border border-rule text-text-warm bg-white px-3 py-1.5 rounded-full hover:border-green-dark"
+            title={t(
+              "Låt AI skriva frågor om ett tema, en text eller en plats (kostar krediter)",
+              "Let AI write questions about a topic, a text or a place (costs credits)"
+            )}
+          >
+            ✨ {t("Generera med AI", "Generate with AI")}
+          </button>
+          <button
             onClick={() => setShowLibrary(true)}
             className="text-xs border border-rule text-text-warm bg-white px-3 py-1.5 rounded-full hover:border-green-dark"
             title={t(
@@ -889,6 +901,20 @@ export function TipspackEditor({ user, slug, onClose, onCreated }: Props) {
           </button>
         </div>
       </div>
+
+      {showAi && (
+        <AiGenerateDialog
+          user={user}
+          defaultLanguage={draft.language}
+          onClose={() => setShowAi(false)}
+          onPick={(b) => {
+            // AI:n sprider rätt svar själv, men blanda ändå så att
+            // fördelningen blir jämn på samma sätt som vid walk-import.
+            appendBattery({ ...b, questions: shuffleQuestionOptions(b.questions) });
+            setShowAi(false);
+          }}
+        />
+      )}
 
       {showLibrary && (
         <LibraryPickerDialog
