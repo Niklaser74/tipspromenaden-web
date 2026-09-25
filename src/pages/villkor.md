@@ -1,7 +1,7 @@
 ---
 layout: ../layouts/LegalLayout.astro
 title: Användarvillkor
-description: Användarvillkor för Tipspromenaden — gratis hobbyprojekt, AI-krediter och Pro, ansvar och innehåll.
+description: Användarvillkor för Tipspromenaden — gratistjänst från Knackpot AB, AI-krediter och Pro, ansvar och innehåll.
 lang: sv
 ---
 
@@ -12,11 +12,17 @@ lang: sv
 
 ## 1. Vem driver tjänsten
 
-Tipspromenaden drivs av **Niklas Eriksson** som privatperson, hemmahörande
-i Sverige. Kontakt:
-**[legal@tipspromenaden.app](mailto:legal@tipspromenaden.app)**.
+Tipspromenaden drivs och säljs av **Knackpot AB**:
 
-Tipspromenaden är i grunden ett **gratis hobbyprojekt**. Det kostar
+- Organisationsnummer: 559591-7153
+- Postadress: Signalgatan 4, 813 36 Hofors
+- Säte: Hofors kommun, Gävleborgs län
+- E-post: **[legal@tipspromenaden.app](mailto:legal@tipspromenaden.app)**
+
+Det är Knackpot AB som är din avtalspart och som säljer AI-krediter och
+Pro enligt §7.
+
+Tipspromenaden är i grunden **gratis**. Det kostar
 ingenting att skapa och gå promenader, och appen visar ingen reklam. Det
 enda som kostar pengar är de frivilliga **AI-tjänsterna** på
 tipspromenaden.app: AI-krediter och prenumerationen Pro. De beskrivs i
@@ -265,7 +271,9 @@ Hur vi hanterar dina personuppgifter beskrivs i vår
 ## English summary
 
 These Terms of Service are published in Swedish for our primary user
-base. Key points: free hobby project with optional paid AI features
+base. Key points: provided and sold by Knackpot AB (org. no.
+559591-7153, Signalgatan 4, 813 36 Hofors, Sweden); a free service with
+optional paid AI features
 (AI credits and the Pro subscription, see §7: prices include Swedish
 VAT, unused Pro credits don't carry over, cancel any time, 14-day
 right of withdrawal for Pro), you must be 13+, you're

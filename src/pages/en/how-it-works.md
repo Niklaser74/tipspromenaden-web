@@ -68,8 +68,9 @@ No. You only need a name. Signing in is only needed to *create* your
 own walks.
 
 **What does it cost?**
-Nothing. Tipspromenaden is a free hobby project with no ads and no
-purchases. If you want to chip in to cover hosting costs you can
+Creating and playing walks is free, with no ads, and nothing is sold in
+the app. If you like, you can buy AI credits or Pro on the web to have AI
+write questions for you. If you want to chip in to cover hosting costs you can
 [support the project](/en/support) — entirely optional.
 
 **Which languages are supported?**
