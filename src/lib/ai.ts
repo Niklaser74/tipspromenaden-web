@@ -2,10 +2,13 @@
  * @file ai.ts
  * @description Klient för AI-genererade frågor och kreditköp.
  *
- * Tunna omslag kring två callable Cloud Functions i app-repot
+ * Tunna omslag kring callable Cloud Functions i app-repot
  * (`tipspromenaden/functions/`):
  *   - `generateQuestions` → ett färdigt tipspack + förklaring/källa per fråga
  *   - `createCheckoutSession` → Stripe Checkout-URL för ett kreditpaket
+ *   - `createInvoice` → faktura till skola/förening (större paket)
+ *   - `createProCheckout` → Checkout för Pro-prenumerationen
+ *   - `createPortalSession` → Stripes kundportal
  *
  * Kontraktet och felkoderna står i `tipspromenaden/docs/ai-questions-backend.md`.
  * Typerna här speglar backendens — ändra båda om kontraktet ändras.
@@ -63,16 +66,51 @@ export function creditCost(mode: AiMode, count: number): number {
 }
 
 export interface CreditPackInfo {
-  id: "pack10" | "pack30";
+  id: "pack10" | "pack30" | "pack100" | "pack300";
   credits: number;
   /** Visningspris i SEK inkl. moms — det riktiga priset sätts i Stripe. */
   priceSek: number;
+  /** Går att få på faktura (skolor/föreningar). */
+  invoice: boolean;
 }
 
 export const CREDIT_PACKS: CreditPackInfo[] = [
-  { id: "pack10", credits: 10, priceSek: 49 },
-  { id: "pack30", credits: 30, priceSek: 119 },
+  { id: "pack10", credits: 10, priceSek: 49, invoice: false },
+  { id: "pack30", credits: 30, priceSek: 119, invoice: false },
+  { id: "pack100", credits: 100, priceSek: 349, invoice: true },
+  { id: "pack300", credits: 300, priceSek: 899, invoice: true },
 ];
+
+export interface ProPlanInfo {
+  id: "pro_month" | "pro_year";
+  /** Visningspris i SEK inkl. moms per period. */
+  priceSek: number;
+  creditsPerPeriod: number;
+}
+
+/** Samma som PRO_CREDITS_PER_MONTH i functions/src/config.ts. */
+export const PRO_PLANS: ProPlanInfo[] = [
+  { id: "pro_month", priceSek: 79, creditsPerPeriod: 20 },
+  { id: "pro_year", priceSek: 790, creditsPerPeriod: 240 },
+];
+
+export interface InvoiceOrganization {
+  name: string;
+  orgNumber: string;
+  vatNumber: string;
+  email: string;
+  reference: string;
+  address: { line1: string; line2: string; postalCode: string; city: string; country: string };
+}
+
+export interface InvoiceResponse {
+  invoiceId: string;
+  number: string | null;
+  hostedInvoiceUrl: string | null;
+  amountDue: number;
+  currency: string;
+  dueDate: number | null;
+}
 
 // Generering tar ofta 20–60 s (platsläget längre) — backendens timeout är 300 s.
 const generateCallable = httpsCallable<GenerateRequest, GenerateResponse>(
@@ -85,6 +123,16 @@ const checkoutCallable = httpsCallable<{ packId: string }, { url: string }>(
   "createCheckoutSession"
 );
 
+const invoiceCallable = httpsCallable<
+  { packId: string; requestId: string; organization: InvoiceOrganization },
+  InvoiceResponse
+>(functions, "createInvoice");
+const proCheckoutCallable = httpsCallable<{ plan: ProPlanInfo["id"] }, { url: string }>(
+  functions,
+  "createProCheckout"
+);
+const portalCallable = httpsCallable<void, { url: string }>(functions, "createPortalSession");
+
 export async function generateQuestions(req: GenerateRequest): Promise<GenerateResponse> {
   const res = await generateCallable(req);
   return res.data;
@@ -96,12 +144,37 @@ export async function startCheckout(packId: CreditPackInfo["id"]): Promise<strin
   return res.data.url;
 }
 
+/** Skickar en faktura till organisationen. Samma requestId vid retry → samma faktura. */
+export async function requestInvoice(
+  packId: CreditPackInfo["id"],
+  organization: InvoiceOrganization,
+  requestId: string
+): Promise<InvoiceResponse> {
+  const res = await invoiceCallable({ packId, organization, requestId });
+  return res.data;
+}
+
+/** Checkout för Pro — returnerar URL:en att skicka användaren till. */
+export async function startProCheckout(plan: ProPlanInfo["id"]): Promise<string> {
+  const res = await proCheckoutCallable({ plan });
+  return res.data.url;
+}
+
+/** Stripes kundportal: kort, plan, uppsägning, kvitton. */
+export async function openCustomerPortal(): Promise<string> {
+  const res = await portalCallable();
+  return res.data.url;
+}
+
 export type AiErrorReason =
   | "no-credits"
   | "rate-limited"
   | "in-progress"
   | "anonymous"
   | "generation-failed"
+  | "already-subscribed"
+  | "too-many-open-invoices"
+  | "no-customer"
   | "invalid"
   | "network"
   | "unknown";
@@ -122,6 +195,9 @@ export function toAiError(e: unknown): AiError {
       "in-progress",
       "anonymous",
       "generation-failed",
+      "already-subscribed",
+      "too-many-open-invoices",
+      "no-customer",
     ];
     if (details?.reason && (known as string[]).includes(details.reason)) {
       return { reason: details.reason as AiErrorReason, message: e.message };
