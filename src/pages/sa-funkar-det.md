@@ -68,7 +68,9 @@ Nej. Du behöver bara ange ett namn. Inloggning krävs bara för att
 *skapa* egna promenader.
 
 **Vad kostar det?**
-Inget. Tipspromenaden är ett gratis hobbyprojekt utan reklam eller köp.
+Att skapa och gå promenader är gratis, utan reklam, och i appen säljs
+ingenting. Den som vill kan köpa AI-krediter eller Pro på webben för att
+låta AI skapa frågor — se [villkoren](/villkor).
 
 **Vilka språk stöds?**
 Appen finns på svenska, engelska, tyska, norsk, dansk, finska, franska

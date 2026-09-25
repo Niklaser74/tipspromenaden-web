@@ -51,17 +51,21 @@ function AppInner() {
     return unsub;
   }, []);
 
-  // Retur från Stripe Checkout: ?kop=ok eller ?kop=avbrutet. Visa en
+  // Retur från Stripe Checkout: ?kop=ok|avbrutet (kreditpaket) eller
+  // ?pro=ok|avbrutet (Pro-prenumeration). Visa en
   // banner och städa bort parametrarna så att en omladdning inte visar
   // den igen. Krediterna läggs till av webhooken — saldot uppdateras
   // live via useCredits, oftast inom några sekunder.
-  const [purchase, setPurchase] = useState<"ok" | "cancelled" | null>(null);
+  const [purchase, setPurchase] = useState<"ok" | "pro" | "cancelled" | null>(null);
   useEffect(() => {
     const url = new URL(window.location.href);
     const kop = url.searchParams.get("kop");
-    if (kop !== "ok" && kop !== "avbrutet") return;
-    setPurchase(kop === "ok" ? "ok" : "cancelled");
+    const pro = url.searchParams.get("pro");
+    const result = kop ?? pro;
+    if (result !== "ok" && result !== "avbrutet") return;
+    setPurchase(result === "avbrutet" ? "cancelled" : pro ? "pro" : "ok");
     url.searchParams.delete("kop");
+    url.searchParams.delete("pro");
     url.searchParams.delete("session_id");
     window.history.replaceState(null, "", url.pathname + url.search + url.hash);
   }, []);
@@ -93,12 +97,17 @@ function AppInner() {
   const banner = purchase && (
     <div
       className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-[2200] max-w-md w-[calc(100%-2rem)] rounded-xl shadow-lg px-4 py-3 text-sm flex items-start gap-3 ${
-        purchase === "ok" ? "bg-green-dark text-cream" : "bg-white text-text-warm border border-rule"
+        purchase === "cancelled" ? "bg-white text-text-warm border border-rule" : "bg-green-dark text-cream"
       }`}
       role="status"
     >
       <span className="flex-1">
-        {purchase === "ok"
+        {purchase === "pro"
+          ? t(
+              "Välkommen till Pro! ⭐ Dina månadskrediter dyker upp i saldot om en liten stund.",
+              "Welcome to Pro! ⭐ Your monthly credits will show up in your balance shortly."
+            )
+          : purchase === "ok"
           ? t(
               "Tack för köpet! ✨ Krediterna dyker upp i ditt saldo om en liten stund.",
               "Thanks for your purchase! ✨ The credits will show up in your balance shortly."
