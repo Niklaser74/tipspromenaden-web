@@ -63,6 +63,9 @@ first.
 
 ## FAQ
 
+The short answers are below. More — leaderboards, rounds, events and GPS —
+are on the **[FAQ page](/en/faq)**.
+
 **Do I need to sign in to participate?**
 No. You only need a name. Signing in is only needed to *create* your
 own walks.
@@ -79,6 +82,11 @@ Finnish, French and Spanish. Pick one under **Settings → Language** or
 let the app follow your system language. Questions you create can be
 tagged with a language so the right people find them.
 
+**Why do I only see myself on the leaderboard?**
+The walk has been split into several rounds. The explanation and the fix are
+on the [FAQ page](/en/faq#the-leaderboard).
+
 **Something is broken — who do I contact?**
-Email **[support@tipspromenaden.app](mailto:support@tipspromenaden.app)**
+Check the **[FAQ](/en/faq)** first. If the answer is not there, email
+**[support@tipspromenaden.app](mailto:support@tipspromenaden.app)**
 and I will look into it.

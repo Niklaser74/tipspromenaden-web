@@ -11,6 +11,18 @@ användar-orienterad text.
 
 ---
 
+## 2026-11-02 — Ny sida: Vanliga frågor
+
+- `/vanliga-fragor` samlar de frågor som faktiskt kommer in via support,
+  i fyra avsnitt: topplistan, under promenaden, för dig som skapar, samt
+  konto och data. Första posten är den vanligaste just nu — varför man bara
+  ser sig själv på topplistan när flera har gått, och hur man slår på
+  evenemang med datum för att få en gemensam lista över en hel vecka.
+- Engelsk spegel på `/en/faq`, länkad från språkväljaren åt båda håll.
+- Länkad från sidfoten på både svenska och engelska startsidan, och från
+  FAQ-blocken i "Så funkar det" / "How it works", som nu pekar vidare i
+  stället för att svara på allt själva.
+
 ## 2026-09-22 — Frågeeditor för tipspack
 
 - Nytt på `/skapa`: **+ Skapa nytt** under Mina tipspacks öppnar en

@@ -63,6 +63,9 @@ sorteras listan med närmaste promenad först.
 
 ## Vanliga frågor
 
+Här är de kortaste svaren. Fler — om topplistor, omgångar, evenemang och
+GPS — finns på **[Vanliga frågor](/vanliga-fragor)**.
+
 **Måste jag vara inloggad för att delta?**
 Nej. Du behöver bara ange ett namn. Inloggning krävs bara för att
 *skapa* egna promenader.
@@ -78,8 +81,13 @@ och spanska. Välj under **Inställningar → Språk** eller låt appen följa
 ditt systemspråk. Frågor du själv skapar kan taggas med ett språk så
 att rätt personer hittar dem.
 
+**Varför ser jag bara mig själv på topplistan?**
+Promenaden har delats upp i flera omgångar. Förklaringen och lösningen står
+under [Vanliga frågor](/vanliga-fragor#topplistan).
+
 **Något krånglar — vart vänder jag mig?**
-Mejla **[support@tipspromenaden.app](mailto:support@tipspromenaden.app)**
+Titta först på **[Vanliga frågor](/vanliga-fragor)**. Står svaret inte där,
+mejla **[support@tipspromenaden.app](mailto:support@tipspromenaden.app)**
 så kollar jag på det.
 
 ---
