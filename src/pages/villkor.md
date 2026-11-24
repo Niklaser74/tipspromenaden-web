@@ -207,7 +207,7 @@ för att låta AI skapa frågor åt sig.
 Topplistor i Tipspromenaden räknas **klient-side** för effektivitet —
 vi har ingen serverside-validering av varje svar. Det betyder att en
 motiverad fuskare kan manipulera sin egen poäng i Firestore. Vi
-accepterar detta för nuvarande hobby-skala. Om vi någon gång håller en
+accepterar detta i nuvarande skala. Om vi någon gång håller en
 formell tävling kommer vi flytta validering till serversidan i förväg.
 
 ## 9. Ansvarsbegränsning
