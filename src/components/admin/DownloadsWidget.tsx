@@ -72,7 +72,7 @@ export default function DownloadsWidget({ user }: Props) {
             <h2 className="font-serif text-lg text-green-dark">
               📲 Nedladdningar
               <HelpIcon
-                text="Hämtas automatiskt en gång per dygn från Play Console och App Store Connect. Android släpar ett par dagar, iOS räknar hela avslutade månader. Misslyckas en hämtning står felet i en gul notering här under. Siffrorna går också att skriva över för hand."
+                text="Hämtas automatiskt en gång per dygn från Play Console och App Store Connect. Båda släpar ett par dagar efter verkligheten. Misslyckas en hämtning står felet i en gul notering här under. Siffrorna går också att skriva över för hand."
               />
             </h2>
             {stats.updatedAt && (

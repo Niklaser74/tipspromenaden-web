@@ -17,6 +17,8 @@ användar-orienterad text.
   varje natt sedan 5 juni. Android-siffrorna räknas nu rätt (summan av
   dagliga installationer i stället för en kolumn som Google slutat fylla i)
   och sparas även när iOS-hämtningen misslyckas.
+- iOS-siffrorna inkluderar nu innevarande månad, hämtad dag för dag. Tidigare
+  syntes en månad först några dagar efter att den tagit slut.
 - Ett fel hos Apple eller Google kan inte längre nolla siffror som redan
   finns. Felet visas i stället i klartext i en gul notering i widgeten.
 

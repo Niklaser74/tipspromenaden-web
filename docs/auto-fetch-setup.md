@@ -12,6 +12,10 @@ Apple-godkännanden.
 > räknas som summan av `Daily User Installs` över alla månadsfiler —
 > kolumnen `Total User Installs` finns kvar men är alltid 0.
 >
+> iOS läser månadsrapporter för avslutade månader och dagsrapporter för
+> innevarande månad (samt föregående månad tills dess månadsrapport
+> finns, några dagar efter månadsskiftet).
+>
 > Failar en plattform sparas den andras siffror ändå, felet hamnar i
 > `notes` (syns i admin-widgeten) och körningen blir röd så att GitHub
 > mejlar.

@@ -189,14 +189,18 @@ function buildAscJwt() {
 }
 
 /**
- * Hämtar en månadlig sales-summary-rapport och returnerar { units, downloads }
- * för Tipspromenaden. Returnerar { units: 0, downloads: 0 } om rapporten
- * inte finns (t.ex. framtida månad).
+ * Hämtar en sales-summary-rapport och returnerar { units, downloads } för
+ * Tipspromenaden. `frequency` är "MONTHLY" (reportDate "YYYY-MM") eller
+ * "DAILY" (reportDate "YYYY-MM-DD").
+ *
+ * Returnerar `null` vid 404. Apple svarar 404 både när rapporten inte är
+ * klar än och när perioden saknar försäljning — de går inte att skilja åt.
  */
-async function fetchAscMonth(yearMonth) {
-  const reportDate = `${yearMonth.slice(0, 4)}-${yearMonth.slice(4, 6)}`;
+async function fetchAscReport(frequency, reportDate) {
+  const quiet = frequency === "DAILY";
+  const yearMonth = reportDate;
   const url = new URL("https://api.appstoreconnect.apple.com/v1/salesReports");
-  url.searchParams.set("filter[frequency]", "MONTHLY");
+  url.searchParams.set("filter[frequency]", frequency);
   url.searchParams.set("filter[reportType]", "SALES");
   url.searchParams.set("filter[reportSubType]", "SUMMARY");
   url.searchParams.set("filter[reportDate]", reportDate);
@@ -206,7 +210,7 @@ async function fetchAscMonth(yearMonth) {
   const res = await fetch(url.toString(), {
     headers: { Authorization: `Bearer ${jwt}`, Accept: "application/a-gzip" },
   });
-  if (res.status === 404) return { units: 0, downloads: 0 };
+  if (res.status === 404) return null;
   if (!res.ok) {
     const text = await res.text();
     let msg = text.slice(0, 200);
@@ -233,9 +237,17 @@ async function fetchAscMonth(yearMonth) {
   const productTypeIdx = headers.indexOf("Product Type Identifier");
   const skuIdx = headers.indexOf("SKU");
 
-  console.log(
-    `iOS ${yearMonth}: ${lines.length - 1} rader, headers: ${headers.length} kolumner`
-  );
+  if (unitsIdx < 0 || productTypeIdx < 0) {
+    throw new Error(
+      `Hittar inte Units/Product Type Identifier i rapporten ${reportDate}: ${headers.join(", ")}`
+    );
+  }
+
+  if (!quiet) {
+    console.log(
+      `iOS ${yearMonth}: ${lines.length - 1} rader, headers: ${headers.length} kolumner`
+    );
+  }
 
   // Diagnostik: lista distinkta produkttyper så vi ser om Apple bytt format
   const seenTypes = new Set();
@@ -258,16 +270,44 @@ async function fetchAscMonth(yearMonth) {
     if (isFirstTime) units += u;
     if (isAnyDownload) downloads += u;
   }
-  console.log(
-    `iOS ${yearMonth}: distinkta typer = [${[...seenTypes].join(", ")}]`
-  );
+  if (!quiet) {
+    console.log(
+      `iOS ${yearMonth}: distinkta typer = [${[...seenTypes].join(", ")}]`
+    );
+  }
   return { units, downloads };
 }
 
 /**
- * Iterera månader från LAUNCH_YYYYMM till nu, summera units/downloads
- * över alla månader. Apple-rapporter är tillgängliga ~5 dagar efter
- * månadens slut, så aktuell månad fångas av nästa körning.
+ * Summerar dagsrapporterna för en månad, t.o.m. gårdagen (UTC). Används
+ * för månader som ännu saknar månadsrapport. Dagar utan rapport (404)
+ * räknas som 0 — det gäller alltid de senaste 1–2 dagarna.
+ */
+async function fetchAscMonthFromDaily(year, month) {
+  const todayUtc = new Date().toISOString().slice(0, 10);
+  const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  let units = 0;
+  let downloads = 0;
+  let daysWithReport = 0;
+  let lastDay = null;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+    if (date >= todayUtc) break;
+    const r = await fetchAscReport("DAILY", date);
+    if (!r) continue;
+    units += r.units;
+    downloads += r.downloads;
+    daysWithReport++;
+    lastDay = date;
+  }
+  return { units, downloads, daysWithReport, lastDay };
+}
+
+/**
+ * Iterera månader från LAUNCH_YYYYMM till nu, summera units/downloads.
+ * Avslutade månader läses ur månadsrapporten. Den kommer först några dagar
+ * in i nästa månad, så innevarande månad (och föregående, de första dagarna
+ * efter ett månadsskifte) summeras ur dagsrapporter i stället.
  */
 async function fetchIosStats() {
   if (!ASC_KEY_ID || !ASC_ISSUER_ID || !ASC_PRIVATE_KEY || !ASC_VENDOR_NUMBER) {
@@ -276,8 +316,11 @@ async function fetchIosStats() {
   const launchYear = parseInt(LAUNCH_YYYYMM.slice(0, 4), 10);
   const launchMonth = parseInt(LAUNCH_YYYYMM.slice(4, 6), 10);
   const now = new Date();
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth() + 1;
+  const currentYear = now.getUTCFullYear();
+  const currentMonth = now.getUTCMonth() + 1;
+  // Månadsindex (år*12+månad) för att avgöra vilka månader som är färska
+  // nog att sakna månadsrapport.
+  const currentIdx = currentYear * 12 + currentMonth;
 
   // Ett fel på en enda månad avbryter hela iOS-hämtningen. En delsumma
   // (eller 0 när alla månader failar) får aldrig skrivas över de riktiga
@@ -289,10 +332,28 @@ async function fetchIosStats() {
     const mEnd = y === currentYear ? currentMonth : 12;
     for (let m = mStart; m <= mEnd; m++) {
       const yyyymm = `${y}${String(m).padStart(2, "0")}`;
-      const { units, downloads } = await fetchAscMonth(yyyymm);
-      console.log(`iOS ${yyyymm}: ${units} units, ${downloads} downloads`);
-      totalUnits += units;
-      totalDownloads += downloads;
+      const isCurrent = y * 12 + m === currentIdx;
+      const isRecent = currentIdx - (y * 12 + m) <= 1;
+
+      // Innevarande månad har aldrig månadsrapport — gå direkt på dagarna.
+      const monthly = isCurrent
+        ? null
+        : await fetchAscReport("MONTHLY", `${y}-${String(m).padStart(2, "0")}`);
+
+      if (monthly) {
+        console.log(`iOS ${yyyymm}: ${monthly.units} units, ${monthly.downloads} downloads`);
+        totalUnits += monthly.units;
+        totalDownloads += monthly.downloads;
+      } else if (isRecent) {
+        const d = await fetchAscMonthFromDaily(y, m);
+        console.log(
+          `iOS ${yyyymm} (dagsrapporter, ${d.daysWithReport} dagar t.o.m. ${d.lastDay ?? "—"}): ${d.units} units, ${d.downloads} downloads`
+        );
+        totalUnits += d.units;
+        totalDownloads += d.downloads;
+      } else {
+        console.log(`iOS ${yyyymm}: ingen månadsrapport (404) — räknas som 0`);
+      }
     }
   }
   return { iosUnits: totalUnits, iosDownloads: totalDownloads };
