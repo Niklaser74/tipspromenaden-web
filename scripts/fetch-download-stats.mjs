@@ -212,7 +212,7 @@ async function fetchAscMonth(yearMonth) {
     let msg = text.slice(0, 200);
     try {
       const err = JSON.parse(text).errors?.[0];
-      if (err) msg = `${err.code} — ${err.title}`;
+      if (err) msg = `${err.code} — ${err.title} ${err.detail ?? ""}`.trim();
     } catch {}
     if (/REQUIRED_AGREEMENTS/.test(msg)) {
       msg += " Logga in på appstoreconnect.apple.com → Business/Avtal och godkänn det nya avtalet.";
