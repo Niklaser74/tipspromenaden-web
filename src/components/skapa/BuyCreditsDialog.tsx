@@ -218,8 +218,8 @@ export function BuyCreditsDialog({ onClose, reason }: Props) {
 
           <p className="text-xs text-text-warm">
             {t(
-              "Betalning sker via Stripe (kort eller Swish). Krediterna är digitalt innehåll som levereras direkt — när du betalar godkänner du att ångerrätten upphör. ",
-              "Payment is handled by Stripe (card or Swish). Credits are digital content delivered immediately — by paying you agree that the right of withdrawal ends. "
+              "Betalningen hanteras säkert av Stripe. Krediterna är digitalt innehåll som levereras direkt — när du betalar godkänner du att ångerrätten upphör. ",
+              "Payment is handled securely by Stripe. Credits are digital content delivered immediately — by paying you agree that the right of withdrawal ends. "
             )}
             <a href="/villkor" target="_blank" rel="noopener noreferrer" className="underline">
               {t("Villkor", "Terms")}

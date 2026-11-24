@@ -11,6 +11,12 @@ användar-orienterad text.
 
 ---
 
+## 2026-11-24 — Köp av AI-krediter: texten lovar inte Swish
+
+- Köpdialogen på `/skapa` sa att betalning sker med "kort eller Swish". Swish
+  är inte aktiverat än, så texten säger nu bara att betalningen hanteras
+  säkert av Stripe. Kassan visar de betalsätt som faktiskt finns.
+
 ## 2026-11-24 — Admin: nedladdningssiffrorna hämtas igen
 
 - Den dagliga hämtningen av nedladdningssiffror till `/admin` hade kraschat
