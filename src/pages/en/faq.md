@@ -107,6 +107,27 @@ time you open a walk.
 
 ## For creators
 
+**Can I move the checkpoints on the map afterwards?**
+
+Yes, and it works fine on a phone. Open **Library → My walks**, tap the pencil
+on the walk, then drag the pins on the map:
+
+1. **Press and hold a pin until it lifts**, drag it where you want it and let
+   go. A short tap opens the question instead of moving it.
+2. Tap **Save changes** at the bottom when you are happy.
+
+Two things make it much easier to be precise: zoom in before you drag, and
+switch map type with the button at the top right of the map. In **Satellite**
+you can see paths, trees and buildings, so you can put the checkpoint by the
+right bench or sign.
+
+Participants get the changes automatically — the same link and QR code still
+work, there is nothing to re-share. Results already recorded are unaffected.
+
+Remember that a question unlocks within about 15 metres of the pin, so it does
+not have to be exact. GPS is unreliable indoors and close to walls, though —
+better to place the checkpoint a little out in the open.
+
 **The correct answer is always first — can I shuffle the options?**
 
 They are shuffled automatically now when you take questions from a question

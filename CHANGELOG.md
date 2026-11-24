@@ -11,6 +11,14 @@ användar-orienterad text.
 
 ---
 
+## 2026-11-24 — Vanliga frågor: flytta kontrollerna
+
+- Ny fråga under *För dig som skapar* på `/vanliga-fragor` och `/en/faq`:
+  hur du flyttar kontrollerna på kartan i efterhand. Att hålla in pinnen
+  och dra är inte självklart — ett kort tryck öppnar frågan i stället — så
+  steget är utskrivet, tillsammans med satellitläget för att pricka rätt
+  och påminnelsen om att frågan låses upp inom ~15 meter.
+
 ## 2026-11-02 — Ny sida: Vanliga frågor
 
 - `/vanliga-fragor` samlar de frågor som faktiskt kommer in via support,

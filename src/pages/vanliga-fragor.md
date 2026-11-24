@@ -107,6 +107,27 @@ promenad behöver du dock internet.
 
 ## För dig som skapar
 
+**Kan jag flytta kontrollerna på kartan i efterhand?**
+
+Ja, och det går bra på mobilen. Öppna **Bibliotek → Mina promenader**, tryck på
+pennan på promenaden, och dra sedan pinnarna på kartan:
+
+1. **Håll fingret på pinnen tills den lyfter**, dra den dit du vill och släpp.
+   Ett kort tryck öppnar frågan i stället för att flytta den.
+2. Tryck **Spara ändringar** längst ner när du är nöjd.
+
+Två saker gör det mycket lättare att pricka rätt: zooma in ordentligt innan du
+drar, och byt karttyp med knappen uppe till höger på kartan. I läget
+**Satellit** ser du stigar, träd och byggnader, så du kan lägga kontrollen vid
+rätt bänk eller skylt.
+
+Deltagarna får ändringarna automatiskt — samma länk och QR-kod gäller, du
+behöver inte dela om något. Resultat som redan registrerats påverkas inte.
+
+Kom ihåg att frågan låses upp inom ungefär 15 meter från pinnen, så den behöver
+inte sitta exakt. Däremot blir GPS:en opålitlig inomhus och tätt intill
+husväggar — lägg hellre kontrollen en bit ut i det öppna.
+
 **Rätt svar hamnar alltid först — kan jag blanda alternativen?**
 
 De blandas numera automatiskt när du hämtar frågor från ett tipspack. Vill du
