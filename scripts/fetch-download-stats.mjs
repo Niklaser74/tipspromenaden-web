@@ -42,20 +42,14 @@
 
 import { Storage } from "@google-cloud/storage";
 import { initializeApp, cert } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, FieldValue } from "firebase-admin/firestore";
 import { createSign } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 
-// TODO ROADMAP: Android-vägen via GCS-bucket (pubsite_prod_<id>) failar med
-// "storage.objects.list denied" trots korrekta Play Console-permissions
-// ("Visa appinformation och ladda ned grupprapporter (skrivskyddat)" +
-// projekt-länkning ej tillgänglig i modern Play Console). Verkar vara ett
-// öppet problem i moderna Play Console-konton — service-account-grants
-// propagerar inte konsekvent till bucket-IAM (testat 2026-06-04, >6h
-// väntan). Plan B: porta till Play Developer Reporting API
-// (playdeveloperreporting.googleapis.com) som använder samma service-
-// account men annan permission-mekanism. Tills dess: Android fylls i
-// manuellt via admin-widget:ens "✏️ Uppdatera siffror"-knapp.
+// Historik: 2026-06-04 nekades GCS-bucketen (pubsite_prod_<id>) med
+// "storage.objects.list denied". Behörigheten slog igenom dagen efter —
+// bucketen går att läsa sedan 2026-06-05, så Plan B (Play Developer
+// Reporting API) behövdes aldrig.
 
 const {
   GCP_SERVICE_ACCOUNT_JSON,
@@ -97,49 +91,62 @@ async function fetchAndroidStats() {
   const bucketName = `pubsite_prod_${PLAY_DEVELOPER_ID}`;
   const prefix = `stats/installs/installs_${PLAY_PACKAGE_NAME}_`;
 
-  // Lista filer, hitta senaste YYYYMM-suffix.
+  // Alla månadsfiler, äldst först.
   const [files] = await storage.bucket(bucketName).getFiles({ prefix });
   const overviewFiles = files.filter((f) => f.name.endsWith("_overview.csv"));
   if (overviewFiles.length === 0) {
     throw new Error(`Hittade inga overview-CSVer i ${bucketName}/${prefix}`);
   }
   overviewFiles.sort((a, b) => a.name.localeCompare(b.name));
-  const latestFile = overviewFiles[overviewFiles.length - 1];
-  console.log(`Android: läser ${latestFile.name}`);
 
-  const [buffer] = await latestFile.download();
-  // Play exporterar UTF-16LE med BOM
-  const text = buffer.toString("utf16le").replace(/^﻿/, "");
-  const lines = text.split(/\r?\n/).filter((l) => l.trim());
-  if (lines.length < 2) throw new Error("Tom CSV");
+  // "Total User Installs" finns kvar som kolumn men Google fyller den med 0
+  // sedan måttet pensionerades. Kumulativa installs = summan av
+  // "Daily User Installs" över alla dagar i alla månadsfiler. Aktiva =
+  // senaste dag som har ett värde i "Active Device Installs" (de sista
+  // dagarna i filen kan släpa).
+  let androidInstalls = 0;
+  let androidActive;
+  let sawDailyColumn = false;
 
-  // Headers identifierar kolumnerna — kolumnordningen är inte garanterad
-  const headers = lines[0].split(",");
-  const totalInstallsIdx = headers.findIndex((h) =>
-    /total user installs/i.test(h)
-  );
-  const activeIdx = headers.findIndex((h) => /active devices/i.test(h));
+  for (const file of overviewFiles) {
+    const [buffer] = await file.download();
+    // Play exporterar UTF-16LE med BOM
+    const text = buffer.toString("utf16le").replace(/^﻿/, "");
+    const lines = text.split(/\r?\n/).filter((l) => l.trim());
+    if (lines.length < 2) continue;
 
-  if (totalInstallsIdx < 0) {
-    throw new Error(
-      `Hittar inte "Total User Installs"-kolumn i headers: ${headers.join(", ")}`
+    // Headers identifierar kolumnerna — kolumnordningen är inte garanterad
+    const headers = lines[0].split(",").map((h) => h.trim());
+    const dailyIdx = headers.findIndex((h) => /^daily user installs$/i.test(h));
+    const activeIdx = headers.findIndex((h) =>
+      /^active device installs$/i.test(h)
+    );
+    if (dailyIdx < 0) {
+      throw new Error(
+        `Hittar inte "Daily User Installs" i ${file.name}: ${headers.join(", ")}`
+      );
+    }
+    sawDailyColumn = true;
+
+    let monthInstalls = 0;
+    for (let i = 1; i < lines.length; i++) {
+      const cells = lines[i].split(",");
+      const daily = parseInt(cells[dailyIdx], 10);
+      if (Number.isFinite(daily)) monthInstalls += daily;
+      const active = activeIdx >= 0 ? parseInt(cells[activeIdx], 10) : NaN;
+      if (Number.isFinite(active) && active > 0) androidActive = active;
+    }
+    androidInstalls += monthInstalls;
+    console.log(
+      `Android ${file.name.match(/_(\d{6})_overview/)?.[1]}: ${monthInstalls} installs (${lines.length - 1} dagar)`
     );
   }
 
-  // Sista raden = senaste dagens cumulative
-  const lastRow = lines[lines.length - 1].split(",");
-  const androidInstalls = parseInt(lastRow[totalInstallsIdx], 10);
-  const androidActive =
-    activeIdx >= 0 ? parseInt(lastRow[activeIdx], 10) : undefined;
+  if (!sawDailyColumn) throw new Error("Alla overview-CSVer var tomma");
 
-  if (Number.isNaN(androidInstalls)) {
-    throw new Error("Kunde inte parse:a androidInstalls från sista raden");
-  }
-
-  return {
-    androidInstalls,
-    androidActive: Number.isFinite(androidActive) ? androidActive : undefined,
-  };
+  const result = { androidInstalls };
+  if (androidActive !== undefined) result.androidActive = androidActive;
+  return result;
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -202,7 +209,15 @@ async function fetchAscMonth(yearMonth) {
   if (res.status === 404) return { units: 0, downloads: 0 };
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`ASC ${res.status}: ${text.slice(0, 200)}`);
+    let msg = text.slice(0, 200);
+    try {
+      const err = JSON.parse(text).errors?.[0];
+      if (err) msg = `${err.code} — ${err.title}`;
+    } catch {}
+    if (/REQUIRED_AGREEMENTS/.test(msg)) {
+      msg += " Logga in på appstoreconnect.apple.com → Business/Avtal och godkänn det nya avtalet.";
+    }
+    throw new Error(`ASC ${res.status}: ${msg}`);
   }
 
   const gz = Buffer.from(await res.arrayBuffer());
@@ -264,6 +279,9 @@ async function fetchIosStats() {
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth() + 1;
 
+  // Ett fel på en enda månad avbryter hela iOS-hämtningen. En delsumma
+  // (eller 0 när alla månader failar) får aldrig skrivas över de riktiga
+  // siffrorna i Firestore.
   let totalUnits = 0;
   let totalDownloads = 0;
   for (let y = launchYear; y <= currentYear; y++) {
@@ -271,14 +289,10 @@ async function fetchIosStats() {
     const mEnd = y === currentYear ? currentMonth : 12;
     for (let m = mStart; m <= mEnd; m++) {
       const yyyymm = `${y}${String(m).padStart(2, "0")}`;
-      try {
-        const { units, downloads } = await fetchAscMonth(yyyymm);
-        console.log(`iOS ${yyyymm}: ${units} units, ${downloads} downloads`);
-        totalUnits += units;
-        totalDownloads += downloads;
-      } catch (e) {
-        console.warn(`iOS ${yyyymm}: ${e.message}`);
-      }
+      const { units, downloads } = await fetchAscMonth(yyyymm);
+      console.log(`iOS ${yyyymm}: ${units} units, ${downloads} downloads`);
+      totalUnits += units;
+      totalDownloads += downloads;
     }
   }
   return { iosUnits: totalUnits, iosDownloads: totalDownloads };
@@ -317,21 +331,27 @@ async function main() {
     notes.push(`iOS: ${e.message}`);
   }
 
-  if (notes.length > 0) {
-    stats.notes = `Auto-fetch ${new Date().toISOString().slice(0, 10)}: ${notes.join(" | ")}`;
-  }
-
   // Behåll manuella siffror om hämtningen misslyckades helt
   const onlyMeta = Object.keys(stats).every(
-    (k) => k === "updatedAt" || k === "updatedBy" || k === "notes"
+    (k) => k === "updatedAt" || k === "updatedBy"
   );
   if (onlyMeta) {
     console.error("Ingen plattform lyckades — avbryter utan att skriva");
     process.exit(1);
   }
 
+  // Felnoteringen visas i admin-widgeten. Lyckas allt rensas en gammal.
+  stats.notes =
+    notes.length > 0
+      ? `Auto-fetch ${new Date().toISOString().slice(0, 10)}: ${notes.join(" | ")}`
+      : FieldValue.delete();
+
   await db.collection("stats").doc("downloads").set(stats, { merge: true });
-  console.log("Skrivit stats/downloads:", stats);
+  console.log("Skrivit stats/downloads:", { ...stats, notes: notes.join(" | ") || "(rensad)" });
+
+  // Det som gick att hämta är sparat, men körningen ska ändå bli röd så
+  // länge en plattform failar — annars står en gammal siffra kvar obemärkt.
+  if (notes.length > 0) process.exit(1);
 }
 
 main().catch((e) => {

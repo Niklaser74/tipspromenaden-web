@@ -7,19 +7,14 @@ till Firestore-doc:en `stats/downloads` som admin-dashboarden läser.
 Du gör det här en gång. Tar ~30 minuter inklusive att vänta på Google/
 Apple-godkännanden.
 
-> ⚠️ **Status 2026-06-04: iOS funkar, Android väntar på roadmap.**
-> GCS-bucket-vägen för Play Console-stats (stegen för
-> `GCP_SERVICE_ACCOUNT_JSON` + `PLAY_DEVELOPER_ID`) failar med
-> "storage.objects.list denied" trots korrekta Play Console-permissions
-> och flera timmars IAM-propagering. Verkar vara ett känt problem i
-> moderna Play Console-konton. Plan B är att porta Android-delen till
-> Play Developer Reporting API (`playdeveloperreporting.googleapis.com`)
-> — se README → Roadmap. Tills dess: Android-siffror fylls i manuellt
-> via admin-widget:ens "✏️ Uppdatera siffror"-knapp.
+> **Status 2026-11-24:** Android hämtas via GCS-bucketen (behörigheten
+> som nekades 2026-06-04 slog igenom dagen efter). Kumulativa installs
+> räknas som summan av `Daily User Installs` över alla månadsfiler —
+> kolumnen `Total User Installs` finns kvar men är alltid 0.
 >
-> Du kan ändå sätta upp Google Play-secrets enligt nedan — workflow:n
-> sätter `notes`-fältet med felmeddelandet på Android utan att krascha,
-> och iOS-delen fungerar parallellt.
+> Failar en plattform sparas den andras siffror ändå, felet hamnar i
+> `notes` (syns i admin-widgeten) och körningen blir röd så att GitHub
+> mejlar.
 
 ## Vad du behöver i slutet
 
@@ -130,6 +125,11 @@ eller dubbelkolla att mejlet stämmer exakt.
 
 **"ASC 401 Unauthorized":** Antagligen .p8-formatet. Kontrollera att hela
 texten inkl. BEGIN/END-rader är med, och att Key ID + Issuer ID stämmer.
+
+**"ASC 403 FORBIDDEN.REQUIRED_AGREEMENTS_MISSING_OR_EXPIRED":** Apple har
+publicerat ett nytt avtal som inte är godkänt, och API:et är spärrat tills
+det är gjort. Logga in på appstoreconnect.apple.com som kontoinnehavare →
+**Business** (Avtal) och godkänn. Nästa körning går igenom av sig själv.
 
 **"Cannot find bucket pubsite_prod_XXX":** Fel `PLAY_DEVELOPER_ID`. Kolla
 URL:en i Play Console när du tittar på appen.

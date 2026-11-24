@@ -11,6 +11,15 @@ användar-orienterad text.
 
 ---
 
+## 2026-11-24 — Admin: nedladdningssiffrorna hämtas igen
+
+- Den dagliga hämtningen av nedladdningssiffror till `/admin` hade kraschat
+  varje natt sedan 5 juni. Android-siffrorna räknas nu rätt (summan av
+  dagliga installationer i stället för en kolumn som Google slutat fylla i)
+  och sparas även när iOS-hämtningen misslyckas.
+- Ett fel hos Apple eller Google kan inte längre nolla siffror som redan
+  finns. Felet visas i stället i klartext i en gul notering i widgeten.
+
 ## 2026-11-24 — Vanliga frågor: flytta kontrollerna
 
 - Ny fråga under *För dig som skapar* på `/vanliga-fragor` och `/en/faq`:
