@@ -27,7 +27,11 @@ const faq = [
   },
   {
     q: "What does the app cost?",
-    a: "Nothing. Tipspromenaden is completely free with no ads and no in-app purchases — it runs as a hobby project.",
+    a: "Creating and walking quiz walks is free, with no ads and no in-app purchases. The only thing that costs money is AI-generated questions, an optional extra bought on the website.",
+  },
+  {
+    q: "Can AI write the questions for me?",
+    a: "Yes. At tipspromenaden.app/skapa and in the Android app you can have AI create a question pack from a topic, a place or your own text. You review and edit the questions before saving. It costs credits: from 49 SEK for 10 credits, where one credit covers up to 15 questions.",
   },
   {
     q: "Do I need to log in to take part?",
@@ -166,6 +170,84 @@ const screenshots = [
       ))}
     </section>
 
+    {/* ─── AI QUESTIONS ──────────────────────────────────────
+        Feature block for AI-generated questions (paid extra, 2026-11).
+        The price and credit cost below must match `CREDIT_PACKS` and
+        `creditCost()` in `src/lib/ai.ts`. Mirror of the Swedish page. */}
+    <section class="max-w-4xl mx-auto px-6 pb-24">
+      <div class="bg-white border border-rule rounded-3xl overflow-hidden shadow-lg shadow-green-dark/10">
+        <div class="h-1.5 bg-yellow"></div>
+        <div class="p-8 md:p-12">
+          <p class="text-center mb-5">
+            <span class="inline-block bg-green-dark text-cream text-xs font-semibold tracking-[0.2em] uppercase px-4 py-1.5 rounded-full">
+              New · requested by you
+            </span>
+          </p>
+          <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl text-center mb-5">
+            Let AI write the questions
+          </h2>
+          <p class="text-lg leading-relaxed text-center max-w-2xl mx-auto mb-10">
+            No more blank page the night before the party. Describe what the
+            walk should be about and you have a finished question pack in
+            under a minute — with the right answer, an explanation and a
+            source for every question.
+          </p>
+
+          <div class="grid md:grid-cols-3 gap-8 mb-10">
+            {[
+              {
+                emoji: "💡",
+                title: "From a topic",
+                body: "“Dinosaurs for seven-year-olds” or “Pop music of the 80s”. You choose difficulty, audience and number of questions.",
+              },
+              {
+                emoji: "📍",
+                title: "From a place",
+                body: "Questions about your own town, park or landmark. The AI looks up facts about the place on the web.",
+              },
+              {
+                emoji: "📄",
+                title: "From your own text",
+                body: "Paste course material, your club's history or an article, and the questions are built on it.",
+              },
+            ].map(({ emoji, title, body }) => (
+              <div class="text-center md:text-left">
+                <div class="text-3xl mb-3" aria-hidden="true">{emoji}</div>
+                <h3 class="font-serif font-bold text-xl mb-2">{title}</h3>
+                <p class="text-base leading-relaxed text-text-warm">{body}</p>
+              </div>
+            ))}
+          </div>
+
+          <blockquote class="bg-cream rounded-2xl px-6 py-5 max-w-2xl mx-auto mb-10 border-l-4 border-yellow">
+            <p class="text-base leading-relaxed">
+              <strong class="font-serif text-green-dark">A feature you asked for.</strong>{" "}
+              Coming up with good questions is what takes the longest when
+              you build a walk, and the request for help with exactly that
+              comes from you who use Tipspromenaden. Now the AI does the
+              heavy lifting. You review the questions, drop the ones you
+              don't want and edit the rest before anything is saved.
+            </p>
+          </blockquote>
+
+          <div class="text-center">
+            <a
+              href="/en/skapa"
+              class="inline-block bg-green-dark text-cream font-semibold text-lg px-8 py-4 rounded-xl hover:bg-green transition-colors"
+            >
+              ✨ Try it in the creator
+            </a>
+            <p class="text-sm text-text-warm mt-5 max-w-xl mx-auto leading-relaxed">
+              From 49 SEK for 10 credits — one credit covers up to 15
+              questions. Questions can be written in eight languages.
+              Available on the web and in the Android app. Everything else
+              in Tipspromenaden is free, just like before.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     {/* ─── SCREENSHOTS ──────────────────────────────────── */}
     <section class="max-w-6xl mx-auto pb-24">
       <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl text-center mb-12 px-6">
@@ -220,7 +302,7 @@ const screenshots = [
           },
           {
             title: "Write questions and answer options",
-            body: "Link a question to each checkpoint, add answer options and mark the correct one. You can upload an image per question, or import a ready-made question pack from the library.",
+            body: "Link a question to each checkpoint, add answer options and mark the correct one. You can upload an image per question, import a ready-made question pack from the library or let AI write the questions for you.",
           },
           {
             title: "Choose activity type and event mode",

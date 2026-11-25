@@ -28,7 +28,11 @@ const faq = [
   },
   {
     q: "Vad kostar appen?",
-    a: "Inget. Tipspromenaden är helt gratis utan reklam och utan köp i appen — den drivs som ett hobbyprojekt.",
+    a: "Att skapa och gå promenader är gratis, utan reklam och utan köp i appen. Det enda som kostar är AI-genererade frågor, en frivillig tilläggstjänst som köps på webben.",
+  },
+  {
+    q: "Kan AI skriva frågorna åt mig?",
+    a: "Ja. På tipspromenaden.app/skapa och i Android-appen kan du låta AI skapa ett frågebatteri utifrån ett tema, en plats eller en egen text. Du granskar och ändrar frågorna innan du sparar. Det kostar krediter: från 49 kr för 10 krediter, där en kredit räcker till upp till 15 frågor.",
   },
   {
     q: "Måste jag logga in för att delta?",
@@ -159,6 +163,83 @@ const screenshots = [
       ))}
     </section>
 
+    {/* ─── AI-FRÅGOR ─────────────────────────────────────────
+        Nyhetsblock för AI-genererade frågor (betaltjänst, 2026-11).
+        Priset och kreditkostnaden nedan måste stämma med
+        `CREDIT_PACKS` och `creditCost()` i `src/lib/ai.ts`. */}
+    <section class="max-w-4xl mx-auto px-6 pb-24">
+      <div class="bg-white border border-rule rounded-3xl overflow-hidden shadow-lg shadow-green-dark/10">
+        <div class="h-1.5 bg-yellow"></div>
+        <div class="p-8 md:p-12">
+          <p class="text-center mb-5">
+            <span class="inline-block bg-green-dark text-cream text-xs font-semibold tracking-[0.2em] uppercase px-4 py-1.5 rounded-full">
+              Nytt · önskat av er
+            </span>
+          </p>
+          <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl text-center mb-5">
+            Låt AI skriva frågorna
+          </h2>
+          <p class="text-lg leading-relaxed text-center max-w-2xl mx-auto mb-10">
+            Slut på idétorka kvällen före kalaset. Beskriv vad promenaden ska
+            handla om, så har du ett färdigt frågebatteri på under en minut —
+            med rätt svar, förklaring och källa till varje fråga.
+          </p>
+
+          <div class="grid md:grid-cols-3 gap-8 mb-10">
+            {[
+              {
+                emoji: "💡",
+                title: "Från ett tema",
+                body: "”Dinosaurier för sjuåringar” eller ”Svensk musik på 80-talet”. Du väljer svårighet, målgrupp och antal frågor.",
+              },
+              {
+                emoji: "📍",
+                title: "Från en plats",
+                body: "Frågor om just er ort, park eller sevärdhet. AI:n söker upp fakta om platsen på webben.",
+              },
+              {
+                emoji: "📄",
+                title: "Från din egen text",
+                body: "Klistra in kursmaterial, föreningens historia eller en artikel, så bygger frågorna på den.",
+              },
+            ].map(({ emoji, title, body }) => (
+              <div class="text-center md:text-left">
+                <div class="text-3xl mb-3" aria-hidden="true">{emoji}</div>
+                <h3 class="font-serif font-bold text-xl mb-2">{title}</h3>
+                <p class="text-base leading-relaxed text-text-warm">{body}</p>
+              </div>
+            ))}
+          </div>
+
+          <blockquote class="bg-cream rounded-2xl px-6 py-5 max-w-2xl mx-auto mb-10 border-l-4 border-yellow">
+            <p class="text-base leading-relaxed">
+              <strong class="font-serif text-green-dark">En funktion ni har bett om.</strong>{" "}
+              Att hitta på bra frågor är det som tar längst tid när man bygger
+              en promenad, och önskemålet om hjälp med just det kommer från er
+              som använder Tipspromenaden. Nu gör AI:n grovjobbet. Du granskar
+              frågorna, väljer bort dem du inte vill ha och ändrar resten
+              innan något sparas.
+            </p>
+          </blockquote>
+
+          <div class="text-center">
+            <a
+              href="/skapa"
+              class="inline-block bg-green-dark text-cream font-semibold text-lg px-8 py-4 rounded-xl hover:bg-green transition-colors"
+            >
+              ✨ Prova i skaparen
+            </a>
+            <p class="text-sm text-text-warm mt-5 max-w-xl mx-auto leading-relaxed">
+              Från 49 kr för 10 krediter — en kredit räcker till upp till
+              15 frågor. Frågorna kan skrivas på åtta språk. Finns på webben
+              och i Android-appen. Allt annat i Tipspromenaden är gratis,
+              precis som förut.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     {/* ─── SKÄRMDUMPAR ───────────────────────────────────── */}
     {/* Visuellt bevis innan CTA — "så här ser det faktiskt ut".
         Mobil: horisontell snap-scroll så fingret kan svepa mellan dem
@@ -216,7 +297,7 @@ const screenshots = [
           },
           {
             title: "Skriv frågor och svarsalternativ",
-            body: "Koppla en fråga till varje kontroll, lägg till svarsalternativ och markera det rätta. Du kan ladda upp en bild per fråga, eller importera ett färdigt frågebatteri från biblioteket.",
+            body: "Koppla en fråga till varje kontroll, lägg till svarsalternativ och markera det rätta. Du kan ladda upp en bild per fråga, importera ett färdigt frågebatteri från biblioteket eller låta AI skriva frågorna åt dig.",
           },
           {
             title: "Välj aktivitetstyp och eventläge",

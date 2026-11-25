@@ -11,6 +11,18 @@ användar-orienterad text.
 
 ---
 
+## 2026-11-25 — Startsidan visar att AI kan skriva frågorna
+
+- Nytt block på startsidan (svenska och engelska): "Låt AI skriva frågorna".
+  Det visar de tre sätten att generera frågor (tema, plats, egen text), vad
+  det kostar och att funktionen finns på webben och i Android-appen, med
+  knapp till skaparen.
+- Blocket berättar också att funktionen är önskad av användarna.
+- Vanliga frågor på startsidan: svaret om vad appen kostar nämner nu att
+  AI-frågor är en frivillig betaltjänst, och det finns en ny fråga om AI.
+- Steg 3 i "Så här skapar du din första tipspromenad" nämner AI som ett sätt
+  att få frågor.
+
 ## 2026-11-24 — Köp av AI-krediter: texten lovar inte Swish
 
 - Köpdialogen på `/skapa` sa att betalning sker med "kort eller Swish". Swish
