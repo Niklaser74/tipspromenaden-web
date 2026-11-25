@@ -92,6 +92,20 @@ vibrates when a checkpoint triggers, so you can keep it in your pocket.
 If the creator enabled enforced order, checkpoints must be taken in sequence.
 The others show a padlock on the map until the previous one is answered.
 
+**The image or the top of the question is not visible when the question opens.**
+
+This was a bug, fixed on 25 November 2026. The question panel grew upwards when
+the question was long, and whatever sat at the top of it ended up past the top
+edge of the screen — the image first, then the beginning of the question text.
+The panel now scrolls instead, so everything fits.
+
+If you still see it: close the app completely, open it, close it again and open
+it once more. The update downloads in the background the first time and takes
+effect the second.
+
+If these are your own questions — **do not remove the images**. They were
+loading all along; they were simply above the visible part of the panel.
+
 **Can I pause and continue later?**
 
 Yes. Reopen the walk on the same phone and it tells you how many questions you

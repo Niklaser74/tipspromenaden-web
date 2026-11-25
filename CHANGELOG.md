@@ -54,6 +54,16 @@ användar-orienterad text.
 - Ett fel hos Apple eller Google kan inte längre nolla siffror som redan
   finns. Felet visas i stället i klartext i en gul notering i widgeten.
 
+## 2026-11-25 — Vanliga frågor: bilden som inte syntes
+
+- Ny fråga under *Under promenaden* på `/vanliga-fragor` och `/en/faq`:
+  bilden eller början av frågan syns inte när frågan öppnas. Frågerutan
+  var ankrad i underkanten och växte uppåt förbi skärmkanten, så den
+  kapade innehållet ovanifrån — bilden låg först och försvann först.
+  Rättat i appen samma dag (OTA mot runtime 1.9.0 + 1.9.2); FAQ-svaret
+  finns för att symptomet får folk att tro att bilderna inte laddar och
+  börja ta bort dem. Därav den uttryckliga raden om att behålla dem.
+
 ## 2026-11-24 — Vanliga frågor: flytta kontrollerna
 
 - Ny fråga under *För dig som skapar* på `/vanliga-fragor` och `/en/faq`:

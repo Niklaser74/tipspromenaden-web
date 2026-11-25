@@ -92,6 +92,20 @@ vibrerar när det smäller till, så du behöver inte gå med telefonen i handen
 Har skaparen slagit på tvingad ordning måste kontrollerna tas i nummerordning.
 Övriga visas då med ett lås på kartan tills den föregående är besvarad.
 
+**Bilden eller början av frågan syns inte när frågan öppnas.**
+
+Det var ett fel i appen, rättat den 25 november 2026. Frågerutan växte uppåt
+när frågan var lång, och det som låg högst upp i rutan hamnade utanför skärmens
+överkant — bilden först, därefter början av frågetexten. Rutan skrollar nu i
+stället, så allt får plats.
+
+Ser du det fortfarande: stäng appen helt, öppna den, stäng den igen och öppna
+en gång till. Uppdateringen laddas ner i bakgrunden första gången och börjar
+gälla andra gången.
+
+Är det dina egna frågor det gäller — **ta inte bort bilderna**. De har laddats
+hela tiden, de låg bara ovanför den synliga delen av rutan.
+
 **Kan jag pausa och fortsätta senare?**
 
 Ja. Öppnar du promenaden igen på samma telefon står det hur många frågor du
