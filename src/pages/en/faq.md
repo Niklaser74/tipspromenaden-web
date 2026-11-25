@@ -158,6 +158,20 @@ No, you only enter a name. An account is needed only to create your own walks.
 Creating and walking is free, with no ads. The only paid part is AI-generated
 questions, which is an optional extra.
 
+**Can AI write the questions for me?**
+
+Yes. You start from a topic, a place or your own text and get a finished
+question pack that you review and edit before saving. The feature is available
+at **[tipspromenaden.app/skapa](/en/skapa)** and in the Android app. It costs
+credits: from 49 SEK for 10 credits, where one credit covers up to
+15 questions.
+
+**I have an iPhone — how do I use AI questions?**
+
+Create the questions at **[tipspromenaden.app/skapa](/en/skapa)** in your
+browser, signed in with the same account as in the app. The walk is then in the
+app right away. The AI button is not available in the iPhone app.
+
 **How do I delete my account and my data?**
 
 **Settings → Danger zone** in the app, where you type RADERA to confirm. If you

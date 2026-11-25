@@ -42,8 +42,8 @@ export function AiPromo({ variant }: { variant: "full" | "compact" }) {
         </p>
         <p className="text-sm leading-relaxed text-text-warm">
           {t(
-            "Utgå från ett tema, en plats eller en egen text och få ett färdigt frågebatteri på under en minut. Öppna en promenad och välj ”✨ Generera med AI”. Från 49 kr för 10 krediter — en kredit räcker till upp till 15 frågor.",
-            "Start from a topic, a place or your own text and get a finished question pack in under a minute. Open a walk and choose “✨ Generate with AI”. From 49 SEK for 10 credits — one credit covers up to 15 questions."
+            "Utgå från ett tema, en plats eller en egen text och få ett färdigt frågebatteri på under en minut. Öppna en promenad och välj ”✨ Generera med AI”. Från 49 kr för 10 krediter — en kredit räcker till upp till 15 frågor. Har du iPhone? Skapa frågorna här, så finns promenaden i appen direkt.",
+            "Start from a topic, a place or your own text and get a finished question pack in under a minute. Open a walk and choose “✨ Generate with AI”. From 49 SEK for 10 credits — one credit covers up to 15 questions. On iPhone? Create the questions here, and the walk is in the app right away."
           )}
         </p>
         <button
@@ -139,6 +139,13 @@ export function AiPromo({ variant }: { variant: "full" | "compact" }) {
             {t(
               "Logga in här ovanför för att prova. Från 49 kr för 10 krediter — en kredit räcker till upp till 15 frågor. Frågorna kan skrivas på åtta språk. Allt annat i Tipspromenaden är gratis, precis som förut.",
               "Sign in above to try it. From 49 SEK for 10 credits — one credit covers up to 15 questions. Questions can be written in eight languages. Everything else in Tipspromenaden is free, just like before."
+            )}
+          </p>
+          <p className="text-sm text-text-warm text-center max-w-xl mx-auto leading-relaxed mt-3">
+            <strong>{t("Har du iPhone?", "On iPhone?")}</strong>{" "}
+            {t(
+              "Skapa frågorna här på webben, så finns promenaden i appen direkt.",
+              "Create the questions here on the web, and the walk is in the app right away."
             )}
           </p>
         </div>

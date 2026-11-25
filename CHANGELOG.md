@@ -11,6 +11,13 @@ användar-orienterad text.
 
 ---
 
+## 2026-11-25 — AI-frågor: besked till iPhone-användare
+
+- Startsidan och `/skapa` säger nu vad som gäller med iPhone: skapa frågorna
+  på webben, så finns promenaden i appen direkt.
+- Vanliga frågor (svenska och engelska) har två nya svar: om AI kan skriva
+  frågorna, och hur man använder funktionen med iPhone.
+
 ## 2026-11-25 — AI-frågorna marknadsförs även på /skapa
 
 - Inloggningssidan på `/skapa` (svenska och engelska) visar samma block som

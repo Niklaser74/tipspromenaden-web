@@ -158,6 +158,20 @@ Nej, du anger bara ett namn. Konto behövs bara för att skapa egna promenader.
 Att skapa och gå promenader är gratis, utan reklam. Det enda som kostar är
 AI-genererade frågor, som är en frivillig tilläggstjänst.
 
+**Kan AI skriva frågorna åt mig?**
+
+Ja. Du utgår från ett tema, en plats eller en egen text och får ett färdigt
+frågebatteri som du granskar och ändrar innan du sparar. Funktionen finns på
+**[tipspromenaden.app/skapa](/skapa)** och i Android-appen. Den kostar
+krediter: från 49 kr för 10 krediter, där en kredit räcker till upp till
+15 frågor.
+
+**Jag har iPhone — hur använder jag AI-frågorna?**
+
+Skapa frågorna på **[tipspromenaden.app/skapa](/skapa)** i webbläsaren, inloggad
+med samma konto som i appen. Promenaden finns sedan i appen direkt. Knappen
+för AI-frågor finns inte i iPhone-appen.
+
 **Hur raderar jag mitt konto och mina uppgifter?**
 
 **Inställningar → Farozon** i appen, där du skriver RADERA för att bekräfta.
