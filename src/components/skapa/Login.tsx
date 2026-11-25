@@ -15,6 +15,7 @@ import { useState } from "react";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../lib/firebase";
 import { useT, useLocale } from "./i18n";
+import { AiPromo } from "./AiPromo";
 
 export function Login() {
   const t = useT();
@@ -39,7 +40,7 @@ export function Login() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
+    <div className="min-h-screen flex flex-col items-center px-6 py-16 text-center">
       <img
         src="/icon.png"
         alt=""
@@ -70,6 +71,11 @@ export function Login() {
       {error && (
         <p className="mt-6 text-red-700 text-sm max-w-md">{error}</p>
       )}
+
+      {/* Reklam för AI-frågorna — samma budskap som på startsidan. */}
+      <div className="w-full mt-16">
+        <AiPromo variant="full" />
+      </div>
 
       <a
         href={lang === "en" ? "/en/" : "/"}

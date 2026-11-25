@@ -19,6 +19,7 @@ import { ShareDialog } from "./ShareDialog";
 import { UploadTipspackDialog } from "./UploadTipspackDialog";
 import { MyTipspacks } from "./MyTipspacks";
 import { CreditsBadge } from "./CreditsBadge";
+import { AiPromo } from "./AiPromo";
 import { useT, useLocale } from "./i18n";
 
 interface Props {
@@ -101,6 +102,8 @@ export function WalkList({ user, onOpenWalk }: Props) {
           <CreditsBadge user={user} />
         </div>
       </header>
+
+      <AiPromo variant="compact" />
 
       <button
         onClick={handleCreate}

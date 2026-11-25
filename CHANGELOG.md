@@ -11,6 +11,13 @@ användar-orienterad text.
 
 ---
 
+## 2026-11-25 — AI-frågorna marknadsförs även på /skapa
+
+- Inloggningssidan på `/skapa` (svenska och engelska) visar samma block som
+  startsidan, "Låt AI skriva frågorna", under inloggningsknappen.
+- Inloggade ser en kort ruta om AI-frågorna överst i "Mina promenader". Den
+  går att stänga och kommer då inte tillbaka i samma webbläsare.
+
 ## 2026-11-25 — Startsidan visar att AI kan skriva frågorna
 
 - Nytt block på startsidan (svenska och engelska): "Låt AI skriva frågorna".
